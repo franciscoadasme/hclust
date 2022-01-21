@@ -28,6 +28,14 @@ describe HClust::DistanceMatrix do
         HClust::DistanceMatrix.new([] of Float64)
       end
     end
+
+    it "raises if distance is nan" do
+      expect_raises(ArgumentError, "Invalid distance (NaN)") do
+        HClust::DistanceMatrix.new(5) do
+          Float64::NAN
+        end
+      end
+    end
   end
 
   describe "#[]" do

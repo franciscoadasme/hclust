@@ -41,6 +41,8 @@ struct HClust::DistanceMatrix
   # given block once for each pair of elements (indexes), using the
   # block's return value as the distance between the given elements.
   #
+  # Raises `ArgumentError` if any distance value is NaN.
+  #
   # ```
   # HClust::DistanceMatrix.new(5) do |i, j|
   #   # compute distance between elements i and j
@@ -54,7 +56,9 @@ struct HClust::DistanceMatrix
     k = 0
     (size - 1).times do |i|
       (i + 1).upto(size - 1) do |j|
-        @buffer[k] = yield i, j
+        value = (yield i, j).to_f
+        raise ArgumentError.new("Invalid distance (NaN)") if value.nan?
+        @buffer[k] = value
         k += 1
       end
     end
@@ -65,6 +69,8 @@ struct HClust::DistanceMatrix
   # array cannot be interpreted as a condensed matrix (it contains an
   # invalid number of elements) or `Enumerable::EmptyError` if it's
   # empty.
+  #
+  # NOTE: distance values must be valid (non-NaN).
   def initialize(values : Array(Float64))
     raise Enumerable::EmptyError.new if values.empty?
     size = Math.sqrt(8 * values.size + 1) / 2 + 0.5
