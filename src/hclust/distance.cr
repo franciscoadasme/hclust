@@ -50,7 +50,7 @@ struct HClust::DistanceMatrix
   # end
   # ```
   def initialize(@size : Int32, & : Int32, Int32 -> Number)
-    @internal_size = (size * (size - 1)) // 2
+    @internal_size = size * (size - 1) >> 1
     @buffer = Pointer(Float64).malloc(@internal_size)
 
     k = 0
