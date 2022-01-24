@@ -98,6 +98,14 @@ struct HClust::DistanceMatrix
     end
   end
 
+  # Returns the internal index for the distance between the elements at
+  # *i* and *j*.
+  @[AlwaysInline]
+  private def index_to_internal(i : Int32, j : Int32) : Int32
+    i, j = j, i if j < i
+    ((2 * @size - 3 - i) * i >> 1) + j - 1
+  end
+
   # Returns the size of the encoded matrix.
   def size : Int32
     @size
@@ -126,10 +134,8 @@ struct HClust::DistanceMatrix
   # NOTE: This method should only be directly invoked if you are
   # absolutely sure *i* and *j* are in bounds, to avoid a bounds check
   # for a small boost of performance.
-  def unsafe_fetch(i : Int, j : Int) : Float64
-      i, j = j, i if j < i
-      k = ((2 * @size - 3 - i) * i >> 1) + j - 1
-      unsafe_fetch(k)
+  def unsafe_fetch(i : Int32, j : Int32) : Float64
+    unsafe_fetch index_to_internal(i, j)
   end
 
   # Returns the distance at the given index of the condensed distance
