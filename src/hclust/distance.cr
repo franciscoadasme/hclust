@@ -37,31 +37,10 @@ class HClust::DistanceMatrix
   # Size of the condensed form (one-dimensional array)
   @internal_size : Int32
 
-  # Creates a new `DistanceMatrix` of the given size and invokes the
-  # given block once for each pair of elements (indexes), using the
-  # block's return value as the distance between the given elements.
-  #
-  # Raises `ArgumentError` if any distance value is NaN.
-  #
-  # ```
-  # HClust::DistanceMatrix.new(5) do |i, j|
-  #   # compute distance between elements i and j
-  #   10 * (i + 1) + j + 1
-  # end
-  # ```
-  def initialize(@size : Int32, & : Int32, Int32 -> Number)
+  # Creates a new `DistanceMatrix` of the given size filled with zeros.
+  def initialize(@size : Int32)
     @internal_size = size * (size - 1) >> 1
-    @buffer = Pointer(Float64).malloc(@internal_size)
-
-    k = 0
-    (size - 1).times do |i|
-      (i + 1).upto(size - 1) do |j|
-        value = (yield i, j).to_f
-        raise ArgumentError.new("Invalid distance (NaN)") if value.nan?
-        @buffer[k] = value
-        k += 1
-      end
-    end
+    @buffer = Pointer(Float64).malloc(@internal_size, 0.0)
   end
 
   # Creates a new `DistanceMatrix` from the given condensed distance
@@ -79,6 +58,32 @@ class HClust::DistanceMatrix
     @internal_size = values.size
     @buffer = Pointer(Float64).malloc(@internal_size)
     @buffer.copy_from values.to_unsafe, values.size
+  end
+
+  # Creates a new `DistanceMatrix` of the given size and invokes the
+  # given block once for each pair of elements (indexes), using the
+  # block's return value as the distance between the given elements.
+  #
+  # Raises `ArgumentError` if any distance value is NaN.
+  #
+  # ```
+  # HClust::DistanceMatrix.new(5) do |i, j|
+  #   # compute distance between elements i and j
+  #   10 * (i + 1) + j + 1
+  # end
+  # ```
+  def self.new(size : Int32, & : Int32, Int32 -> Number)
+    new(size).tap do |mat|
+      k = 0
+      (size - 1).times do |i|
+        (i + 1).upto(size - 1) do |j|
+          value = (yield i, j).to_f
+          raise ArgumentError.new("Invalid distance (NaN)") if value.nan?
+          mat.unsafe_put k, value
+          k += 1
+        end
+      end
+    end
   end
 
   # Returns the distance between the elements at *i* and *j*. Raises

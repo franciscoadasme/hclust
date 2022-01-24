@@ -2,6 +2,11 @@ require "./spec_helper"
 
 describe HClust::DistanceMatrix do
   describe "#new" do
+    it "creates a zero matrix" do
+      mat = HClust::DistanceMatrix.new(5)
+      mat.to_a.should eq [0.0] * 10
+    end
+
     it "creates a matrix with block" do
       mat = HClust::DistanceMatrix.new(5) do |i, j|
         10 * (i + 1) + j + 1
@@ -41,7 +46,7 @@ describe HClust::DistanceMatrix do
   describe "#[]" do
     it "raises if out of bounds" do
       expect_raises(IndexError) do
-        HClust::DistanceMatrix.new(5) { 0 }[5, 3]
+        HClust::DistanceMatrix.new(5)[5, 3]
       end
     end
   end
@@ -68,7 +73,7 @@ describe HClust::DistanceMatrix do
     end
 
     it "returns nil if out of bounds" do
-      mat = HClust::DistanceMatrix.new(5) { 0 }
+      mat = HClust::DistanceMatrix.new(5)
       mat[0, 10]?.should be_nil
       mat[40, 3]?.should be_nil
       mat[11, 6]?.should be_nil
@@ -92,14 +97,14 @@ describe HClust::DistanceMatrix do
 
     it "raises if elements are the same" do
       expect_raises(IndexError, "The distances at the diagonal must be zero") do
-        mat = HClust::DistanceMatrix.new(5) { 0 }
+        mat = HClust::DistanceMatrix.new(5)
         mat[3, 3] = 123
       end
     end
 
     it "raises if out of bounds" do
       expect_raises(IndexError) do
-        mat = HClust::DistanceMatrix.new(5) { 0 }
+        mat = HClust::DistanceMatrix.new(5)
         mat[5, 3] = 25
       end
     end
@@ -107,7 +112,7 @@ describe HClust::DistanceMatrix do
 
   describe "#to_a" do
     it "returns a flatten array" do
-      mat = HClust::DistanceMatrix.new(5) { 0 }
+      mat = HClust::DistanceMatrix.new(5)
       mat.to_a.should eq Array(Float64).new(10, 0)
     end
   end
