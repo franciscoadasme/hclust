@@ -90,6 +90,7 @@ struct HClust::DistanceMatrix
   # Returns the distance between the elements at *i* and *j*, or `nil` if
   # any of the indexes is out of bounds.
   def []?(i : Int, j : Int) : Float64?
+    return 0.0 if i == j
     i += size if i < 0
     j += size if j < 0
     if 0 <= i < size && 0 <= j < size
@@ -118,21 +119,17 @@ struct HClust::DistanceMatrix
   # Returns the distance between the elements at *i* and *j*, without
   # doing any bounds check.
   #
-  # This should be called with *i* and *j* within `0...size`. Use
-  # `#[](i, j)` and `#[]?(i, j)` instead for bounds checking and support
-  # for negative indexes.
+  # This should be called with *i* and *j* within `0...size` and `i !=
+  # j`. Use `#[](i, j)` and `#[]?(i, j)` instead for bounds checking and
+  # support for negative indexes.
   #
   # NOTE: This method should only be directly invoked if you are
   # absolutely sure *i* and *j* are in bounds, to avoid a bounds check
   # for a small boost of performance.
   def unsafe_fetch(i : Int, j : Int) : Float64
-    if i != j
       i, j = j, i if j < i
       k = ((2 * @size - 3 - i) * i >> 1) + j - 1
       unsafe_fetch(k)
-    else
-      0.0
-    end
   end
 
   # Returns the distance at the given index of the condensed distance
