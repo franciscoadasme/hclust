@@ -33,7 +33,7 @@
 # [1]: https://en.wikipedia.org/wiki/Metric_(mathematics)
 # [2]:
 #     https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.squareform.html
-struct HClust::DistanceMatrix
+class HClust::DistanceMatrix
   # Size of the condensed form (one-dimensional array)
   @internal_size : Int32
 
@@ -98,6 +98,31 @@ struct HClust::DistanceMatrix
     end
   end
 
+  # Sets the distance between the elements at *i* and *j* to *value*.
+  # Returns *value*.
+  #
+  # Negative indices can be used to start counting from the end of the
+  # elements. Raises `IndexError` if either *i* or *j* is out of bounds,
+  # or if *i == j* and *value* is not zero.
+  @[AlwaysInline]
+  def []=(i : Int, j : Int, value : Float64) : Float64
+    if i == j
+      if value == 0
+        return 0.0
+      else
+        raise IndexError.new("The distances at the diagonal must be zero")
+      end
+    end
+
+    i += size if i < 0
+    j += size if j < 0
+    if 0 <= i < size && 0 <= j < size
+      unsafe_put(i, j, value)
+    else
+      raise IndexError.new
+    end
+  end
+
   # Returns the internal index for the distance between the elements at
   # *i* and *j*.
   @[AlwaysInline]
@@ -149,5 +174,32 @@ struct HClust::DistanceMatrix
   # a small boost of performance.
   def unsafe_fetch(index : Int) : Float64
     @buffer[index]
+  end
+
+  # Sets the distance between the elements at *i* and *j* to *value*,
+  # without doing any bounds check.
+  #
+  # This should be called with *i* and *j* within `0...size` and `i !=
+  # j`. Use `#[]=(i, j, value)` instead for bounds checking and support
+  # for negative indexes.
+  #
+  # NOTE: This method should only be directly invoked if you are
+  # absolutely sure *i* and *j* are in bounds, to avoid a bounds check
+  # for a small boost of performance.
+  def unsafe_put(i : Int32, j : Int32, value : Float64) : Float64
+    unsafe_put index_to_internal(i, j), value
+  end
+
+  # Sets the distance at the given index of the condensed distance
+  # matrix (one-dimensional) to *value*, without doing any bounds check.
+  #
+  # This should be called with *index* within `0...((size * (size - 1))
+  # // 2)`.
+  #
+  # NOTE: This method should only be directly invoked if you are
+  # absolutely sure the index is in bounds, to avoid a bounds check for
+  # a small boost of performance.
+  def unsafe_put(index : Int32, value : Float64) : Float64
+    @buffer[index] = value
   end
 end

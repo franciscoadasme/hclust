@@ -75,6 +75,36 @@ describe HClust::DistanceMatrix do
     end
   end
 
+  describe "#[]=" do
+    it "sets the distance between two elements" do
+      mat = HClust::DistanceMatrix.new(5) do |i, j|
+        10 * (i + 1) + j + 1
+      end
+      (mat[1, 1] = 0).should eq 0
+      mat[2, 3].should eq 34
+      mat[2, 3] = -0.457
+      mat[2, 3].should eq -0.457
+      mat[3, 2].should eq -0.457
+      mat[4, 1] = -2.301
+      mat[1, 4].should eq -2.301
+      mat[4, 1].should eq -2.301
+    end
+
+    it "raises if elements are the same" do
+      expect_raises(IndexError, "The distances at the diagonal must be zero") do
+        mat = HClust::DistanceMatrix.new(5) { 0 }
+        mat[3, 3] = 123
+      end
+    end
+
+    it "raises if out of bounds" do
+      expect_raises(IndexError) do
+        mat = HClust::DistanceMatrix.new(5) { 0 }
+        mat[5, 3] = 25
+      end
+    end
+  end
+
   describe "#to_a" do
     it "returns a flatten array" do
       mat = HClust::DistanceMatrix.new(5) { 0 }
@@ -109,10 +139,33 @@ describe HClust::DistanceMatrix do
       mat = HClust::DistanceMatrix.new(5) do |i, j|
         10 * (i + 1) + j + 1
       end
-      mat.unsafe_fetch(0, 0).should eq 0
       mat.unsafe_fetch(0, 1).should eq 12
       mat.unsafe_fetch(2, 3).should eq 34
       mat.unsafe_fetch(3, 2).should eq 34
+    end
+  end
+
+  describe "#unsafe_put" do
+    it "sets the distance between two elements (one index)" do
+      mat = HClust::DistanceMatrix.new(5) do |i, j|
+        10 * (i + 1) + j + 1
+      end
+      mat.unsafe_fetch(6).should eq 25
+      mat.unsafe_put 6, 2.5
+      mat.unsafe_fetch(6).should eq 2.5
+    end
+
+    it "sets the distance between two elements" do
+      mat = HClust::DistanceMatrix.new(5) do |i, j|
+        10 * (i + 1) + j + 1
+      end
+      mat[2, 3].should eq 34
+      mat.unsafe_put 2, 3, -0.457
+      mat[2, 3].should eq -0.457
+      mat[3, 2].should eq -0.457
+      mat.unsafe_put 4, 1, -2.301
+      mat[1, 4].should eq -2.301
+      mat[4, 1].should eq -2.301
     end
   end
 end
