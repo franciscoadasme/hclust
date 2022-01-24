@@ -83,12 +83,14 @@ class HClust::DistanceMatrix
 
   # Returns the distance between the elements at *i* and *j*. Raises
   # `IndexError` if any of the indexes is out of bounds.
+  @[AlwaysInline]
   def [](i : Int, j : Int) : Float64
     self[i, j]? || raise IndexError.new
   end
 
   # Returns the distance between the elements at *i* and *j*, or `nil` if
   # any of the indexes is out of bounds.
+  @[AlwaysInline]
   def []?(i : Int, j : Int) : Float64?
     return 0.0 if i == j
     i += size if i < 0
