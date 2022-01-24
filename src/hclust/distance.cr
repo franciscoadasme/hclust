@@ -81,13 +81,13 @@ struct HClust::DistanceMatrix
     @buffer.copy_from values.to_unsafe, values.size
   end
 
-  # Returns the distance between elements at *i* and *j*. Raises
+  # Returns the distance between the elements at *i* and *j*. Raises
   # `IndexError` if any of the indexes is out of bounds.
   def [](i : Int, j : Int) : Float64
     self[i, j]? || raise IndexError.new
   end
 
-  # Returns the distance between elements at *i* and *j*, or `nil` if
+  # Returns the distance between the elements at *i* and *j*, or `nil` if
   # any of the indexes is out of bounds.
   def []?(i : Int, j : Int) : Float64?
     i += size if i < 0
