@@ -130,6 +130,20 @@ class HClust::DistanceMatrix
     end
   end
 
+  # Returns `true` if the distances of the matrices are equal, else
+  # `false`.
+  def ==(rhs : self) : Bool
+    return false unless @size == rhs.size
+    0.upto(@size - 1) do |i|
+      return false unless unsafe_fetch(i) == rhs.unsafe_fetch(i)
+    end
+    true
+  end
+
+  # :ditto:
+  def ==(rhs) : Bool
+    false
+  end
   # Returns the condensed matrix index of the distance between the
   # elements at *i* and *j*.
   @[AlwaysInline]

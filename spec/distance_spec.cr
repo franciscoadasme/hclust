@@ -110,6 +110,14 @@ describe HClust::DistanceMatrix do
     end
   end
 
+  describe "#==" do
+    it "compares two matrices" do
+      mat = HClust::DistanceMatrix.new(5) { |i, j| 10 * (i + 1) + j + 1 }
+      mat.should eq mat
+      mat.should eq HClust::DistanceMatrix.new(5) { |i, j| 10 * (i + 1) + j + 1 }
+      mat.should_not eq HClust::DistanceMatrix.new(5)
+    end
+  end
   describe "#to_a" do
     it "returns a flatten array" do
       mat = HClust::DistanceMatrix.new(5)
