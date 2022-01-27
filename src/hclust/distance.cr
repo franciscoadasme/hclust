@@ -130,11 +130,18 @@ class HClust::DistanceMatrix
     end
   end
 
-  # Returns the internal index for the distance between the elements at
-  # *i* and *j*.
+  # Returns the condensed matrix index of the distance between the
+  # elements at *i* and *j*.
   @[AlwaysInline]
-  private def index_to_internal(i : Int32, j : Int32) : Int32
+  private def matrix_to_condensed_index(i : Int32, j : Int32) : Int32
+    # The matrix is assumed to be symmetric, so `m[i, j] == m[j, i]`,
+    # but *i* should be less than *j* since the condensed matrix encodes
+    # the upper right triangle.
     i, j = j, i if j < i
+    # The formula below is an optimized version of the nominal
+    # transformation formula:
+    #
+    # ((@size * i) + j) - ((i * (i + 1)) / 2) - 1 - i
     ((2 * @size - 3 - i) * i >> 1) + j - 1
   end
 
@@ -167,7 +174,7 @@ class HClust::DistanceMatrix
   # absolutely sure *i* and *j* are in bounds, to avoid a bounds check
   # for a small boost of performance.
   def unsafe_fetch(i : Int32, j : Int32) : Float64
-    unsafe_fetch index_to_internal(i, j)
+    unsafe_fetch matrix_to_condensed_index(i, j)
   end
 
   # Returns the distance at the given index of the condensed distance
@@ -194,7 +201,7 @@ class HClust::DistanceMatrix
   # absolutely sure *i* and *j* are in bounds, to avoid a bounds check
   # for a small boost of performance.
   def unsafe_put(i : Int32, j : Int32, value : Float64) : Float64
-    unsafe_put index_to_internal(i, j), value
+    unsafe_put matrix_to_condensed_index(i, j), value
   end
 
   # Sets the distance at the given index of the condensed distance
