@@ -118,6 +118,16 @@ describe HClust::DistanceMatrix do
       mat.should_not eq HClust::DistanceMatrix.new(5)
     end
   end
+
+  describe "#clone" do
+    it "returns a clone of the matrix" do
+      mat = HClust::DistanceMatrix.new(5) { |i, j| 10 * (i + 1) + j + 1 }
+      other = mat.clone
+      other.should_not be mat
+      other.should eq mat
+    end
+  end
+
   describe "#to_a" do
     it "returns a flatten array" do
       mat = HClust::DistanceMatrix.new(5)

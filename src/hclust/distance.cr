@@ -144,6 +144,15 @@ class HClust::DistanceMatrix
   def ==(rhs) : Bool
     false
   end
+
+  # Returns a new `DistanceMatrix` with the same elements as the matrix
+  # (deep copy).
+  def clone : self
+    {{@type}}.new(size).tap do |mat|
+      mat.to_unsafe.copy_from @buffer, @internal_size
+    end
+  end
+
   # Returns the condensed matrix index of the distance between the
   # elements at *i* and *j*.
   @[AlwaysInline]
