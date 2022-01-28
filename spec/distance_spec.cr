@@ -128,6 +128,28 @@ describe HClust::DistanceMatrix do
     end
   end
 
+  describe "#map" do
+    it "returns a new distance matrix with the elements returned by the block" do
+      dism = HClust::DistanceMatrix.new(5) do |i, j|
+        10 * (i + 1) + j + 1
+      end
+      other = dism.map &.*(2)
+      other.should_not be dism
+      other.to_a.should eq [24, 26, 28, 30, 46, 48, 50, 68, 70, 90]
+    end
+  end
+
+  describe "#map!" do
+    it "replaces the elements with the values returned by the given block" do
+      dism = HClust::DistanceMatrix.new(5) do |i, j|
+        10 * (i + 1) + j + 1
+      end
+      other = dism.map! &.*(2)
+      other.should be dism
+      dism.to_a.should eq [24, 26, 28, 30, 46, 48, 50, 68, 70, 90]
+    end
+  end
+
   describe "#to_a" do
     it "returns a flatten array" do
       mat = HClust::DistanceMatrix.new(5)

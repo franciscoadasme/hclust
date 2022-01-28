@@ -153,6 +153,22 @@ class HClust::DistanceMatrix
     end
   end
 
+  # Returns a new `DistanceMatrix` with the results of running the block
+  # against each element of the matrix.
+  def map(& : Float64 -> Float64) : self
+    clone.map! { |distance| yield distance }
+  end
+
+  # Invokes the given block for each element of the distance matrix,
+  # replacing the element with the value returned by the block. Returns
+  # `self`.
+  def map!(& : Float64 -> Float64) : self
+    @internal_size.times do |i|
+      unsafe_put(i, yield unsafe_fetch(i))
+    end
+    self
+  end
+
   # Returns the condensed matrix index of the distance between the
   # elements at *i* and *j*.
   @[AlwaysInline]
