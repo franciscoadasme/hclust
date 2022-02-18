@@ -29,7 +29,7 @@ wget -q -O $BENCH_DIR/fastcluster_dm.cpp $FASTCLUSTER_URL \
 gcc -O3 -o $BENCH_DIR/fastcluster_bench $BENCH_DIR/fastcluster_bench.cpp -lstdc++ 2>/dev/null \
     || abort "Compilation of fastcluster benchmark failed"
 timings[fastcluster]=$($BENCH_DIR/fastcluster_bench)
-[ $? -eq 0 ] || abort "Something went wrong"
+[ $? -ne 0 ] && abort "Fastcluster (C++) benchmark failed"
 rm $BENCH_DIR/fastcluster_dm.cpp $BENCH_DIR/fastcluster_bench || abort "Something went wrong"
 
 # kodama
@@ -37,6 +37,7 @@ compilers[kodama]=$(cargo --version | awk '{print $2}')
 [ $? -ne 0 ] && abort "rust not available"
 workdir=$BENCH_DIR/kodama_bench
 timings[kodama]=$(cd $workdir && cargo run --release 2>/dev/null)
+[ $? -ne 0 ] && abort "Kodama (Rust) benchmark failed"
 package_versions[kodama]=$(grep -A 1 'name = "kodama"' $workdir/Cargo.lock | grep version | awk '{print $3}' | sed 's/"//g')
 (cd $workdir && cargo clean && rm Cargo.lock)
 
@@ -46,6 +47,7 @@ compilers[scipy]=$(python --version | awk '{print $2}')
 package_versions[scipy]=$(python -c 'import scipy; print(scipy.__version__)')
 [ $? -ne 0 ] && abort "scipy not available"
 timings[scipy]=$(python $BENCH_DIR/scipy_bench.py)
+[ $? -ne 0 ] && abort "Scipy (Python) benchmark failed"
 rm -r $BENCH_DIR/__pycache__ 2>/dev/null
 
 # hclust.cr
@@ -53,6 +55,7 @@ compilers[hclust]=$(crystal --version | head -n 1 | awk '{print $2}')
 [ $? -ne 0 ] && abort "crystal not available"
 package_versions[hclust]=$(shards version $BENCH_DIR/..)
 timings[hclust]=$(crystal run --release $BENCH_DIR/hclust_bench.cr)
+[ $? -ne 0 ] && abort "HClust (Crystal) benchmark failed"
 
 echo "| name         | version | compiler     | time (ms) |"
 echo "| ------------ | ------- | ------------ | --------- |"
