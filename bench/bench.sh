@@ -26,7 +26,7 @@ package_versions[fastcluster]="$tag"
 
 wget -q -O $BENCH_DIR/fastcluster_dm.cpp $FASTCLUSTER_URL \
     || abort "Could not download fastcluster.cpp from $FASTCLUSTER_URL"
-gcc -O3 -o $BENCH_DIR/fastcluster_bench $BENCH_DIR/fastcluster_bench.cpp -lstdc++ 2>/dev/null \
+gcc -O3 -o $BENCH_DIR/fastcluster_bench $BENCH_DIR/fastcluster_bench.cpp -lstdc++ -lm 2>/dev/null \
     || abort "Compilation of fastcluster benchmark failed"
 timings[fastcluster]=$($BENCH_DIR/fastcluster_bench)
 [ $? -ne 0 ] && abort "Fastcluster (C++) benchmark failed"
