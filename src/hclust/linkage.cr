@@ -10,11 +10,10 @@ module HClust
     n_i = 0 # current node
     Dendrogram.build(dism.size - 1) do |dendrogram|
       active_nodes.delete n_i
-      n_j, d_ij = active_nodes.nearest_to(n_i) do |n_k|
-        a, b = n_k > n_i ? {n_i, n_k} : {n_k, n_i}
-        d_ik = dism.unsafe_fetch(a, b) # pairwise distance
-        d_jk = node_distances[n_k]     # distance to current node
-        node_distances[n_k] = Method.single(d_ik, d_jk)
+      n_j, d_ij = active_nodes.nearest_to(n_i, dism) do |n_k, dis|
+        ptr = node_distances + n_k
+        Method.single(ptr, dis)
+        ptr.value
       end
       dendrogram << Dendrogram::Step.new(n_i, n_j, d_ij)
       n_i = n_j
