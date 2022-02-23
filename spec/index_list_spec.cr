@@ -1,20 +1,15 @@
 require "./spec_helper"
+require "spec/helpers/iterate"
 
 describe HClust::IndexList do
   describe "#each" do
     it "yields each index" do
-      indexes = HClust::IndexList.new(10)
-
-      arr = [] of Int32
-      indexes.each { |index| arr << index }
-      arr.should eq [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      assert_iterates_yielding (0..9).to_a, HClust::IndexList.new(10).each
     end
 
     it "yields each neighboring index" do
-      indexes = HClust::IndexList.new(10)
-      arr = [] of Int32
-      indexes.each(omit: 4) { |i| arr << i }
-      arr.should eq [0, 1, 2, 3, 5, 6, 7, 8, 9]
+      assert_iterates_yielding [0, 1, 2, 3, 5, 6, 7, 8, 9],
+        HClust::IndexList.new(10).each(omit: 4)
     end
 
     it "yields each neighboring index after deletion" do
@@ -22,25 +17,18 @@ describe HClust::IndexList do
       indexes.delete 3
       indexes.delete 8
       indexes.delete 1
-
-      arr = [] of Int32
-      indexes.each(omit: 3) { |i| arr << i }
-      arr.should eq [0, 2, 4, 5, 6, 7, 9]
+      assert_iterates_yielding [0, 2, 4, 5, 6, 7, 9], indexes.each(omit: 3)
     end
 
     it "does not yield if empty" do
-      arr = [] of Int32
-      HClust::IndexList.new(0).each { |i| arr << i }
-      arr.empty?.should be_true
+      assert_iterates_yielding [] of Int32, HClust::IndexList.new(0).each
     end
 
     it "does not yield after full deletion" do
       indexes = HClust::IndexList.new(10)
       (0...10).to_a.shuffle.each { |i| indexes.delete i }
+      assert_iterates_yielding [] of Int32, indexes.each
 
-      arr = [] of Int32
-      indexes.each { |i| arr << i }
-      arr.empty?.should be_true
     end
   end
 
