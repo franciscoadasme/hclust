@@ -101,6 +101,7 @@ class HClust::DistanceMatrix
     i += size if i < 0
     j += size if j < 0
     if 0 <= i < size && 0 <= j < size
+      i, j = j, i if j < i
       unsafe_fetch(i, j)
     end
   end
@@ -124,6 +125,7 @@ class HClust::DistanceMatrix
     i += size if i < 0
     j += size if j < 0
     if 0 <= i < size && 0 <= j < size
+      i, j = j, i if j < i
       unsafe_put(i, j, value)
     else
       raise IndexError.new
@@ -172,16 +174,16 @@ class HClust::DistanceMatrix
   # Returns the condensed matrix index of the distance between the
   # elements at *i* and *j*.
   @[AlwaysInline]
-  private def matrix_to_condensed_index(i : Int32, j : Int32) : Int32
-    # The matrix is assumed to be symmetric, so `m[i, j] == m[j, i]`,
-    # but *i* should be less than *j* since the condensed matrix encodes
-    # the upper right triangle.
-    i, j = j, i if j < i
+  private def matrix_to_condensed_index(row : Int32, col : Int32) : Int32
+    {% if !flag?(:release) %}
+      # The condensed matrix encodes the upper right triangle, so `row < col`.
+      raise ArgumentError.new("row >= column") if row >= col
+    {% end %}
     # The formula below is an optimized version of the nominal
     # transformation formula:
     #
-    # ((@size * i) + j) - ((i * (i + 1)) / 2) - 1 - i
-    ((2 * @size - 3 - i) * i >> 1) + j - 1
+    # ((@size * row) + col) - ((row * (row + 1)) / 2) - 1 - row
+    ((2 * @size - 3 - row) * row >> 1) + col - 1
   end
 
   # Returns the size of the encoded matrix.

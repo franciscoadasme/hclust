@@ -11,8 +11,9 @@ module HClust
     Dendrogram.build(dism.size - 1) do |dendrogram|
       active_nodes.delete n_i
       n_j, d_ij = active_nodes.nearest_to(n_i) do |n_k|
-        d_ik = dism.unsafe_fetch(n_k, n_i) # pairwise distance
-        d_jk = node_distances[n_k]         # distance to current node
+        a, b = n_k > n_i ? {n_i, n_k} : {n_k, n_i}
+        d_ik = dism.unsafe_fetch(a, b) # pairwise distance
+        d_jk = node_distances[n_k]     # distance to current node
         node_distances[n_k] = Method.single(d_ik, d_jk)
       end
       dendrogram << Dendrogram::Step.new(n_i, n_j, d_ij)
@@ -63,9 +64,12 @@ module HClust
           in .{{member.camelcase.downcase.id}}?
             {% value = ChainMethod.constant(member) %}
             active_nodes.each do |n_k|
+              # TODO: remove all these conditions
               next if n_k == n_j
-              d_ik = dism.unsafe_fetch(n_i, n_k)
-              d_jk = dism.unsafe_fetch(n_j, n_k)
+              a, b = n_k > n_i ? {n_i, n_k} : {n_k, n_i}
+              d_ik = dism.unsafe_fetch(a, b)
+              a, b = n_k > n_j ? {n_j, n_k} : {n_k, n_j}
+              d_jk = dism.unsafe_fetch(a, b)
 
               {% if value == ChainMethod::Single %}
                 new_dist = Method.single(d_ik, d_jk)
@@ -84,7 +88,7 @@ module HClust
                 new_dist = Method.ward(d_ij, d_ik, d_jk, size_i, size_j, size_k)
               {% end %}
 
-              dism.unsafe_put n_j, n_k, new_dist
+              dism.unsafe_put a, b, new_dist
             end
         {% end %}
         end
