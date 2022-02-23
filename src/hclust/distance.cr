@@ -95,7 +95,6 @@ class HClust::DistanceMatrix
 
   # Returns the distance between the elements at *i* and *j*, or `nil` if
   # any of the indexes is out of bounds.
-  @[AlwaysInline]
   def []?(i : Int, j : Int) : Float64?
     return 0.0 if i == j
     i += size if i < 0
@@ -112,7 +111,6 @@ class HClust::DistanceMatrix
   # Negative indices can be used to start counting from the end of the
   # elements. Raises `IndexError` if either *i* or *j* is out of bounds,
   # or if *i == j* and *value* is not zero.
-  @[AlwaysInline]
   def []=(i : Int, j : Int, value : Float64) : Float64
     if i == j
       if value == 0
@@ -214,6 +212,7 @@ class HClust::DistanceMatrix
   # NOTE: This method should only be directly invoked if you are
   # absolutely sure *i* and *j* are in bounds, to avoid a bounds check
   # for a small boost of performance.
+  @[AlwaysInline]
   def unsafe_fetch(i : Int32, j : Int32) : Float64
     unsafe_fetch matrix_to_condensed_index(i, j)
   end
@@ -227,6 +226,7 @@ class HClust::DistanceMatrix
   # NOTE: This method should only be directly invoked if you are
   # absolutely sure the index is in bounds, to avoid a bounds check for
   # a small boost of performance.
+  @[AlwaysInline]
   def unsafe_fetch(index : Int) : Float64
     @buffer[index]
   end
@@ -241,6 +241,7 @@ class HClust::DistanceMatrix
   # NOTE: This method should only be directly invoked if you are
   # absolutely sure *i* and *j* are in bounds, to avoid a bounds check
   # for a small boost of performance.
+  @[AlwaysInline]
   def unsafe_put(i : Int32, j : Int32, value : Float64) : Float64
     unsafe_put matrix_to_condensed_index(i, j), value
   end
@@ -254,6 +255,7 @@ class HClust::DistanceMatrix
   # NOTE: This method should only be directly invoked if you are
   # absolutely sure the index is in bounds, to avoid a bounds check for
   # a small boost of performance.
+  @[AlwaysInline]
   def unsafe_put(index : Int32, value : Float64) : Float64
     @buffer[index] = value
   end
