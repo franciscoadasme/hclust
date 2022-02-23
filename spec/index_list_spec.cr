@@ -27,6 +27,21 @@ describe HClust::IndexList do
       indexes.each(omit: 3) { |i| arr << i }
       arr.should eq [0, 2, 4, 5, 6, 7, 9]
     end
+
+    it "does not yield if empty" do
+      arr = [] of Int32
+      HClust::IndexList.new(0).each { |i| arr << i }
+      arr.empty?.should be_true
+    end
+
+    it "does not yield after full deletion" do
+      indexes = HClust::IndexList.new(10)
+      (0...10).to_a.shuffle.each { |i| indexes.delete i }
+
+      arr = [] of Int32
+      indexes.each { |i| arr << i }
+      arr.empty?.should be_true
+    end
   end
 
   describe "#delete" do
