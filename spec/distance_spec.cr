@@ -186,7 +186,6 @@ describe HClust::DistanceMatrix do
       end
       mat.unsafe_fetch(0, 1).should eq 12
       mat.unsafe_fetch(2, 3).should eq 34
-      mat.unsafe_fetch(3, 2).should eq 34
     end
   end
 
@@ -208,7 +207,7 @@ describe HClust::DistanceMatrix do
       mat.unsafe_put 2, 3, -0.457
       mat[2, 3].should eq -0.457
       mat[3, 2].should eq -0.457
-      mat.unsafe_put 4, 1, -2.301
+      mat.unsafe_put 1, 4, -2.301
       mat[1, 4].should eq -2.301
       mat[4, 1].should eq -2.301
     end
