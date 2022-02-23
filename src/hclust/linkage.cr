@@ -2,22 +2,25 @@ module HClust
   # TODO: docs
   def self.mst(dism : DistanceMatrix) : Dendrogram
     # keeps updated distances to merged nodes
-    node_distances = Pointer(Float64).malloc dism.size
+    dis_ptr = Pointer(Float64).malloc dism.size
     # position 0 is never accessed because the search starts at node 1
-    (node_distances + 1).copy_from dism.to_unsafe, dism.size - 1
+    (dis_ptr + 1).copy_from dism.to_unsafe, dism.size - 1
 
+    dendrogram = Dendrogram.new(dism.size - 1)
     active_nodes = IndexList.new(dism.size)
     n_i = 0 # current node
-    Dendrogram.build(dism.size - 1) do |dendrogram|
+    (dism.size - 1).times do
       active_nodes.delete n_i
       n_j, d_ij = active_nodes.nearest_to(n_i, dism) do |n_k, dis|
-        ptr = node_distances + n_k
+        ptr = dis_ptr + n_k
         Method.single(ptr, dis)
         ptr.value
       end
       dendrogram << Dendrogram::Step.new(n_i, n_j, d_ij)
       n_i = n_j
     end
+
+    dendrogram
   end
 
   # TODO: docs
@@ -27,11 +30,12 @@ module HClust
     dism = dism.clone unless reuse
     # dism.map! &.**(2) if method.needs_squared_euclidean? # TODO: do this!!!
 
+    dendrogram = Dendrogram.new(dism.size - 1)
     active_nodes = IndexList.new(dism.size)
     node_chain = Deque(Int32).new(dism.size)
     node_sizes = Pointer(Int32).malloc dism.size, 1
     d_ij = Float64::MAX
-    Dendrogram.build(dism.size - 1) do |dendrogram|
+    (dism.size - 1).times do
       if node_chain.size < 4
         node_chain.clear
         node_chain << (n_i = active_nodes.first) # current node
@@ -98,5 +102,6 @@ module HClust
       # d_ij = Math.sqrt(d_ij) if method.needs_squared_euclidean? # TODO: do this!!!
       dendrogram << Dendrogram::Step.new(n_i, n_j, d_ij)
     end
+    dendrogram
   end
 end

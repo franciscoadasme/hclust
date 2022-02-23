@@ -5,14 +5,6 @@ module HClust
       @steps = Array(Step).new(initial_capacity)
     end
 
-    def self.build(size : Int, & : self ->) : self
-      new(size).tap do |dendrogram|
-        size.times do
-          yield dendrogram
-        end
-      end
-    end
-
     def <<(step : Step) : self
       @steps << step
       self
