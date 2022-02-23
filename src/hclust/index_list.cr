@@ -52,6 +52,17 @@ class HClust::IndexList
     end
   end
 
+  # Returns the first index. Raises `Enumerable::EmptyError` if the list
+  # is empty.
+  def first : Int32
+    first? || raise Enumerable::EmptyError.new
+  end
+
+  # Returns the first index or `nil` if the list is empty.
+  def first? : Int32?
+    @start if @start < @size
+  end
+
   # Returns `true` if the list includes the given index, else `false`.
   def includes?(index : Int32) : Bool
     @succ[index] > 0

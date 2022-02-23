@@ -44,6 +44,31 @@ describe HClust::IndexList do
     end
   end
 
+  describe "#first" do
+    it "raises if empty" do
+      expect_raises Enumerable::EmptyError do
+        HClust::IndexList.new(0).first
+      end
+    end
+  end
+
+  describe "#first?" do
+    it "returns the first index" do
+      indexes = HClust::IndexList.new(10)
+      indexes.first?.should eq 0
+      indexes.delete 0
+      indexes.delete 7
+      indexes.delete 2
+      indexes.first?.should eq 1
+      indexes.delete 1
+      indexes.first?.should eq 3
+    end
+
+    it "returns nil if empty" do
+      HClust::IndexList.new(0).first?.should be_nil
+    end
+  end
+
   describe "#delete" do
     it "deletes a index" do
       indexes = HClust::IndexList.new(5)
