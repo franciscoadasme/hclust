@@ -106,6 +106,16 @@ describe HClust::IndexList do
       index.should eq 4
       distance.should eq 10
     end
+
+    it "returns the nearest index using a distance matrix and block" do
+      indexes = HClust::IndexList.new(10)
+      dism = HClust::DistanceMatrix.new(10) do |i, j|
+        ((i - j) ** 2 + i + j)
+      end
+      index, distance = indexes.nearest_to(5, dism) { |i, dis| dis + i }
+      index.should eq 4
+      distance.should eq 14
+    end
   end
 
   describe "#to_a" do

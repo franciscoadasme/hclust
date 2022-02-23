@@ -101,12 +101,25 @@ class HClust::IndexList
   # Returns the nearest index to the given index based on the distance
   # matrix.
   def nearest_to(index : Int32, dism : DistanceMatrix) : {Int32, Float64}
+    nearest_to(index, dism) { |_, dis| dis }
+  end
+
+  # Returns the nearest index to the given index based on the block's
+  # returns value. Both the index and distance taken from the distance
+  # matrix are yielded such that the block may compute a new distance if
+  # needed.
+  def nearest_to(
+    index : Int32,
+    dism : DistanceMatrix,
+    & : Int32, Float64 -> Float64
+  ) : {Int32, Float64}
     nearest_index = @start
     min_dis = Float64::MAX
 
     other = @start
     while other < index
       dis = dism.unsafe_fetch(other, index)
+      dis = yield other, dis
       if dis < min_dis
         nearest_index = other
         min_dis = dis
@@ -117,6 +130,7 @@ class HClust::IndexList
     other = @succ[index] if other == index
     while other < @size
       dis = dism.unsafe_fetch(index, other)
+      dis = yield other, dis
       if dis < min_dis
         nearest_index = other
         min_dis = dis
