@@ -97,16 +97,16 @@ module HClust
     @[AlwaysInline]
     def self.average(d_ik : Float64, d_jk : Float64,
                      size_i : Int32, size_j : Int32) : Float64
-      ptr = pointerof(d_ik)
-      average ptr, d_jk, size_i, size_j
+      ptr = pointerof(d_jk)
+      average d_ik, ptr, size_i, size_j
       ptr.value
     end
 
     # :ditto:
     @[AlwaysInline]
-    def self.average(ptr_ik : Pointer(Float64), d_jk : Float64,
+    def self.average(d_ik : Float64, ptr_jk : Pointer(Float64),
                      size_i : Int32, size_j : Int32) : Nil
-      ptr_ik.value = (size_i * ptr_ik.value + size_j * d_jk) / (size_i + size_j)
+      ptr_jk.value = (size_i * d_ik + size_j * ptr_jk.value) / (size_i + size_j)
     end
 
     # Update formula for the centroid linkage method (see above for
@@ -119,17 +119,17 @@ module HClust
     @[AlwaysInline]
     def self.centroid(d_ij : Float64, d_ik : Float64, d_jk : Float64,
                       size_i : Int32, size_j : Int32) : Float64
-      ptr = pointerof(d_ik)
-      centroid d_ij, ptr, d_jk, size_i, size_j
+      ptr = pointerof(d_jk)
+      centroid d_ij, d_ik, ptr, size_i, size_j
       ptr.value
     end
 
     # :ditto:
     @[AlwaysInline]
-    def self.centroid(d_ij : Float64, ptr_ik : Pointer(Float64), d_jk : Float64,
+    def self.centroid(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64),
                       size_i : Int32, size_j : Int32) : Nil
       size_kj = size_k + size_j
-      ptr_ik.value = (size_k * ptr_ik.value + size_j * d_jk) / size_kj -
+      ptr_jk.value = (size_k * d_ik + size_j * ptr_jk.value) / size_kj -
                      size_i * size_j * d_ij / size_kj**2
     end
 
@@ -139,16 +139,16 @@ module HClust
     # the clusters *I*, *J*, and *K*.
     @[AlwaysInline]
     def self.complete(d_ik : Float64, d_jk : Float64) : Float64
-      ptr = pointerof(d_ik)
-      complete ptr, d_jk
+      ptr = pointerof(d_jk)
+      complete d_ik, ptr
       ptr.value
     end
 
     # :ditto:
     @[AlwaysInline]
-    def self.complete(ptr_ik : Pointer(Float64), d_jk : Float64) : Nil
-      if d_jk > ptr_ik.value
-        ptr_ik.value = d_jk
+    def self.complete(d_ik : Float64, ptr_jk : Pointer(Float64)) : Nil
+      if d_ik > ptr_jk.value
+        ptr_jk.value = d_ik
       end
     end
 
@@ -160,16 +160,16 @@ module HClust
     # WARNING: The distances must be (proportional to) squared Euclidean
     # distance.
     @[AlwaysInline]
-    def self.median(d_ik : Float64, d_jk : Float64, d_ij : Float64) : Float64
-      ptr = pointerof(d_ik)
-      median ptr, d_jk, d_ij
+    def self.median(d_ij : Float64, d_ik : Float64, d_jk : Float64) : Float64
+      ptr = pointerof(d_jk)
+      median d_ij, d_ik, ptr
       ptr.value
     end
 
     # :ditto:
     @[AlwaysInline]
-    def self.median(ptr_ik : Pointer(Float64), d_jk : Float64, d_ij : Float64) : Nil
-      ptr.value = (ptr_ik.value + d_jk) * 0.5 - d_ij * 0.25
+    def self.median(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64)) : Nil
+      ptr_jk.value = (d_ik + ptr_jk.value) * 0.5 - d_ij * 0.25
     end
 
     # Update formula for the single linkage method (see above for
@@ -178,16 +178,16 @@ module HClust
     # the clusters *I*, *J*, and *K*.
     @[AlwaysInline]
     def self.single(d_ik : Float64, d_jk : Float64) : Float64
-      ptr = pointerof(d_ik)
-      single ptr, d_jk
+      ptr = pointerof(d_jk)
+      single d_ik, ptr
       ptr.value
     end
 
     # :ditto:
     @[AlwaysInline]
-    def self.single(ptr_ik : Pointer(Float64), d_jk : Float64) : Nil
-      if d_jk < ptr_ik.value
-        ptr_ik.value = d_jk
+    def self.single(d_ik : Float64, ptr_jk : Pointer(Float64)) : Nil
+      if d_ik < ptr_jk.value
+        ptr_jk.value = d_ik
       end
     end
 
@@ -201,17 +201,17 @@ module HClust
     @[AlwaysInline]
     def self.ward(d_ij : Float64, d_ik : Float64, d_jk : Float64,
                   size_i : Int32, size_j : Int32, size_k : Int32) : Float64
-      ptr = pointerof(d_ik)
-      ward d_ij, ptr, d_jk, size_i, size_j, size_k
+      ptr = pointerof(d_jk)
+      ward d_ij, d_ik, ptr, size_i, size_j, size_k
       ptr.value
     end
 
     # :ditto:
     @[AlwaysInline]
-    def self.ward(d_ij : Float64, ptr_ik : Pointer(Float64), d_jk : Float64,
+    def self.ward(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64),
                   size_i : Int32, size_j : Int32, size_k : Int32) : Nil
-      ptr_ik.value = ((size_i + size_k) * ptr_ik.value +
-                      (size_j + size_k) * d_jk -
+      ptr_jk.value = ((size_i + size_k) * d_ik +
+                      (size_j + size_k) * ptr_jk.value -
                       size_k * d_ij) /
                      (size_i + size_j + size_k)
     end
@@ -222,15 +222,15 @@ module HClust
     # the clusters *I*, *J*, and *K*.
     @[AlwaysInline]
     def self.weighted(d_ik : Float64, d_jk : Float64) : Float64
-      ptr = pointerof(d_ik)
-      weighted ptr, d_jk
+      ptr = pointerof(d_jk)
+      weighted d_ik, ptr
       ptr.value
     end
 
     # :ditto:
     @[AlwaysInline]
-    def self.weighted(ptr_ik : Pointer(Float64), d_jk : Float64) : Nil
-      ptr_ik.value = (ptr_ik.value + d_jk) * 0.5
+    def self.weighted(d_ik : Float64, ptr_jk : Pointer(Float64)) : Nil
+      ptr_jk.value = (d_ik + ptr_jk.value) * 0.5
     end
 
     # Returns `true` if the linkage method requires that the initial
@@ -259,14 +259,14 @@ module HClust
     end
 
     # :ditto:
-    def update(d_ij : Float64, ptr_ik : Pointer(Float64), d_jk : Float64,
+    def update(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64),
                size_i : Number, size_j : Number, size_k : Number) : Nil
       case self
-      when .single?   then {{@type}}.single(ptr_ik, d_jk)
-      when .complete? then {{@type}}.complete(ptr_ik, d_jk)
-      when .average?  then {{@type}}.average(ptr_ik, d_jk, size_i, size_j)
-      when .weighted? then {{@type}}.weighted(ptr_ik, d_jk)
-      when .ward?     then {{@type}}.ward(d_ij, ptr_ik, d_jk, size_i, size_j, size_k)
+      when .single?   then {{@type}}.single(d_ik, ptr_jk)
+      when .complete? then {{@type}}.complete(d_ik, ptr_jk)
+      when .average?  then {{@type}}.average(d_ik, ptr_jk, size_i, size_j)
+      when .weighted? then {{@type}}.weighted(d_ik, ptr_jk)
+      when .ward?     then {{@type}}.ward(d_ij, d_ik, ptr_jk, size_i, size_j, size_k)
       else                 raise "BUG: #{self} not implemented"
       end
     end
