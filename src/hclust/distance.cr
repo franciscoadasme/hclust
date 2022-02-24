@@ -172,7 +172,7 @@ class HClust::DistanceMatrix
   # Returns the condensed matrix index of the distance between the
   # elements at *i* and *j*.
   @[AlwaysInline]
-  private def matrix_to_condensed_index(row : Int32, col : Int32) : Int32
+  def matrix_to_condensed_index(row : Int32, col : Int32) : Int32
     {% if !flag?(:release) %}
       # The condensed matrix encodes the upper right triangle, so `row < col`.
       raise ArgumentError.new("row >= column") if row >= col
