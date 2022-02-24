@@ -58,9 +58,7 @@ module HClust
       n_i, n_j = n_j, n_i if n_j < n_i # select the smallest node
       active_nodes.delete n_i
 
-      # Update distances. Do not check for the method on every
-      # iteration, so put the loop inside the case statement. Use macros
-      # to avoid repeating setup and loop code for every method.
+      # Update distances to the new node from merging *i* and *j*
       case method
       in .average?
         size_i = node_sizes[n_i]
