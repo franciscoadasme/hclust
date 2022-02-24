@@ -28,7 +28,6 @@ describe HClust::IndexList do
       indexes = HClust::IndexList.new(10)
       (0...10).to_a.shuffle.each { |i| indexes.delete i }
       assert_iterates_yielding [] of Int32, indexes.each
-
     end
   end
 

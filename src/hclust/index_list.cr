@@ -141,6 +141,11 @@ class HClust::IndexList
     {nearest_index, min_dis}
   end
 
+  # Returns the total number of indexes in the list.
+  def size : Int32
+    @size
+  end
+
   # Returns an `Array` with all the indexes in the list.
   def to_a : Array(Int32)
     nodes = [] of Int32
@@ -148,5 +153,12 @@ class HClust::IndexList
       nodes << node
     end
     nodes
+  end
+
+  # Returns the succeeding index to `index`, without doing any bounds
+  # check.
+  @[AlwaysInline]
+  def unsafe_succ(index) : Int32
+    @succ[index]
   end
 end
