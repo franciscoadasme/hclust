@@ -61,41 +61,33 @@ module HClust
       # Update distances. Do not check for the method on every
       # iteration, so put the loop inside the case statement. Use macros
       # to avoid repeating setup and loop code for every method.
-      {% begin %}
-        case method
-        {% for member in ChainMethod.constants %}
-          in .{{member.camelcase.downcase.id}}?
-            {% value = ChainMethod.constant(member) %}
-            active_nodes.each do |n_k|
-              # TODO: remove all these conditions
-              next if n_k == n_j
-              a, b = n_k > n_i ? {n_i, n_k} : {n_k, n_i}
-              d_ik = dism.unsafe_fetch(a, b)
-              a, b = n_k > n_j ? {n_j, n_k} : {n_k, n_j}
-              d_jk = dism.unsafe_fetch(a, b)
-
-              {% if value == ChainMethod::Single %}
-                new_dist = Method.single(d_ik, d_jk)
-              {% elsif value == ChainMethod::Complete %}
-                new_dist = Method.complete(d_ik, d_jk)
-              {% elsif value == ChainMethod::Average %}
-                size_i = node_sizes[n_i]
-                size_j = node_sizes[n_j]
-                new_dist = Method.average(d_ik, d_jk, size_i, size_j)
-              {% elsif value == ChainMethod::Weighted %}
-                new_dist = Method.weighted(d_ik, d_jk)
-              {% elsif value == ChainMethod::Ward %}
-                size_i = node_sizes[n_i]
-                size_j = node_sizes[n_j]
-                size_k = node_sizes[n_k]
-                new_dist = Method.ward(d_ij, d_ik, d_jk, size_i, size_j, size_k)
-              {% end %}
-
-              dism.unsafe_put a, b, new_dist
-            end
-        {% end %}
+      case method
+      in .average?
+        size_i = node_sizes[n_i]
+        size_j = node_sizes[n_j]
+        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+          Method.average(d_ik, ptr_jk, size_i, size_j)
         end
-      {% end %}
+      in .complete?
+        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+          Method.complete(d_ik, ptr_jk)
+        end
+      in .single?
+        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+          Method.single(d_ik, ptr_jk)
+        end
+      in .ward?
+        size_i = node_sizes[n_i]
+        size_j = node_sizes[n_j]
+        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+          size_k = node_sizes[n_k]
+          Method.ward(d_ij, d_ik, ptr_jk, size_i, size_j, size_k)
+        end
+      in .weighted?
+        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+          Method.weighted(d_ik, ptr_jk)
+        end
+      end
 
       # Merge nodes n_i and n_j
       node_sizes[n_j] += node_sizes[n_i] if method.average? || method.ward?
@@ -103,5 +95,43 @@ module HClust
       dendrogram << Dendrogram::Step.new(n_i, n_j, d_ij)
     end
     dendrogram
+  end
+
+  # Updates the distances upon the merging of nodes *i* and *j*. In each
+  # iteration, it yields the current index *k* (`n_k`), the distance
+  # between the nodes *i* and *k* (`d_ik`), and the pointer to the
+  # distance between nodes *j* and *k* in the distance matrix (`ptr_jk`)
+  # to be updated.
+  private def self.update_distances(
+    active_nodes : IndexList,
+    dism : DistanceMatrix,
+    n_i : Int32,
+    n_j : Int32,
+    & : Int32, Float64, Pointer(Float64) ->
+  ) : Nil
+    dism_ptr = dism.to_unsafe
+
+    # iterate over the indexes in three stages to ensure i < j when
+    # fetching a value from the distance matrix
+    n_k = active_nodes.first? || return
+    while n_k < n_i
+      ptr = dism_ptr + dism.matrix_to_condensed_index(n_k, n_j)
+      yield n_k, dism.unsafe_fetch(n_k, n_i), ptr
+      n_k = active_nodes.unsafe_succ(n_k)
+    end
+
+    n_k = active_nodes.unsafe_succ(n_k) if n_k == n_i
+    while n_k < n_j
+      ptr = dism_ptr + dism.matrix_to_condensed_index(n_k, n_j)
+      yield n_k, dism.unsafe_fetch(n_i, n_k), ptr
+      n_k = active_nodes.unsafe_succ(n_k)
+    end
+
+    n_k = active_nodes.unsafe_succ(n_k) if n_k == n_j
+    while n_k < active_nodes.size
+      ptr = dism_ptr + dism.matrix_to_condensed_index(n_j, n_k)
+      yield n_k, dism.unsafe_fetch(n_i, n_k), ptr
+      n_k = active_nodes.unsafe_succ(n_k)
+    end
   end
 end
