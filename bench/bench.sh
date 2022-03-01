@@ -14,6 +14,7 @@ declare -A package_versions
 declare -A compilers
 
 # fastcluster
+echo "Testing Fastcluster (C++)..."
 gcc_version=$(gcc --version 2>/dev/null | head -n 1 | awk '{print $NF}')
 [ $? -ne 0 ] && abort "gcc not available"
 compilers[fastcluster]="$gcc_version (gcc)"
@@ -33,6 +34,7 @@ timings[fastcluster]=$($BENCH_DIR/fastcluster_bench)
 rm $BENCH_DIR/fastcluster_dm.cpp $BENCH_DIR/fastcluster_bench || abort "Something went wrong"
 
 # kodama
+echo "Testing Kodama (Rust)..."
 compilers[kodama]=$(cargo --version | awk '{print $2}')
 [ $? -ne 0 ] && abort "rust not available"
 workdir=$BENCH_DIR/kodama_bench
@@ -43,6 +45,7 @@ package_versions[kodama]=$(grep -A 1 'name = "kodama"' $workdir/Cargo.lock | gre
 
 # scipy
 compilers[scipy]=$(python --version | awk '{print $2}')
+echo "Testing Scipy (Python)..."
 [ $? -ne 0 ] && abort "python not available"
 package_versions[scipy]=$(python -c 'import scipy; print(scipy.__version__)')
 [ $? -ne 0 ] && abort "scipy not available"
@@ -51,6 +54,7 @@ timings[scipy]=$(python $BENCH_DIR/scipy_bench.py)
 rm -r $BENCH_DIR/__pycache__ 2>/dev/null
 
 # hclust.cr
+echo "Testing HClust (Crystal)..."
 compilers[hclust]=$(crystal --version | head -n 1 | awk '{print $2}')
 [ $? -ne 0 ] && abort "crystal not available"
 package_versions[hclust]=$(shards version $BENCH_DIR/..)
