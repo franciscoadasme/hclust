@@ -14,7 +14,7 @@ with open("distances.txt") as fp:
 best_time = min(
     timeit.repeat("mst_single_linkage(condensed_mat, size)",
     number=1,
-    repeat=int(os.getenv("BENCH_REPEATS", 10)),
+    repeat=int(os.getenv("BENCH_REPEATS", 10_000)),
     globals=dict(
             mst_single_linkage=mst_single_linkage,
             condensed_mat=condensed_mat,

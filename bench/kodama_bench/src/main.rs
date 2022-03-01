@@ -22,7 +22,7 @@ fn main() {
 
     let repeats = match env::var("BENCH_REPEATS") {
         Ok(val) => val.parse::<usize>().unwrap(),
-        Err(_) => 10,
+        Err(_) => 10_000,
     };
 
     let best_time = (0..repeats)

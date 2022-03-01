@@ -11,7 +11,7 @@ condensed_arr = File.open("distances.txt") do |io|
   end
 end
 
-repeats = ENV["BENCH_REPEATS"]?.try(&.to_i) || 10
+repeats = ENV["BENCH_REPEATS"]?.try(&.to_i) || 10_000
 best_time = (0...repeats).min_of do
   dism = HClust::DistanceMatrix.new condensed_arr
   Time.measure do

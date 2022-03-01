@@ -52,7 +52,7 @@ int main(int argc, char **argv)
     fclose(fp);
 
     const char *repears_str = getenv("BENCH_REPEATS");
-    size_t repeats = repears_str ? strtol(repears_str, nullptr, 10) : 10;
+    size_t repeats = repears_str ? strtol(repears_str, nullptr, 10) : 10000;
 
     double best_time = std::numeric_limits<double>::max();
     for (size_t i = 0; i < repeats; i++)
