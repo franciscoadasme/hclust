@@ -44,8 +44,8 @@ package_versions[kodama]=$(grep -A 1 'name = "kodama"' $workdir/Cargo.lock | gre
 (cd $workdir && cargo clean && rm Cargo.lock)
 
 # scipy
-compilers[scipy]=$(python --version | awk '{print $2}')
 echo "Testing Scipy (Python)..."
+compilers[scipy]=$(python --version 2>&1 | awk '{print $2}')
 [ $? -ne 0 ] && abort "python not available"
 package_versions[scipy]=$(python -c 'import scipy; print(scipy.__version__)')
 [ $? -ne 0 ] && abort "scipy not available"
