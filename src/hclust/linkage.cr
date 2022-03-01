@@ -63,15 +63,15 @@ module HClust
       in .average?
         size_i = node_sizes[n_i]
         size_j = node_sizes[n_j]
-        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+        update_distances(active_nodes, dism, n_i, n_j) do |_, d_ik, ptr_jk|
           Method.average(d_ik, ptr_jk, size_i, size_j)
         end
       in .complete?
-        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+        update_distances(active_nodes, dism, n_i, n_j) do |_, d_ik, ptr_jk|
           Method.complete(d_ik, ptr_jk)
         end
       in .single?
-        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+        update_distances(active_nodes, dism, n_i, n_j) do |_, d_ik, ptr_jk|
           Method.single(d_ik, ptr_jk)
         end
       in .ward?
@@ -82,7 +82,7 @@ module HClust
           Method.ward(d_ij, d_ik, ptr_jk, size_i, size_j, size_k)
         end
       in .weighted?
-        update_distances(active_nodes, dism, n_i, n_j) do |n_k, d_ik, ptr_jk|
+        update_distances(active_nodes, dism, n_i, n_j) do |_, d_ik, ptr_jk|
           Method.weighted(d_ik, ptr_jk)
         end
       end

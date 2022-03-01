@@ -89,8 +89,8 @@ describe HClust::IndexList do
   describe "#nearest_to" do
     it "returns the nearest index using the block's return value" do
       indexes = HClust::IndexList.new(10)
-      index, distance = indexes.nearest_to(5) do |index|
-        (index - 5) ** 2 + index
+      index, distance = indexes.nearest_to(5) do |i|
+        (i - 5) ** 2 + i
       end
       index.should eq 4
       distance.should eq 5
