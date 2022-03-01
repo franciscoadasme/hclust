@@ -37,11 +37,22 @@ rm $BENCH_DIR/fastcluster_dm.cpp $BENCH_DIR/fastcluster_bench || abort "Somethin
 echo "Testing Kodama (Rust)..."
 compilers[kodama]=$(cargo --version | awk '{print $2}')
 [ $? -ne 0 ] && abort "rust not available"
-workdir=$BENCH_DIR/kodama_bench
+workdir=$BENCH_DIR/kodama_bench_dir
+mkdir -p $workdir/src
+cp kodama_bench.rs $workdir/src/main.rs
+cat <<EOT > $workdir/Cargo.toml
+[package]
+name = "bench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kodama = "^0.2"
+EOT
 timings[kodama]=$(cd $workdir && cargo run --release 2>/dev/null)
 [ $? -ne 0 ] && abort "Kodama (Rust) benchmark failed"
 package_versions[kodama]=$(grep -A 1 'name = "kodama"' $workdir/Cargo.lock | grep version | awk '{print $3}' | sed 's/"//g')
-(cd $workdir && cargo clean && rm Cargo.lock)
+rm -r $workdir
 
 # scipy
 echo "Testing Scipy (Python)..."
