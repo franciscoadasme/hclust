@@ -1,6 +1,7 @@
 require "../src/hclust"
 
-condensed_arr = File.open("distances.txt") do |io|
+path = ARGV[0]? || abort "error: Missing test file"
+condensed_arr = File.open(path) do |io|
   size = io.read_line.to_i
   Array(Float64).new((size * (size - 1)) // 2).tap do |arr|
     io.each_line do |line|

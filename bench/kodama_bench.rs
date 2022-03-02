@@ -6,7 +6,12 @@ use std::time::Instant;
 use kodama::mst;
 
 fn main() {
-    let file = File::open("../distances.txt").unwrap();
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 2 {
+        panic!("Missing test file");
+    }
+
+    let file = File::open(&args[1]).unwrap();
     let mut io = io::BufReader::new(file);
 
     let mut line = String::new();

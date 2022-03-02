@@ -16,7 +16,13 @@ int main(int argc, char **argv)
 
     int result;
 
-    const char *datafile = "distances.txt";
+    if (argc < 2)
+    {
+        fprintf(stderr, "error: Missing test file\n");
+        return 1;
+    }
+
+    const char *datafile = argv[1];
     FILE *fp = fopen(datafile, "r");
     if (!fp)
     {

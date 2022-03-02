@@ -1,9 +1,13 @@
 import os
+import sys
 import timeit
 import numpy as np
 from scipy.cluster._hierarchy import mst_single_linkage
 
-with open("distances.txt") as fp:
+if len(sys.argv) < 2:
+    exit("error: Missing test file")
+
+with open(sys.argv[1]) as fp:
     size = int(next(fp))
     condensed_mat = np.zeros((size * (size - 1)) // 2)
     i = 0
