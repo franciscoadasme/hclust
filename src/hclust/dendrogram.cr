@@ -22,5 +22,12 @@ module HClust
     def initialize(n_i : Int32, n_j : Int32, @distance : Float64)
       @nodes = {n_i, n_j}
     end
+
+    def sort : self
+      n_i = @nodes.unsafe_fetch(0)
+      n_j = @nodes.unsafe_fetch(1)
+      n_i, n_j = n_j, n_i if n_j < n_i
+      Dendrogram::Step.new n_i, n_j, @distance
+    end
   end
 end
