@@ -24,8 +24,7 @@ describe HClust::NNChain do
         {18, 19, 0.00088411},
         {16, 19, 0.92729970},
       ],
-      HClust::NNChain,
-      {method: :single, reuse: true}
+      HClust::NNChain(HClust::Linkage::Single)
 
     it_linkages "clusters using the complete linkage",
       [
@@ -49,8 +48,7 @@ describe HClust::NNChain do
         {18, 19, 0.00173310},
         {16, 19, 0.99731562},
       ],
-      HClust::NNChain,
-      {method: :complete, reuse: true}
+      HClust::NNChain(HClust::Linkage::Complete)
 
     it_linkages "clusters using the weighted linkage",
       [
@@ -74,8 +72,7 @@ describe HClust::NNChain do
         {18, 19, 0.00130861},
         {16, 19, 0.97807528},
       ],
-      HClust::NNChain,
-      {method: :weighted, reuse: true}
+      HClust::NNChain(HClust::Linkage::Weighted)
 
     it_linkages "clusters using the ward linkage",
       [
@@ -99,8 +96,7 @@ describe HClust::NNChain do
         {18, 19, 0.00239086},
         {16, 19, 7.23521293},
       ],
-      HClust::NNChain,
-      {method: :ward, reuse: true}
+      HClust::NNChain(HClust::Linkage::Ward)
 
     it_linkages "clusters using the average linkage",
       [
@@ -124,7 +120,6 @@ describe HClust::NNChain do
         {18, 19, 0.00152085},
         {16, 19, 0.96840281},
       ],
-      HClust::NNChain,
-      {method: :average, reuse: true}
+      HClust::NNChain(HClust::Linkage::Average)
   end
 end

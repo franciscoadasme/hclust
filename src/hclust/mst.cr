@@ -16,7 +16,7 @@ class HClust::MST
       # find the nearest cluster and update the distances at the same time
       n_j, d_ij = @active_nodes.nearest_to(n_i, @dism) do |n_k, dis|
         ptr = @merged_dis_ptr + n_k
-        Method.single(dis, ptr)
+        Linkage::Single.update(0, dis, ptr, 0, 0, 0)
         ptr.value
       end
       dendrogram << Dendrogram::Step.new(n_i, n_j, d_ij)
