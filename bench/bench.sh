@@ -40,7 +40,7 @@ compilers[kodama]=$(cargo --version | awk '{print $2}')
 [ $? -ne 0 ] && abort "rust not available"
 workdir=$BENCH_DIR/kodama_bench_dir
 mkdir -p $workdir/src
-cp kodama_bench.rs $workdir/src/main.rs
+cp $BENCH_DIR/kodama_bench.rs $workdir/src/main.rs
 cat <<EOT > $workdir/Cargo.toml
 [package]
 name = "bench"
