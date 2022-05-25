@@ -29,6 +29,31 @@ describe HClust::IndexList do
       (0...10).to_a.shuffle.each { |i| indexes.delete i }
       assert_iterates_yielding [] of Int32, indexes.each
     end
+
+    it "yields each index within range" do
+      assert_iterates_yielding [2, 3, 4, 5], HClust::IndexList.new(10).each(within: 2..5)
+      assert_iterates_yielding [8, 9], HClust::IndexList.new(10).each(within: 8..15)
+      assert_iterates_yielding [2, 3, 4], HClust::IndexList.new(10).each(within: 2...5)
+      assert_iterates_yielding [5, 6, 7, 8, 9], HClust::IndexList.new(10).each(within: 5..)
+      assert_iterates_yielding [5, 6, 7, 8, 9], HClust::IndexList.new(10).each(within: 5...)
+      assert_iterates_yielding [0, 1, 2], HClust::IndexList.new(10).each(within: ..2)
+      assert_iterates_yielding [0, 1], HClust::IndexList.new(10).each(within: ...2)
+
+      indexes = HClust::IndexList.new(10)
+      indexes.delete 3
+      indexes.delete 4
+      indexes.delete 8
+      indexes.delete 1
+      assert_iterates_yielding [2, 5], indexes.each(within: 2..5)
+      assert_iterates_yielding [5], indexes.each(within: 3..5)
+      assert_iterates_yielding [5, 6, 7], indexes.each(within: 3..8)
+      assert_iterates_yielding [5, 6, 7, 9], indexes.each(within: 3..9)
+      assert_iterates_yielding [5, 6, 7], indexes.each(within: 3...9)
+    end
+
+    it "raises if range if out of bounds" do
+      expect_raises(IndexError) { HClust::IndexList.new(5).each(within: 10..) { } }
+    end
   end
 
   describe "#first" do

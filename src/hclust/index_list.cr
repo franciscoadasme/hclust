@@ -37,6 +37,24 @@ class HClust::IndexList
     end
   end
 
+  # Yields each index in the list within the given range.
+  def each(*, within range : Range(Int32?, Int32?), & : Int32 ->) : Nil
+    start = range.begin || @start
+    stop = range.end || @size
+    stop += 1 if range.end && !range.exclusive?
+    stop = Math.min(stop, @size)
+    raise IndexError.new unless @start <= start < @size && start < stop
+    until start == stop || start.in?(self)
+      start += 1
+    end
+
+    index = start
+    while index < stop
+      yield index
+      index = @succ[index]
+    end
+  end
+
   # Yields each index except *index*. Useful for iterating in pairs.
   def each(*, omit index : Int32, & : Int32 ->) : Nil
     other = @start
