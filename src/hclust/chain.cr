@@ -14,8 +14,8 @@ class HClust::NNChain(L)
     dendrogram = Dendrogram.new(@dism.size - 1)
     (@dism.size - 1).times do
       step = next_nearest_clusters       # find the next nearest clusters
-      @active_nodes.delete step.nodes[0] # remove smallest cluster
       merge_clusters step                # merge nearest clusters
+      @active_nodes.delete step.nodes[0] # remove smallest cluster
       # step = step.sqrt if L.needs_squared_euclidean? # TODO: do this!!!
       dendrogram << step
     end
@@ -63,25 +63,19 @@ class HClust::NNChain(L)
 
     # iterate over the indexes in three stages to ensure row < column
     # when fetching a value from the distance matrix
-    c_k = @active_nodes.first? || return
-    while c_k < c_i
+    @active_nodes.each(within: ...c_i) do |c_k|
       d_ik = @dism.unsafe_fetch(c_k, c_i)
       L.update d_ij, d_ik, @dism.to_unsafe(c_k, c_j), n_i, n_j, @sizes[c_k]
-      c_k = @active_nodes.unsafe_succ(c_k)
     end
 
-    c_k = @active_nodes.unsafe_succ(c_k) if c_k == c_i
-    while c_k < c_j
+    @active_nodes.each(within: c_i...c_j, skip: 1) do |c_k|
       d_ik = @dism.unsafe_fetch(c_i, c_k)
       L.update d_ij, d_ik, @dism.to_unsafe(c_k, c_j), n_i, n_j, @sizes[c_k]
-      c_k = @active_nodes.unsafe_succ(c_k)
     end
 
-    c_k = @active_nodes.unsafe_succ(c_k) if c_k == c_j
-    while c_k < @active_nodes.size
+    @active_nodes.each(within: c_j.., skip: 1) do |c_k|
       d_ik = @dism.unsafe_fetch(c_i, c_k)
       L.update d_ij, d_ik, @dism.to_unsafe(c_j, c_k), n_i, n_j, @sizes[c_k]
-      c_k = @active_nodes.unsafe_succ(c_k)
     end
   end
 end
