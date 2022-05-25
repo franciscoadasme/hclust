@@ -168,6 +168,17 @@ describe HClust::DistanceMatrix do
       ptr[2].should eq 14
       ptr[8].should eq 35
     end
+
+    it "returns a pointer to the internal array at the specified location" do
+      mat = HClust::DistanceMatrix.new(5) do |i, j|
+        10 * (i + 1) + j + 1
+      end
+      ptr = mat.to_unsafe(2, 3)
+      ptr.should be_a Pointer(Float64)
+      ptr[0].should eq 34
+      ptr[1].should eq 35
+      ptr[2].should eq 45
+    end
   end
 
   describe "#unsafe_fetch" do

@@ -58,8 +58,6 @@ class HClust::NNChain(L)
   # pointer to the distance between nodes *j* and *k* in the distance
   # matrix (`ptr_jk`) to be updated.
   private def update_distances(c_i : Int32, c_j : Int32, d_ij : Float64) : Nil
-    dism_ptr = @dism.to_unsafe
-
     n_i = @sizes[c_i]
     n_j = @sizes[c_j]
 
@@ -67,25 +65,22 @@ class HClust::NNChain(L)
     # when fetching a value from the distance matrix
     c_k = @active_nodes.first? || return
     while c_k < c_i
-      ptr = dism_ptr + @dism.matrix_to_condensed_index(c_k, c_j)
       d_ik = @dism.unsafe_fetch(c_k, c_i)
-      L.update d_ij, d_ik, ptr, n_i, n_j, @sizes[c_k]
+      L.update d_ij, d_ik, @dism.to_unsafe(c_k, c_j), n_i, n_j, @sizes[c_k]
       c_k = @active_nodes.unsafe_succ(c_k)
     end
 
     c_k = @active_nodes.unsafe_succ(c_k) if c_k == c_i
     while c_k < c_j
-      ptr = dism_ptr + @dism.matrix_to_condensed_index(c_k, c_j)
       d_ik = @dism.unsafe_fetch(c_i, c_k)
-      L.update d_ij, d_ik, ptr, n_i, n_j, @sizes[c_k]
+      L.update d_ij, d_ik, @dism.to_unsafe(c_k, c_j), n_i, n_j, @sizes[c_k]
       c_k = @active_nodes.unsafe_succ(c_k)
     end
 
     c_k = @active_nodes.unsafe_succ(c_k) if c_k == c_j
     while c_k < @active_nodes.size
-      ptr = dism_ptr + @dism.matrix_to_condensed_index(c_j, c_k)
       d_ik = @dism.unsafe_fetch(c_i, c_k)
-      L.update d_ij, d_ik, ptr, n_i, n_j, @sizes[c_k]
+      L.update d_ij, d_ik, @dism.to_unsafe(c_j, c_k), n_i, n_j, @sizes[c_k]
       c_k = @active_nodes.unsafe_succ(c_k)
     end
   end

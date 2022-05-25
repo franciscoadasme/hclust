@@ -202,6 +202,12 @@ class HClust::DistanceMatrix
     @buffer
   end
 
+  # Returns a pointer to the internal buffer placed at the specified
+  # location.
+  def to_unsafe(row : Int32, col : Int32) : Pointer(Float64)
+    @buffer + matrix_to_condensed_index(row, col)
+  end
+
   # Returns the distance between the elements at *i* and *j*, without
   # doing any bounds check.
   #
