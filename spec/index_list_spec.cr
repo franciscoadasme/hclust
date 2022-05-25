@@ -38,6 +38,8 @@ describe HClust::IndexList do
       assert_iterates_yielding [5, 6, 7, 8, 9], HClust::IndexList.new(10).each(within: 5...)
       assert_iterates_yielding [0, 1, 2], HClust::IndexList.new(10).each(within: ..2)
       assert_iterates_yielding [0, 1], HClust::IndexList.new(10).each(within: ...2)
+      assert_iterates_yielding [4, 5], HClust::IndexList.new(10).each(within: 2..5, skip: 2)
+      assert_iterates_yielding [] of Int32, HClust::IndexList.new(10).each(within: 2..5, skip: 10)
 
       indexes = HClust::IndexList.new(10)
       indexes.delete 3
@@ -49,6 +51,7 @@ describe HClust::IndexList do
       assert_iterates_yielding [5, 6, 7], indexes.each(within: 3..8)
       assert_iterates_yielding [5, 6, 7, 9], indexes.each(within: 3..9)
       assert_iterates_yielding [5, 6, 7], indexes.each(within: 3...9)
+      assert_iterates_yielding [5], indexes.each(within: 2..5, skip: 1)
     end
 
     it "raises if range if out of bounds" do

@@ -37,21 +37,27 @@ class HClust::IndexList
     end
   end
 
-  # Yields each index in the list within the given range.
-  def each(*, within range : Range(Int32?, Int32?), & : Int32 ->) : Nil
+  # Yields each index in the list within the given range. It discards
+  # *skip* elements before yielding.
+  def each(
+    *,
+    within range : Range(Int32?, Int32?),
+    skip : Int32 = 0, & : Int32 ->
+  ) : Nil
     start = range.begin || @start
     stop = range.end || @size
     stop += 1 if range.end && !range.exclusive?
     stop = Math.min(stop, @size)
-    raise IndexError.new unless @start <= start < @size && start < stop
+    raise IndexError.new unless @start <= start < @size
     until start == stop || start.in?(self)
       start += 1
     end
 
     index = start
     while index < stop
-      yield index
+      yield index unless skip > 0
       index = @succ[index]
+      skip -= 1
     end
   end
 
@@ -118,6 +124,7 @@ class HClust::IndexList
 
   # Returns the nearest index to the given index based on the distance
   # matrix.
+  @[AlwaysInline]
   def nearest_to(index : Int32, dism : DistanceMatrix) : {Int32, Float64}
     nearest_to(index, dism) { |_, dis| dis }
   end
@@ -126,6 +133,7 @@ class HClust::IndexList
   # returns value. Both the index and distance taken from the distance
   # matrix are yielded such that the block may compute a new distance if
   # needed.
+  @[AlwaysInline]
   def nearest_to(
     index : Int32,
     dism : DistanceMatrix,
