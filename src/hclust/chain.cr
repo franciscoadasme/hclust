@@ -49,7 +49,7 @@ class HClust::NNChain(L)
 
   # Update distances and sizes upon merging the given nodes.
   private def merge_clusters(step : Dendrogram::Step) : Nil
-    update_distances *step.nodes, step.distance
+    update_distances *step.nodes
     @sizes[step.nodes[1]] += @sizes[step.nodes[0]]
   end
 
@@ -57,9 +57,10 @@ class HClust::NNChain(L)
   # iteration, it calls the parameterized method T along with the
   # pointer to the distance between nodes *j* and *k* in the distance
   # matrix (`ptr_jk`) to be updated.
-  private def update_distances(c_i : Int32, c_j : Int32, d_ij : Float64) : Nil
+  private def update_distances(c_i : Int32, c_j : Int32) : Nil
     n_i = @sizes[c_i]
     n_j = @sizes[c_j]
+    d_ij = @dism.unsafe_fetch(c_i, c_j)
 
     # iterate over the indexes in three stages to ensure row < column
     # when fetching a value from the distance matrix
