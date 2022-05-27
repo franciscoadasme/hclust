@@ -23,6 +23,10 @@ module HClust
       @nodes = {n_i, n_j}
     end
 
+    def sqrt : self
+      self.class.new *@nodes, Math.sqrt(@distance)
+    end
+
     def sort : self
       n_i = @nodes.unsafe_fetch(0)
       n_j = @nodes.unsafe_fetch(1)
