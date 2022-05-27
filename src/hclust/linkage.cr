@@ -50,7 +50,7 @@ module HClust::Linkage
       # *I ∪ J* and *K*. The distance is computed from the
       # pre-computed distances between the clusters *I*, *J*, and *K*,
       # and cluster sizes.
-      def update(
+      def self.update(
         d_ij : Float64, d_ik : Float64, d_jk : Float64,
         n_i : Number, n_j : Number, n_k : Number
       ) : Float64
@@ -62,7 +62,7 @@ module HClust::Linkage
       # Returns `true` if the linkage rule requires that the initial
       # cluster distances are (proportional to) squared Euclidean
       # distance, else `false`.
-      def needs_squared_euclidean? : Bool
+      def self.needs_squared_euclidean? : Bool
         {{use_square}}
       end
     end
