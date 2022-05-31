@@ -9,7 +9,7 @@ class HClust::MST
   end
 
   def linkage : Dendrogram
-    dendrogram = Dendrogram.new(@dism.size - 1)
+    dendrogram = Dendrogram.new(@dism.size)
     n_i = 0 # current node
     (@dism.size - 1).times do
       @active_nodes.delete n_i
@@ -19,9 +19,9 @@ class HClust::MST
         Linkage::Single.update(0, dis, ptr, 0, 0, 0)
         ptr.value
       end
-      dendrogram << Dendrogram::Step.new(n_i, n_j, d_ij)
+      dendrogram.add(n_i, n_j, d_ij)
       n_i = n_j
     end
-    dendrogram
+    dendrogram.relabel(ordered: false)
   end
 end

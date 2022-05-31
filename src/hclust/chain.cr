@@ -3,7 +3,7 @@ class HClust::NNChain(L)
   def initialize(@dism : DistanceMatrix, reuse : Bool = false)
     {% raise "Unsupported linkage rule #{L} by NNChain" unless L < Linkage::Chain %}
     @dism = @dism.clone unless reuse
-    # @dism.map! &.**(2) if L.needs_squared_euclidean? # TODO: do this!!!
+    @dism.map! &.**(2) if L.needs_squared_euclidean?
 
     @active_nodes = IndexList.new(@dism.size)    # tracks non-merged clusters
     @chain = Deque(Int32).new(@dism.size)        # nearest neighbor chain
@@ -11,15 +11,15 @@ class HClust::NNChain(L)
   end
 
   def linkage : Dendrogram
-    dendrogram = Dendrogram.new(@dism.size - 1)
+    dendrogram = Dendrogram.new(@dism.size)
     (@dism.size - 1).times do
       step = next_nearest_clusters       # find the next nearest clusters
       merge_clusters step                # merge nearest clusters
       @active_nodes.delete step.nodes[0] # remove smallest cluster
-      # step = step.sqrt if L.needs_squared_euclidean? # TODO: do this!!!
+      step = step.sqrt if L.needs_squared_euclidean?
       dendrogram << step
     end
-    dendrogram
+    dendrogram.relabel(ordered: L.order_dependent?)
   end
 
   # Searches and returns the next pair of nearest clusters using the
