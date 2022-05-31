@@ -4,7 +4,7 @@ module HClust
     getter observations : Int32
 
     def initialize(@observations : Int32)
-      @steps = Array(Step).new(@observations)
+      @steps = Array(Step).new(@observations - 1)
     end
 
     def <<(step : Step) : self

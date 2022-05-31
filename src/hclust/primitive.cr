@@ -9,7 +9,7 @@ class HClust::Primitive(L)
   end
 
   def linkage : Dendrogram
-    dendrogram = Dendrogram.new(@dism.size - 1)
+    dendrogram = Dendrogram.new(@dism.size)
     (@dism.size - 1).times do
       step = next_nearest_clusters                   # find the next nearest clusters
       update_distances *step.nodes                   # update distances upon merge
@@ -18,7 +18,7 @@ class HClust::Primitive(L)
       step = step.sqrt if L.needs_squared_euclidean?
       dendrogram << step
     end
-    dendrogram
+    dendrogram.relabel(ordered: L.order_dependent?)
   end
 
   # Searches and returns the next pair of nearest clusters using brute
