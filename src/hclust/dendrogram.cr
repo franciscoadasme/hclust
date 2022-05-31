@@ -12,6 +12,14 @@ module HClust
       self
     end
 
+    # Creates and appends a merge step between clusters *c_i* and *c_j*
+    # separated bu *distance*.
+    def add(c_i : Int32, c_j : Int32, distance : Float64) : Step
+      step = Step.new(c_i, c_j, distance).sort
+      @steps << step
+      step
+    end
+
     def steps : Array::View(Step)
       @steps.view
     end
