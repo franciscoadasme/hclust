@@ -29,7 +29,7 @@ module HClust::Linkage
   # Euclidean distances. The given block will correspond to the body of
   # the in-place `#update` method, which accepts the distance between
   # the clusters *J* and *K* as a pointer that can be modified.
-  macro gen_rule(name, use_square = false)
+  macro gen_rule(name, use_square = false, order_dependent = true)
     module Linkage::{{name.id.camelcase}}
       # Update formula for the linkage rule (see above for details).
       # The distance is computed between the newly formed cluster *I ∪
@@ -64,6 +64,15 @@ module HClust::Linkage
       # distance, else `false`.
       def self.needs_squared_euclidean? : Bool
         {{use_square}}
+      end
+
+      # Returns `true` if the distance formula depends on the order
+      # which the clusters were formed by merging, else `false`.
+      #
+      # This is used in the cluster relabeling after linkage. See
+      # `Dendrogram#relabel`.
+      def self.order_dependent? : Bool
+        {{order_dependent}}
       end
     end
   end
@@ -113,7 +122,7 @@ module HClust::Linkage
   #     d(I ∪ J) = (|I| * d(I, K) + |J| * d(J, K)) / (|I| + |J|)
   #
   # This is also called the UPGMA method.
-  gen_rule Average do
+  gen_rule Average, order_dependent: false do
     ptr_jk.value = (n_i * d_ik + n_j * ptr_jk.value) / (n_i + n_j)
   end
 
@@ -140,7 +149,7 @@ module HClust::Linkage
   #     d(I ∪ J) = max(d(I, K), d(J, K))
   #
   # This is also called the farthest neighbor method.
-  gen_rule Complete do
+  gen_rule Complete, order_dependent: false do
     if d_ik > ptr_jk.value
       ptr_jk.value = d_ik
     end
@@ -168,7 +177,7 @@ module HClust::Linkage
   #     d(I ∪ J) = max(d(I, K), d(J, K))
   #
   # This is also called the nearest neighbor method.
-  gen_rule Single do
+  gen_rule Single, order_dependent: false do
     if d_ik < ptr_jk.value
       ptr_jk.value = d_ik
     end
@@ -186,7 +195,7 @@ module HClust::Linkage
   #
   # WARNING: This method requires that the initial cluster distances are
   # (proportional to) squared Euclidean distance.
-  gen_rule Ward, use_square: true do
+  gen_rule Ward, use_square: true, order_dependent: false do
     ptr_jk.value = ((n_i + n_k) * d_ik +
                     (n_j + n_k) * ptr_jk.value -
                     n_k * d_ij) /
@@ -201,7 +210,7 @@ module HClust::Linkage
   #
   # where *da(X, Y)* means the average distance between *X* and *Y*.
   # This is also called the WPGMA method.
-  gen_rule Weighted do
+  gen_rule Weighted, order_dependent: false do
     ptr_jk.value = (d_ik + ptr_jk.value) * 0.5
   end
 end
