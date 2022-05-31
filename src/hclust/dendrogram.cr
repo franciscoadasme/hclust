@@ -20,6 +20,31 @@ module HClust
       step
     end
 
+    # Returns a new `Dendrogram` with relabeled clusters. If *ordered*
+    # is `false`, the dendrogram's steps will be sorted by the
+    # dissimilarities first.
+    #
+    # Internally, it uses a `UnionFind` data structure for creating
+    # merge step with the new cluster labels efficiently.
+    #
+    # NOTE: Cluster labels will follow the SciPy convention, where new
+    # clusters start at `N` with `N ` equal to the number of
+    # observations (see `UnionFind`).
+    def relabel(ordered : Bool = true) : self
+      steps = @steps
+      steps = steps.sort_by(&.distance) unless ordered
+
+      dendrogram = self.class.new @observations
+      set = UnionFind.new @observations
+      steps.each do |step|
+        c_i = set.find(step.nodes[0]).not_nil! # node always exists
+        c_j = set.find(step.nodes[1]).not_nil! # node always exists
+        set.union c_i, c_j
+        dendrogram.add c_i, c_j, step.distance
+      end
+      dendrogram
+    end
+
     def steps : Array::View(Step)
       @steps.view
     end
