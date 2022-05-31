@@ -19,8 +19,8 @@ module HClust
     getter nodes : Tuple(Int32, Int32)
     getter distance : Float64
 
-    def initialize(n_i : Int32, n_j : Int32, @distance : Float64)
-      @nodes = {n_i, n_j}
+    def initialize(c_i : Int32, c_j : Int32, @distance : Float64)
+      @nodes = {c_i, c_j}
     end
 
     def sqrt : self
@@ -28,10 +28,10 @@ module HClust
     end
 
     def sort : self
-      n_i = @nodes.unsafe_fetch(0)
-      n_j = @nodes.unsafe_fetch(1)
-      n_i, n_j = n_j, n_i if n_j < n_i
-      Dendrogram::Step.new n_i, n_j, @distance
+      c_i = @nodes.unsafe_fetch(0)
+      c_j = @nodes.unsafe_fetch(1)
+      c_i, c_j = c_j, c_i if c_j < c_i
+      Dendrogram::Step.new c_i, c_j, @distance
     end
   end
 end
