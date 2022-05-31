@@ -12,6 +12,16 @@ module HClust
       self
     end
 
+    # Returns `true` if the merge steps are equal to `rhs`'s steps, else
+    # `false`.
+    def ==(rhs : self) : Bool
+      return false if observations != rhs.observations
+      @steps.each_with_index do |step, i|
+        return false unless step == rhs.steps.unsafe_fetch(i)
+      end
+      true
+    end
+
     # Creates and appends a merge step between clusters *c_i* and *c_j*
     # separated bu *distance*.
     def add(c_i : Int32, c_j : Int32, distance : Float64) : Step
@@ -56,6 +66,10 @@ module HClust
 
     def initialize(c_i : Int32, c_j : Int32, @distance : Float64)
       @nodes = {c_i, c_j}
+    end
+
+    def ==(rhs : self) : Bool
+      @nodes == rhs.nodes && (@distance - rhs.distance).abs <= Float64::EPSILON
     end
 
     def sqrt : self
