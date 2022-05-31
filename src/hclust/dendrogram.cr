@@ -10,8 +10,8 @@ module HClust
       self
     end
 
-    def steps : Slice(Step)
-      Slice(Step).new @steps.to_unsafe, @steps.size, read_only: true
+    def steps : Array::View(Step)
+      @steps.view
     end
   end
 
