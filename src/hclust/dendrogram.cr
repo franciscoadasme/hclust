@@ -1,8 +1,10 @@
 module HClust
   # TODO: docs
   class Dendrogram
-    def initialize(initial_capacity : Int)
-      @steps = Array(Step).new(initial_capacity)
+    getter observations : Int32
+
+    def initialize(@observations : Int32)
+      @steps = Array(Step).new(@observations)
     end
 
     def <<(step : Step) : self
