@@ -141,11 +141,12 @@ class HClust::IndexPriorityQueue
     @elements.swap(i, j)
   end
 
-  # Returns the array representation of the binary heap.
+  # Returns the indexes as an array.
   def to_a : Array(Int32)
-    Array(Int32).build(@size) do |buffer|
-      buffer.copy_from @heap, @size
-      @size
+    Array(Int32).new.tap do |arr|
+      @mask.each_with_index do |flag, i|
+        arr << i if flag
+      end
     end
   end
 end
