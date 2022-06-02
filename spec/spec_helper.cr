@@ -14,9 +14,11 @@ macro it_linkages(description, method, expected)
   end
 end
 
-macro it_linkages_random(method, rule)
+macro it_linkages_random(method, rule, seed = nil)
   it "using the {{rule.id.downcase}} linkage" do
-    %dism = HClust::DistanceMatrix.new(20) { rand }
+    %random = Random.new{% if seed %}({{seed}}){% end %}
+    %dism = HClust::DistanceMatrix.new(20) { %random.rand }
+
     {{method.id}}{% unless method.stringify.includes?("MST") %}({{rule.id}}){% end %}.new(%dism).linkage.should eq \
       HClust::Primitive({{rule.id}}).new(%dism).linkage
   end
