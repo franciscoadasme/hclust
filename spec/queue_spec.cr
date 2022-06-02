@@ -75,11 +75,11 @@ describe HClust::IndexPriorityQueue do
     end
   end
 
-  describe "#update" do
+  describe "#set_priority_at" do
     it "updates the queue with the given priority" do
       queue = HClust::IndexPriorityQueue.new(6) { Float64::MAX }
       [2, 1, 10, 5, 4, 4.5].each_with_index do |priority, i|
-        queue.update i, priority.to_f
+        queue.set_priority_at i, priority.to_f
       end
       queue.to_a.should eq [1, 0, 5, 3, 4, 2]
     end

@@ -128,7 +128,7 @@ class HClust::IndexPriorityQueue
   # Updates the priority of the element at *index* with the given value.
   #
   # NOTE: The queue is updated internally to restore the heap property.
-  def update(index : Int32, priority : Float64) : Nil
+  def set_priority_at(index : Int, priority : Float64) : Nil
     raise IndexError.new unless @mask[index]?
     old_priority = @priorities[index]
     @priorities[index] = priority
