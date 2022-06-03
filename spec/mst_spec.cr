@@ -1,5 +1,7 @@
 require "./spec_helper"
 
-describe HClust::MST do
-  it_linkages_random HClust::MST, HClust::Linkage::Single
+describe HClust do
+  describe ".mst" do
+    it_linkages_random HClust.mst, HClust::Rule::Single
+  end
 end

@@ -6,7 +6,6 @@ macro it_linkages(description, method, expected)
     {% precision = expected.map(&.[2].stringify.split(".").last.size).sort.first %}
     {% precision = 11 if precision > 11 %}
     {{method.id}}
-      .linkage
       .steps
       .map { |step| {step.nodes[0], step.nodes[1], step.distance.round({{precision}})} }
       .to_a
@@ -19,7 +18,7 @@ macro it_linkages_random(method, rule, seed = nil)
     %random = Random.new{% if seed %}({{seed}}){% end %}
     %dism = HClust::DistanceMatrix.new(20) { %random.rand }
 
-    {{method.id}}{% unless method.stringify.includes?("MST") %}({{rule.id}}){% end %}.new(%dism).linkage.should eq \
-      HClust::Primitive({{rule.id}}).new(%dism).linkage
+    {{method.id}}({% unless method.stringify.includes?("mst") %}{{rule.id}}, {% end %}%dism).should eq \
+      HClust.primitive({{rule.id.gsub(/Chain/, "")}}, %dism)
   end
 end
