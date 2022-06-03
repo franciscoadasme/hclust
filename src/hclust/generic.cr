@@ -33,7 +33,7 @@ def HClust.generic(rule : Rule, dism : DistanceMatrix) : Dendrogram
     step = step.sqrt if rule.needs_squared_euclidean?
     dendrogram << step
   end
-  dendrogram.relabel(ordered: rule.order_dependent?)
+  dendrogram.relabel(ordered: !rule.order_dependent?)
 end
 
 # Searches and returns the next pair of nearest clusters using the

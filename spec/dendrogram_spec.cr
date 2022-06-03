@@ -9,7 +9,7 @@ describe HClust::Dendrogram do
       dendrogram.add 0, 4, 0.015
       dendrogram.add 1, 4, 0.03
 
-      dendrogram.relabel(ordered: true)
+      dendrogram.relabel(ordered: false)
         .steps
         .map { |step| {*step.nodes, step.distance} }
         .should eq [
@@ -19,7 +19,7 @@ describe HClust::Dendrogram do
           {6, 7, 0.03},
         ]
 
-      dendrogram.relabel(ordered: false)
+      dendrogram.relabel(ordered: true)
         .steps
         .map { |step| {*step.nodes, step.distance} }
         .should eq [

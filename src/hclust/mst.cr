@@ -19,5 +19,5 @@ def HClust.mst(dism : DistanceMatrix) : Dendrogram
     dendrogram.add(n_i, n_j, d_ij)
     n_i = n_j
   end
-  dendrogram.relabel(ordered: false)
+  dendrogram.relabel(ordered: true)
 end

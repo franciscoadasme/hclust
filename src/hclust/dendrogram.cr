@@ -31,7 +31,7 @@ module HClust
     end
 
     # Returns a new `Dendrogram` with relabeled clusters. If *ordered*
-    # is `false`, the dendrogram's steps will be sorted by the
+    # is `true`, the dendrogram's steps will be sorted by the
     # dissimilarities first.
     #
     # Internally, it uses a `UnionFind` data structure for creating
@@ -40,9 +40,9 @@ module HClust
     # NOTE: Cluster labels will follow the SciPy convention, where new
     # clusters start at `N` with `N ` equal to the number of
     # observations (see `UnionFind`).
-    def relabel(ordered : Bool = true) : self
+    def relabel(ordered : Bool = false) : self
       steps = @steps
-      steps = steps.sort_by(&.distance) unless ordered
+      steps = steps.sort_by(&.distance) if ordered
 
       dendrogram = self.class.new @observations
       set = UnionFind.new @observations
