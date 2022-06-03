@@ -1,6 +1,20 @@
 require "spec"
 require "../src/hclust"
 
+module Spec
+  struct CloseExpectation(T, D)
+    def match(actual_value : HClust::Dendrogram)
+      return false unless @expected_value.is_a?(HClust::Dendrogram)
+      return false unless actual_value.observations == @expected_value.observations
+      actual_value.steps.zip(@expected_value.steps) do |x, y|
+        return false unless x.nodes == y.nodes &&
+                            (x.distance - y.distance).abs <= @delta
+      end
+      true
+    end
+  end
+end
+
 macro it_linkages(description, method, expected)
   it {{description}} do
     {% precision = expected.map(&.[2].stringify.split(".").last.size).sort.first %}
@@ -13,12 +27,17 @@ macro it_linkages(description, method, expected)
   end
 end
 
-macro it_linkages_random(method, rule, seed = nil)
-  it "using the {{rule.id.downcase}} linkage" do
+macro it_linkages_random(method, rule, size = 20, delta = 1e-12, seed = nil)
+  it "using the {{rule.id.split("::")[-1].downcase.id}} linkage" do
     %random = Random.new{% if seed %}({{seed}}){% end %}
-    %dism = HClust::DistanceMatrix.new(20) { %random.rand }
+    %dism = HClust::DistanceMatrix.new({{size}}) { %random.rand }
 
-    {{method.id}}({% unless method.stringify.includes?("mst") %}{{rule.id}}, {% end %}%dism).should eq \
-      HClust.primitive({{rule.id.gsub(/Chain/, "")}}, %dism)
+    {% if method.stringify.includes?("mst") %}
+      {{method.id}}(%dism) \
+    {% else %}
+      {{method.id}}({{rule.id}}, %dism) \
+    {% end %}
+      .should be_close \
+      HClust.primitive({{rule.id.gsub(/Chain/, "")}}, %dism), {{delta}}
   end
 end
