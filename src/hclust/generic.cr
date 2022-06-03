@@ -86,11 +86,12 @@ end
     active_nodes.each(within: ...c_i) do |c_k|
       d_ik = dism.unsafe_fetch(c_k, c_i)
       HClust::Rule.{{rule}} d_ij, d_ik, dism.to_unsafe(c_k, c_j), n_i, n_j, sizes[c_k]
-      # TODO: this check can be omitted for all but median and centroid
-      if (d_kj = dism.unsafe_fetch(c_k, c_j)) < queue.priority_at(c_k)
-        queue.set_priority_at c_k, d_kj
-        nearest[c_k] = c_j
-      elsif nearest[c_k] == c_i
+      {% if %w(centroid median).includes? rule.stringify %}
+        # This branch can be omitted for other than centroid and median
+        if (d_kj = dism.unsafe_fetch(c_k, c_j)) < queue.priority_at(c_k)
+          queue.set_priority_at c_k, d_kj
+          nearest[c_k] = c_j
+        els{% end %}if nearest[c_k] == c_i
         nearest[c_k] = c_j
       end
     end
