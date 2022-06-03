@@ -57,7 +57,6 @@ private def update_nearest(active_nodes, dism, nearest, queue)
   while c_i = queue.first?
     break if queue.priority_at(c_i) == dism.unsafe_fetch(c_i, nearest[c_i])
 
-    # TODO: move to active_nodes.nearest_to(c_i, forward_only: true) or something
     min_dis = Float64::MAX
     active_nodes.each(within: c_i.., skip: 1) do |c_j|
       d_ij = dism.unsafe_fetch(c_i, c_j)
