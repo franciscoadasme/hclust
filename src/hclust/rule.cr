@@ -7,12 +7,13 @@
 # procedure. Note that *d(X, Y)* expands to all distances between the
 # clusters *x ∈ X* and *y ∈ Y* (*d(x, y)*).
 #
-# A rule is implemented as a module containing the `#update` and
-# `#needs_squared_euclidean?` class methods. The former accepts as
-# arguments the pre-computed distances *d(I, J)*, *d(I, K)*, and *d(J,
-# K)*, and cluster sizes (|*I*|, |*J*|, and |*K*|). There are in-place
-# and non-modifying methods of the update formula. Use the `gen_rule`
-# macro for generating additional rules if needed.
+# The update formula for each linkage rule is provided as a class method
+# with the same name, e.g., `Rule.single` for the single linkage rule.
+# The method accepts the pre-computed distances *d(I, J)*, *d(I, K)*,
+# and *d(J, K)*, and cluster sizes (|*I*|, |*J*|, and |*K*|). This is an
+# in-place method, where the distance to be updated (tipically, *d(J,
+# K)* as cluster *J* is reused as the new cluster) is passed as a
+# pointer to the corresponding position in the distance matrix.
 enum HClust::Rule
   # Defines the distance between the cluster *I ∪ J* and cluster *K* as
   # the arithmetic mean of all distances from every cluster *i ∈ I* and
