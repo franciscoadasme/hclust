@@ -1,30 +1,19 @@
 import os
-import sys
-import timeit
+import time
 import numpy as np
-from scipy.cluster._hierarchy import mst_single_linkage
+from scipy.cluster.hierarchy import _LINKAGE_METHODS
+from scipy.cluster._hierarchy import mst_single_linkage, nn_chain
 
-if len(sys.argv) < 2:
-    exit("error: Missing test file")
+size = int(os.getenv("BENCH_SIZE", 100))
+condensed_size = (size * (size - 1)) // 2
+repeats = int(os.getenv("BENCH_REPEATS", 1_000))
 
-with open(sys.argv[1]) as fp:
-    size = int(next(fp))
-    condensed_mat = np.zeros((size * (size - 1)) // 2)
-    i = 0
-    for line in fp:
-        for token in line.split():
-            condensed_mat[i] = float(token)
-
-best_time = min(
-    timeit.repeat("mst_single_linkage(condensed_mat, size)",
-    number=1,
-    repeat=int(os.getenv("BENCH_REPEATS", 10_000)),
-    globals=dict(
-            mst_single_linkage=mst_single_linkage,
-            condensed_mat=condensed_mat,
-            size=size,
-        ),
-    )
-)
+best_time = float("inf")
+for _ in range(repeats):
+    condensed_dism = np.random.rand(condensed_size)
+    starttime = time.perf_counter()
+    nn_chain(condensed_dism, size, _LINKAGE_METHODS["ward"])
+    elapsed = time.perf_counter() - starttime
+    best_time = min(best_time, elapsed)
 
 print(f"{best_time * 1000:.6f}")

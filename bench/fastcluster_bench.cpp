@@ -3,6 +3,7 @@
 #include <limits>
 #include <cstring>
 #include <chrono>
+#include <random>
 
 // Code by Daniel Müllner
 // workaround to make it usable as a standalone version (without R)
@@ -14,61 +15,33 @@ int main(int argc, char **argv)
     using std::chrono::duration;
     using std::chrono::high_resolution_clock;
 
-    int result;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> uniform(0.0, 1.0);
 
-    if (argc < 2)
-    {
-        fprintf(stderr, "error: Missing test file\n");
-        return 1;
-    }
-
-    const char *datafile = argv[1];
-    FILE *fp = fopen(datafile, "r");
-    if (!fp)
-    {
-        fprintf(stderr, "Cannot open '%s'\n", datafile);
-        return 2;
-    }
-
-    size_t size;
-    result = fscanf(fp, "%ld\n", &size);
-    if (result < 1)
-    {
-        fprintf(stderr, "Invalid header in '%s'\n", datafile);
-        return 2;
-    }
-
+    const char *size_str = getenv("BENCH_SIZE");
+    size_t size = size_str ? strtol(size_str, nullptr, 10) : 100;
     size_t condensed_size = (size * (size - 1)) / 2;
-    double *distmat = new double[condensed_size];
-    double x;
-    for (size_t i = 0; i < condensed_size; i++)
-    {
-        result = fscanf(fp, "%lf", &x);
-        if (result == 1)
-        {
-            distmat[i] = x;
-        }
-        else
-        {
-            fprintf(stderr, "Could not read a number\n");
-            return 2;
-        }
-        result = fscanf(fp, "\n");
-    }
-    fclose(fp);
 
     const char *repears_str = getenv("BENCH_REPEATS");
-    size_t repeats = repears_str ? strtol(repears_str, nullptr, 10) : 10000;
+    size_t repeats = repears_str ? strtol(repears_str, nullptr, 10) : 1000;
 
     double best_time = std::numeric_limits<double>::max();
     for (size_t i = 0; i < repeats; i++)
     {
-        double D[condensed_size];
-        memcpy(&D, distmat, sizeof(double) * condensed_size);
+        double *distmat = new double[condensed_size];
+        for (size_t i = 0; i < condensed_size; i++)
+        {
+            distmat[i] = uniform(gen);
+        }
         cluster_result Z2(size - 1);
+        double *members = new double[size];
+        for (int i = 0; i < size; i++)
+            members[i] = 1;
 
         auto start = high_resolution_clock::now();
-        MST_linkage_core(size, D, Z2);
+        // MST_linkage_core(size, D, Z2);
+        NN_chain_core<METHOD_METR_WARD, t_float>(size, distmat, members, Z2);
         duration<double, std::milli> elapsed = high_resolution_clock::now() - start;
 
         double elapsed_ms = elapsed.count();
@@ -76,6 +49,8 @@ int main(int argc, char **argv)
         {
             best_time = elapsed_ms;
         }
+
+        delete[] distmat;
     }
     printf("%.6f\n", best_time);
 
@@ -85,8 +60,6 @@ int main(int argc, char **argv)
     // delete[] merge;
     // delete[] height;
     // delete[] labels;
-
-    delete[] distmat;
 
     return 0;
 }

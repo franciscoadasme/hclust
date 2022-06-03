@@ -1,22 +1,13 @@
 require "../src/hclust"
 
-path = ARGV[0]? || abort "error: Missing test file"
-condensed_arr = File.open(path) do |io|
-  size = io.read_line.to_i
-  Array(Float64).new((size * (size - 1)) // 2).tap do |arr|
-    io.each_line do |line|
-      line.split do |token|
-        arr << token.to_f
-      end
-    end
-  end
-end
+size = ENV["BENCH_SIZE"]?.try(&.to_i) || 100
+repeats = ENV["BENCH_REPEATS"]?.try(&.to_i) || 1_000
 
-repeats = ENV["BENCH_REPEATS"]?.try(&.to_i) || 10_000
 best_time = (0...repeats).min_of do
-  dism = HClust::DistanceMatrix.new condensed_arr
+  dism = HClust::DistanceMatrix.new(size) { rand }
   Time.measure do
-    HClust.mst(dism)
+    # HClust.mst(dism)
+    HClust.nn_chain(:ward, dism)
   end
 end
 

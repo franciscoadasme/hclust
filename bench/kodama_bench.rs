@@ -1,40 +1,31 @@
+use rand::Rng;
 use std::env;
-use std::fs::File;
-use std::io::{self, BufRead};
 use std::time::Instant;
 
-use kodama::mst;
+use kodama::{mst, nnchain, MethodChain};
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        panic!("Missing test file");
-    }
+    let mut rng = rand::thread_rng();
 
-    let file = File::open(&args[1]).unwrap();
-    let mut io = io::BufReader::new(file);
-
-    let mut line = String::new();
-    io.read_line(&mut line).expect("Could not read header");
-    let observations: usize = line.trim_end().parse().expect("Invalid size at header");
-    let condensed_size = (observations * (observations - 1)) / 2;
-    let mut condensed_mat: Vec<f64> = Vec::with_capacity(condensed_size);
-    for line in io.lines() {
-        for num in line.unwrap().split_whitespace() {
-            condensed_mat.push(num.parse().unwrap());
-        }
-    }
-
+    let size = match env::var("BENCH_SIZE") {
+        Ok(val) => val.parse::<usize>().unwrap(),
+        Err(_) => 100,
+    };
+    let condensed_size = (size * (size - 1)) / 2;
     let repeats = match env::var("BENCH_REPEATS") {
         Ok(val) => val.parse::<usize>().unwrap(),
-        Err(_) => 10_000,
+        Err(_) => 1_000,
     };
 
     let best_time = (0..repeats)
         .map(|_| {
-            let mut data = condensed_mat.clone();
+            let mut condensed_dism = Vec::<f64>::with_capacity(condensed_size);
+            for _ in 0..condensed_size {
+                condensed_dism.push(rng.gen());
+            }
             let start = Instant::now();
-            let _dendrogram = mst(&mut data, observations);
+            // let _dendrogram = mst(&mut condensed_dism, observations);
+            let _dendrogram = nnchain(&mut condensed_dism, size, MethodChain::Ward);
             return start.elapsed().as_micros();
         })
         .min()
