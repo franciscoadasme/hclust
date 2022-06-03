@@ -1,5 +1,4 @@
 require "views"
-require "./core_ext/**"
 
 module HClust
 end
