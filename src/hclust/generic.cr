@@ -17,7 +17,7 @@ def HClust.generic(rule : Rule, dism : DistanceMatrix, reuse : Bool = false) : D
 
   dendrogram = Dendrogram.new(dism.size)
   (dism.size - 1).times do
-    update_nearest(active_nodes, dism, nearest, queue) # unless L.single?
+    update_nearest(active_nodes, dism, nearest, queue) unless rule.single?
     step = next_merge(dism, nearest, queue)
 
     {% begin %}
