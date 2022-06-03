@@ -225,6 +225,19 @@ enum HClust::Rule
       false
     end
   end
+
+  # :nodoc:
+  def to_chain : ChainRule
+    case self
+    in .average?  then ChainRule::Average
+    in .complete? then ChainRule::Complete
+    in .single?   then ChainRule::Single
+    in .ward?     then ChainRule::Ward
+    in .weighted? then ChainRule::Weighted
+    in .centroid?, .median?
+      raise ArgumentError.new("Invalid chain linkage rule: #{self}")
+    end
+  end
 end
 
 # An enum that provides linkage rules supported by the
