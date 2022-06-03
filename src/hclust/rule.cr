@@ -237,22 +237,6 @@ enum HClust::ChainRule
   Ward
   Weighted
 
-  # Returns `true` if the linkage rule requires that the initial
-  # cluster distances are (proportional to) squared Euclidean
-  # distance, else `false`.
-  def needs_squared_euclidean? : Bool
-    to_rule.needs_squared_euclidean?
-  end
-
-  # Returns `true` if the distance formula depends on the order
-  # which the clusters were formed by merging, else `false`.
-  #
-  # This is used in the cluster relabeling after linkage. See
-  # `Dendrogram#relabel`.
-  def order_dependent? : Bool
-    to_rule.order_dependent?
-  end
-
   # Returns the corresponding linkage rule.
   def to_rule : Rule
     {% begin %}

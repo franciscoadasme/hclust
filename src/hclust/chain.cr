@@ -1,5 +1,6 @@
 # TODO: docs
 def HClust.nn_chain(rule : ChainRule, dism : DistanceMatrix) : Dendrogram
+  rule = rule.to_rule
   dism.map! &.**(2) if rule.needs_squared_euclidean?
 
   active_nodes = IndexList.new(dism.size)    # tracks non-merged clusters
@@ -13,7 +14,7 @@ def HClust.nn_chain(rule : ChainRule, dism : DistanceMatrix) : Dendrogram
     {% begin %}
       case rule
       {% for rule in HClust::ChainRule.constants.map(&.id.downcase) %}
-        in .{{rule}}?
+        when .{{rule}}?
           update_distances_{{rule}}(active_nodes, dism, sizes, *step.nodes)
       {% end %}
       end
