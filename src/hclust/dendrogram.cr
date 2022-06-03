@@ -35,7 +35,7 @@ module HClust
     # dissimilarities first.
     #
     # Internally, it uses a `UnionFind` data structure for creating
-    # merge step with the new cluster labels efficiently.
+    # merge steps with the new cluster labels efficiently.
     #
     # NOTE: Cluster labels will follow the SciPy convention, where new
     # clusters start at `N` with `N ` equal to the number of
