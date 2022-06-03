@@ -33,9 +33,9 @@ macro it_linkages_random(method, rule, size = 20, delta = 1e-12, seed = nil)
     %dism = HClust::DistanceMatrix.new({{size}}) { %random.rand }
 
     {% if method.stringify.includes?("mst") %}
-      {{method.id}}(%dism) \
+      {{method.id}}(%dism.clone) \
     {% else %}
-      {{method.id}}({{rule.id}}, %dism) \
+      {{method.id}}({{rule.id}}, %dism.clone) \
     {% end %}
       .should be_close \
       HClust.primitive({{rule.id.gsub(/Chain/, "")}}, %dism), {{delta}}

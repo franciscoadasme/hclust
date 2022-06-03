@@ -1,6 +1,5 @@
 # TODO: docs
-def HClust.primitive(rule : Rule, dism : DistanceMatrix, reuse : Bool = false) : Dendrogram
-  dism = dism.clone unless reuse
+def HClust.primitive(rule : Rule, dism : DistanceMatrix) : Dendrogram
   dism.map! &.**(2) if rule.needs_squared_euclidean?
 
   active_nodes = IndexList.new(dism.size)    # tracks non-merged clusters
