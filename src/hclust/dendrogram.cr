@@ -1,3 +1,5 @@
+require "bit_array"
+
 module HClust
   # TODO: docs
   class Dendrogram
@@ -28,6 +30,14 @@ module HClust
       step = Step.new(c_i, c_j, distance).sort
       @steps << step
       step
+    end
+
+    # Returns flat clusters of the original observations obtained by
+    # cutting the dendrogram at *height* (cophenetic distance).
+    def flatten(height : Number) : Array(Array(Int32))
+      max_dists = max_dist_for_each_cluster(self)
+      labels = cluster_monocrit(self, max_dists, height)
+      (0...@observations).to_a.group_by { |i| labels[i] }.values
     end
 
     # Returns a new `Dendrogram` with relabeled clusters. If *ordered*
@@ -83,4 +93,97 @@ module HClust
       Dendrogram::Step.new c_i, c_j, @distance
     end
   end
+end
+
+# Returns the labels of flat clusters formed by monocrit criterion.
+#
+# Adapted from the `scipy.cluster._hierarchy` module.
+private def cluster_monocrit(
+  dendrogram : HClust::Dendrogram,
+  mc : Array(Float64),
+  cutoff : Float64
+) : Array(Int32)
+  visited = BitArray.new(dendrogram.observations * 2 - 1)
+  curr_node = Pointer(Int32).malloc(dendrogram.observations)
+  count = 0
+
+  k = 0
+  cluster_leader = -1
+  curr_node[0] = 2 * dendrogram.observations - 2
+  labels = Array(Int32).new(dendrogram.observations, 0)
+  while k >= 0
+    root = curr_node[k] - dendrogram.observations
+    step = dendrogram.steps[root]
+    c_i, c_j = step.nodes
+
+    if cluster_leader == -1 && mc[root] <= cutoff # found a cluster
+      cluster_leader = root
+      count += 1
+    end
+
+    if c_i >= dendrogram.observations && !visited[c_i]
+      visited[c_i] = true
+      k += 1
+      curr_node[k] = c_i
+    elsif c_j >= dendrogram.observations && !visited[c_j]
+      visited[c_j] = true
+      k += 1
+      curr_node[k] = c_j
+    else
+      if c_i < dendrogram.observations
+        count += 1 if cluster_leader == -1 # singleton cluster
+        labels[c_i] = count
+      end
+      if c_j < dendrogram.observations
+        count += 1 if cluster_leader == -1 # singleton cluster
+        labels[c_j] = count
+      end
+      cluster_leader = -1 if cluster_leader == root # back to leader
+      k -= 1
+    end
+  end
+  labels
+end
+
+# Returns the maximum inconsistency coefficient for each non-singleton
+# cluster.
+#
+# Adapted from the `scipy.cluster._hierarchy` module.
+private def max_dist_for_each_cluster(
+  dendrogram : HClust::Dendrogram
+) : Array(Float64)
+  visited = BitArray.new(dendrogram.observations * 2 - 1)
+  curr_node = Pointer(Int32).malloc(dendrogram.observations)
+
+  k = 0
+  curr_node[0] = 2 * dendrogram.observations - 2
+  max_dists = Array.new(dendrogram.observations, 0.0)
+  while k >= 0
+    root = curr_node[k] - dendrogram.observations
+    step = dendrogram.steps[root]
+    c_i, c_j = step.nodes
+
+    if c_i >= dendrogram.observations && !visited[c_i]
+      visited[c_i] = true
+      k += 1
+      curr_node[k] = c_i
+    elsif c_j >= dendrogram.observations && !visited[c_j]
+      visited[c_j] = true
+      k += 1
+      curr_node[k] = c_j
+    else
+      max_dist = step.distance
+      if c_i >= dendrogram.observations
+        max_i = max_dists[c_i - dendrogram.observations]
+        max_dist = max_i if max_i > max_dist
+      end
+      if c_j >= dendrogram.observations
+        max_j = max_dists[c_j - dendrogram.observations]
+        max_dist = max_j if max_j > max_dist
+      end
+      max_dists[root] = max_dist
+      k -= 1
+    end
+  end
+  max_dists
 end
