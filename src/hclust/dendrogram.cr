@@ -95,6 +95,76 @@ module HClust
   end
 end
 
+# Returns the labels of *max_count* or fewer flat clusters formed by
+# monocrit criterion.
+#
+# It computes the smallest height at which cutting the dendrogram would
+# generate *max_count* or fewer clusters, and then invokes
+# `cluster_monocrit` with the computed height.
+#
+# Adapted from the `scipy.cluster._hierarchy` module.
+private def cluster_maxclust_monocrit(
+  dendrogram : HClust::Dendrogram,
+  mc : Array(Float64),
+  max_count : Int
+) : Array(Int32)
+  visited = BitArray.new(dendrogram.observations * 2 - 1)
+  curr_node = Pointer(Int32).malloc(dendrogram.observations)
+  threshold = 0.0
+
+  lower_i = 0
+  upper_i = dendrogram.observations - 1
+  while upper_i - lower_i > 1
+    i = (lower_i + upper_i) >> 1
+    threshold = mc[i]
+
+    visited.fill false
+    count = k = 0
+    curr_node[0] = 2 * dendrogram.observations - 2
+
+    while k >= 0
+      root = curr_node[k] - dendrogram.observations
+      step = dendrogram.steps[root]
+      c_i, c_j = step.nodes
+
+      if mc[root] <= threshold # this subtree forms a cluster
+        count += 1
+        break if count > max_count
+        k -= 1
+        visited[c_i] = visited[c_j] = true
+      elsif !visited[c_i]
+        visited[c_i] = true
+        if c_i >= dendrogram.observations
+          k += 1
+          curr_node[k] = c_i
+        else # singleton cluster
+          count += 1
+          break if count > max_count
+        end
+      elsif !visited[c_j]
+        visited[c_j] = true
+        if c_j >= dendrogram.observations
+          k += 1
+          curr_node[k] = c_j
+        else # singleton cluster
+          count += 1
+          break if count > max_count
+        end
+      else
+        k -= 1
+      end
+    end
+
+    if count > max_count
+      lower_i = i
+    else
+      upper_i = i
+    end
+  end
+
+  cluster_monocrit(dendrogram, mc, mc[upper_i])
+end
+
 # Returns the labels of flat clusters formed by monocrit criterion.
 #
 # Adapted from the `scipy.cluster._hierarchy` module.
