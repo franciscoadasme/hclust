@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 1.3.2">
+<meta name="crystal_docs.project_version" content="main">
+<meta name="crystal_docs.project_name" content="hclust">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="hclust">
+  <title>HClust::IndexList - hclust main</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          hclust
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="hclust/HClust" data-name="hclust">
+      <a href="../HClust.html">HClust</a>
+      
+        <ul>
+  
+  <li class=" " data-id="hclust/HClust/ChainRule" data-name="hclust::chainrule">
+      <a href="../HClust/ChainRule.html">ChainRule</a>
+      
+    </li>
+  
+  <li class="parent " data-id="hclust/HClust/Dendrogram" data-name="hclust::dendrogram">
+      <a href="../HClust/Dendrogram.html">Dendrogram</a>
+      
+        <ul>
+  
+  <li class=" " data-id="hclust/HClust/Dendrogram/Step" data-name="hclust::dendrogram::step">
+      <a href="../HClust/Dendrogram/Step.html">Step</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/DistanceMatrix" data-name="hclust::distancematrix">
+      <a href="../HClust/DistanceMatrix.html">DistanceMatrix</a>
+      
+    </li>
+  
+  <li class=" current" data-id="hclust/HClust/IndexList" data-name="hclust::indexlist">
+      <a href="../HClust/IndexList.html">IndexList</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/IndexPriorityQueue" data-name="hclust::indexpriorityqueue">
+      <a href="../HClust/IndexPriorityQueue.html">IndexPriorityQueue</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/Rule" data-name="hclust::rule">
+      <a href="../HClust/Rule.html">Rule</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/UnionFind" data-name="hclust::unionfind">
+      <a href="../HClust/UnionFind.html">UnionFind</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> HClust::IndexList
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../HClust/IndexList.html">HClust::IndexList</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>An <code><a href="../HClust/IndexList.html">IndexList</a></code> is an ordered collection of contiguous zero-based
+indexes.</p>
+<p>It supports efficient iteration and removal so it performs better than
+an <code>Array</code> when there are frequent deletions.</p>
+<p>Internally, it is implemented as a double-linked list such that
+deleted indexes are marked as inactive, but otherwise kept in memory.
+Therefore, indexing is not supported. Traversal is performed using the
+<code><a href="../HClust/IndexList.html#each%28%26%3AInt32-%3E%29%3ANil-instance-method">#each</a></code> methods.</p>
+<p>The most typical use case of a <code><a href="../HClust/IndexList.html">IndexList</a></code> is for representing a list
+of nodes, where finding the closest pair is often desired. Hence,
+convenience methods for finding the nearest index based on a given
+distance metric are provided.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L16" target="_blank">
+        hclust/index_list.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28size%3AInt32%29-class-method" class="signature"><strong>.new</strong>(size : Int32)</a>
+        
+          <div class="summary"><p>Creates a new <code><a href="../HClust/IndexList.html">IndexList</a></code> with indexes in the range <code>[0, size)</code>.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#delete%28index%3AInt32%29%3ANil-instance-method" class="signature"><strong>#delete</strong>(index : Int32) : Nil</a>
+        
+          <div class="summary"><p>Removes the given index from the list if present.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#each%28%26%3AInt32-%3E%29%3ANil-instance-method" class="signature"><strong>#each</strong>(& : Int32 -> ) : Nil</a>
+        
+          <div class="summary"><p>Yields each index in the list.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#each%28%2A%2Cwithinrange%3ARange%28Int32%3F%2CInt32%3F%29%2Cskip%3AInt32%3D0%2C%26%3AInt32-%3E%29%3ANil-instance-method" class="signature"><strong>#each</strong>(*, within range : Range(Int32?, Int32?), skip : Int32 = <span class="n">0</span>, & : Int32 -> ) : Nil</a>
+        
+          <div class="summary"><p>Yields each index in the list within the given range.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#each%28%2A%2Comitindex%3AInt32%2C%26%3AInt32-%3E%29%3ANil-instance-method" class="signature"><strong>#each</strong>(*, omit index : Int32, & : Int32 -> ) : Nil</a>
+        
+          <div class="summary"><p>Yields each index except <em>index</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#first%3AInt32-instance-method" class="signature"><strong>#first</strong> : Int32</a>
+        
+          <div class="summary"><p>Returns the first index.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#first%3F%3AInt32%3F-instance-method" class="signature"><strong>#first?</strong> : Int32?</a>
+        
+          <div class="summary"><p>Returns the first index or <code>nil</code> if the list is empty.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#includes%3F%28index%3AInt32%29%3ABool-instance-method" class="signature"><strong>#includes?</strong>(index : Int32) : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> if the list includes the given index, else <code>false</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#nearest_to%28index%3AInt32%2Cdism%3ADistanceMatrix%2C%26%3AInt32%2CFloat64-%3EFloat64%29%3ATuple%28Int32%2CFloat64%29-instance-method" class="signature"><strong>#nearest_to</strong>(index : Int32, dism : DistanceMatrix, & : Int32, Float64 -> Float64) : Tuple(Int32, Float64)</a>
+        
+          <div class="summary"><p>Returns the nearest index to the given index based on the block's returns value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#nearest_to%28index%3AInt32%2C%26%3AInt32-%3ET%29%3ATuple%28Int32%2CT%29forallT-instance-method" class="signature"><strong>#nearest_to</strong>(index : Int32, & : Int32 -> T) : Tuple(Int32, T) forall T</a>
+        
+          <div class="summary"><p>Returns the nearest index to the given index based on the block's returns value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#nearest_to%28index%3AInt32%2Cdism%3ADistanceMatrix%29%3ATuple%28Int32%2CFloat64%29-instance-method" class="signature"><strong>#nearest_to</strong>(index : Int32, dism : DistanceMatrix) : Tuple(Int32, Float64)</a>
+        
+          <div class="summary"><p>Returns the nearest index to the given index based on the distance matrix.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#size%3AInt32-instance-method" class="signature"><strong>#size</strong> : Int32</a>
+        
+          <div class="summary"><p>Returns the total number of indexes in the list.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_a%3AArray%28Int32%29-instance-method" class="signature"><strong>#to_a</strong> : Array(Int32)</a>
+        
+          <div class="summary"><p>Returns an <code>Array</code> with all the indexes in the list.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unsafe_succ%28index%29%3AInt32-instance-method" class="signature"><strong>#unsafe_succ</strong>(index) : Int32</a>
+        
+          <div class="summary"><p>Returns the succeeding index to <code>index</code>, without doing any bounds check.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(size:Int32)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(size : Int32)
+
+        <a class="method-permalink" href="#new%28size%3AInt32%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new <code><a href="../HClust/IndexList.html">IndexList</a></code> with indexes in the range <code>[0, size)</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L18" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="delete(index:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>delete</strong>(index : Int32) : Nil
+
+        <a class="method-permalink" href="#delete%28index%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Removes the given index from the list if present.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L96" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="each(&amp;:Int32-&gt;):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>each</strong>(& : Int32 -> ) : Nil
+
+        <a class="method-permalink" href="#each%28%26%3AInt32-%3E%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Yields each index in the list.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L32" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="each(*,withinrange:Range(Int32?,Int32?),skip:Int32=0,&amp;:Int32-&gt;):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>each</strong>(*, within range : Range(Int32?, Int32?), skip : Int32 = <span class="n">0</span>, & : Int32 -> ) : Nil
+
+        <a class="method-permalink" href="#each%28%2A%2Cwithinrange%3ARange%28Int32%3F%2CInt32%3F%29%2Cskip%3AInt32%3D0%2C%26%3AInt32-%3E%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Yields each index in the list within the given range. It discards
+<em>skip</em> elements before yielding.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L42" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="each(*,omitindex:Int32,&amp;:Int32-&gt;):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>each</strong>(*, omit index : Int32, & : Int32 -> ) : Nil
+
+        <a class="method-permalink" href="#each%28%2A%2Comitindex%3AInt32%2C%26%3AInt32-%3E%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Yields each index except <em>index</em>. Useful for iterating in pairs.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L65" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="first:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>first</strong> : Int32
+
+        <a class="method-permalink" href="#first%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the first index. Raises <code>Enumerable::EmptyError</code> if the list
+is empty.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L81" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="first?:Int32?-instance-method">
+      <div class="signature">
+        
+        def <strong>first?</strong> : Int32?
+
+        <a class="method-permalink" href="#first%3F%3AInt32%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the first index or <code>nil</code> if the list is empty.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L86" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="includes?(index:Int32):Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>includes?</strong>(index : Int32) : Bool
+
+        <a class="method-permalink" href="#includes%3F%28index%3AInt32%29%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if the list includes the given index, else <code>false</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L91" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="nearest_to(index:Int32,dism:DistanceMatrix,&amp;:Int32,Float64-&gt;Float64):Tuple(Int32,Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>nearest_to</strong>(index : Int32, dism : <a href="../HClust/DistanceMatrix.html">DistanceMatrix</a>, & : Int32, Float64 -> Float64) : Tuple(Int32, Float64)
+
+        <a class="method-permalink" href="#nearest_to%28index%3AInt32%2Cdism%3ADistanceMatrix%2C%26%3AInt32%2CFloat64-%3EFloat64%29%3ATuple%28Int32%2CFloat64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the nearest index to the given index based on the block's
+returns value. Both the index and distance taken from the distance
+matrix are yielded such that the block may compute a new distance if
+needed.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L137" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="nearest_to(index:Int32,&amp;:Int32-&gt;T):Tuple(Int32,T)forallT-instance-method">
+      <div class="signature">
+        
+        def <strong>nearest_to</strong>(index : Int32, & : Int32 -> T) : Tuple(Int32, T) forall T
+
+        <a class="method-permalink" href="#nearest_to%28index%3AInt32%2C%26%3AInt32-%3ET%29%3ATuple%28Int32%2CT%29forallT-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the nearest index to the given index based on the block's
+returns value.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L112" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="nearest_to(index:Int32,dism:DistanceMatrix):Tuple(Int32,Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>nearest_to</strong>(index : Int32, dism : <a href="../HClust/DistanceMatrix.html">DistanceMatrix</a>) : Tuple(Int32, Float64)
+
+        <a class="method-permalink" href="#nearest_to%28index%3AInt32%2Cdism%3ADistanceMatrix%29%3ATuple%28Int32%2CFloat64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the nearest index to the given index based on the distance
+matrix.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L128" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="size:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>size</strong> : Int32
+
+        <a class="method-permalink" href="#size%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the total number of indexes in the list.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L171" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_a:Array(Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>to_a</strong> : Array(Int32)
+
+        <a class="method-permalink" href="#to_a%3AArray%28Int32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns an <code>Array</code> with all the indexes in the list.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L176" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unsafe_succ(index):Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>unsafe_succ</strong>(index) : Int32
+
+        <a class="method-permalink" href="#unsafe_succ%28index%29%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the succeeding index to <code>index</code>, without doing any bounds
+check.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/index_list.cr#L187" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

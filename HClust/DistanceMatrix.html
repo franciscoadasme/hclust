@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 1.3.2">
+<meta name="crystal_docs.project_version" content="main">
+<meta name="crystal_docs.project_name" content="hclust">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="hclust">
+  <title>HClust::DistanceMatrix - hclust main</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          hclust
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="hclust/HClust" data-name="hclust">
+      <a href="../HClust.html">HClust</a>
+      
+        <ul>
+  
+  <li class=" " data-id="hclust/HClust/ChainRule" data-name="hclust::chainrule">
+      <a href="../HClust/ChainRule.html">ChainRule</a>
+      
+    </li>
+  
+  <li class="parent " data-id="hclust/HClust/Dendrogram" data-name="hclust::dendrogram">
+      <a href="../HClust/Dendrogram.html">Dendrogram</a>
+      
+        <ul>
+  
+  <li class=" " data-id="hclust/HClust/Dendrogram/Step" data-name="hclust::dendrogram::step">
+      <a href="../HClust/Dendrogram/Step.html">Step</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" current" data-id="hclust/HClust/DistanceMatrix" data-name="hclust::distancematrix">
+      <a href="../HClust/DistanceMatrix.html">DistanceMatrix</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/IndexList" data-name="hclust::indexlist">
+      <a href="../HClust/IndexList.html">IndexList</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/IndexPriorityQueue" data-name="hclust::indexpriorityqueue">
+      <a href="../HClust/IndexPriorityQueue.html">IndexPriorityQueue</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/Rule" data-name="hclust::rule">
+      <a href="../HClust/Rule.html">Rule</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/UnionFind" data-name="hclust::unionfind">
+      <a href="../HClust/UnionFind.html">UnionFind</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> HClust::DistanceMatrix
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../HClust/DistanceMatrix.html">HClust::DistanceMatrix</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Stores the pairwise distances between the elements of a set.</p>
+<p>A distance matrix is a square, hollow, symmetric, two-dimensional
+matrix of distances. The latter are assumed to be a <em>metric</em>, which is
+defined by the properties of non-negativity, identity of
+indiscernibles, and triangle inequality [<a href="https://en.wikipedia.org/wiki/Metric_(mathematics)">1</a>]. However, these
+properties are not checked.</p>
+<p>To avoid redundancy, the matrix is stored in the condensed form, i.e.,
+a one-dimensional array of size <code>(n * (n - 1)) // 2</code> that holds the
+upper triangular portion of the matrix. Then, the position of the
+distance between the elements <em>i</em> and <em>j</em> in the array is computed as
+<code>((2 * n - 3 - i) * i &gt;&gt; 1) + j - 1</code> with <code>i &lt; j</code>. Refer to the Notes
+section in the SciPy documentation of the <code>squareform</code> function [<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.squareform.html">2</a>].
+Using the condensed form is useful for implementing optimized
+clustering functions, among others.</p>
+<h3><a id="example" class="anchor" href="#example">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Example</h3>
+<pre><code class="language-crystal"><span class="c"># 5x5 distance matrix</span>
+mat <span class="o">=</span> <span class="t">HClust</span><span class="t">::</span><span class="t">DistanceMatrix</span>.<span class="k">new</span>(<span class="n">5</span>) <span class="k">do</span> <span class="o">|</span>i, j<span class="o">|</span>
+  <span class="c"># compute distance between elements i and j</span>
+  <span class="n">10</span> <span class="o">*</span> (i <span class="o">+</span> <span class="n">1</span>) <span class="o">+</span> j <span class="o">+</span> <span class="n">1</span>
+<span class="k">end</span>
+mat[<span class="n">0</span>, <span class="n">0</span>] <span class="c"># =&gt; 0.0 (the distance between the same elements is zero)</span>
+mat[<span class="n">1</span>, <span class="n">1</span>] <span class="c"># =&gt; 0.0</span>
+mat[<span class="n">0</span>, <span class="n">1</span>] <span class="c"># =&gt; 12.0</span>
+mat[<span class="n">1</span>, <span class="n">0</span>] <span class="c"># =&gt; 12.0 (symmetry)</span>
+mat[<span class="n">2</span>, <span class="n">3</span>] <span class="c"># =&gt; 34.0</span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L36" target="_blank">
+        hclust/distance.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28size%3AInt32%29-class-method" class="signature"><strong>.new</strong>(size : Int32)</a>
+        
+          <div class="summary"><p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> of the given size filled with zeros.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28values%3AArray%28Float64%29%29-class-method" class="signature"><strong>.new</strong>(values : Array(Float64))</a>
+        
+          <div class="summary"><p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> from the given condensed distance matrix (one-dimensional array).</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28size%3AInt32%2C%26%3AInt32%2CInt32-%3ENumber%29-class-method" class="signature"><strong>.new</strong>(size : Int32, & : Int32, Int32 -> Number)</a>
+        
+          <div class="summary"><p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> of the given size and invokes the given block once for each pair of elements (indexes), using the block's return value as the distance between the given elements.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#%3D%3D%28rhs%3Aself%29%3ABool-instance-method" class="signature"><strong>#==</strong>(rhs : <span class="k">self</span>) : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> if the distances of the matrices are equal, else <code>false</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#%3D%3D%28rhs%29%3ABool-instance-method" class="signature"><strong>#==</strong>(rhs) : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> if the distances of the matrices are equal, else <code>false</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#%5B%5D%28i%3AInt%2Cj%3AInt%29%3AFloat64-instance-method" class="signature"><strong>#[]</strong>(i : Int, j : Int) : Float64</a>
+        
+          <div class="summary"><p>Returns the distance between the elements at <em>i</em> and <em>j</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#%5B%5D%3D%28i%3AInt%2Cj%3AInt%2Cvalue%3AFloat64%29%3AFloat64-instance-method" class="signature"><strong>#[]=</strong>(i : Int, j : Int, value : Float64) : Float64</a>
+        
+          <div class="summary"><p>Sets the distance between the elements at <em>i</em> and <em>j</em> to <em>value</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#%5B%5D%3F%28i%3AInt%2Cj%3AInt%29%3AFloat64%3F-instance-method" class="signature"><strong>#[]?</strong>(i : Int, j : Int) : Float64?</a>
+        
+          <div class="summary"><p>Returns the distance between the elements at <em>i</em> and <em>j</em>, or <code>nil</code> if any of the indexes is out of bounds.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#clone%3Aself-instance-method" class="signature"><strong>#clone</strong> : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Returns a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> with the same elements as the matrix (deep copy).</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#map%28%26%3AFloat64-%3EFloat64%29%3Aself-instance-method" class="signature"><strong>#map</strong>(& : Float64 -> Float64) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Returns a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> with the results of running the block against each element of the matrix.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#map%21%28%26%3AFloat64-%3EFloat64%29%3Aself-instance-method" class="signature"><strong>#map!</strong>(& : Float64 -> Float64) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Invokes the given block for each element of the distance matrix, replacing the element with the value returned by the block.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#matrix_to_condensed_index%28row%3AInt32%2Ccol%3AInt32%29%3AInt32-instance-method" class="signature"><strong>#matrix_to_condensed_index</strong>(row : Int32, col : Int32) : Int32</a>
+        
+          <div class="summary"><p>Returns the condensed matrix index of the distance between the elements at <em>i</em> and <em>j</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#size%3AInt32-instance-method" class="signature"><strong>#size</strong> : Int32</a>
+        
+          <div class="summary"><p>Returns the size of the encoded matrix.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_a%3AArray%28Float64%29-instance-method" class="signature"><strong>#to_a</strong> : Array(Float64)</a>
+        
+          <div class="summary"><p>Returns the condensed distance matrix as an array.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_unsafe%28row%3AInt32%2Ccol%3AInt32%29%3APointer%28Float64%29-instance-method" class="signature"><strong>#to_unsafe</strong>(row : Int32, col : Int32) : Pointer(Float64)</a>
+        
+          <div class="summary"><p>Returns a pointer to the internal buffer placed at the specified location.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_unsafe%3APointer%28Float64%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Float64)</a>
+        
+          <div class="summary"><p>Returns a pointer to the internal buffer.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unsafe_fetch%28i%3AInt32%2Cj%3AInt32%29%3AFloat64-instance-method" class="signature"><strong>#unsafe_fetch</strong>(i : Int32, j : Int32) : Float64</a>
+        
+          <div class="summary"><p>Returns the distance between the elements at <em>i</em> and <em>j</em>, without doing any bounds check.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unsafe_fetch%28index%3AInt%29%3AFloat64-instance-method" class="signature"><strong>#unsafe_fetch</strong>(index : Int) : Float64</a>
+        
+          <div class="summary"><p>Returns the distance at the given index of the condensed distance matrix (one-dimensional), without doing any bounds check.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unsafe_put%28i%3AInt32%2Cj%3AInt32%2Cvalue%3AFloat64%29%3AFloat64-instance-method" class="signature"><strong>#unsafe_put</strong>(i : Int32, j : Int32, value : Float64) : Float64</a>
+        
+          <div class="summary"><p>Sets the distance between the elements at <em>i</em> and <em>j</em> to <em>value</em>, without doing any bounds check.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unsafe_put%28index%3AInt32%2Cvalue%3AFloat64%29%3AFloat64-instance-method" class="signature"><strong>#unsafe_put</strong>(index : Int32, value : Float64) : Float64</a>
+        
+          <div class="summary"><p>Sets the distance at the given index of the condensed distance matrix (one-dimensional) to <em>value</em>, without doing any bounds check.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(size:Int32)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(size : Int32)
+
+        <a class="method-permalink" href="#new%28size%3AInt32%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> of the given size filled with zeros.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L41" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(values:Array(Float64))-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(values : Array(Float64))
+
+        <a class="method-permalink" href="#new%28values%3AArray%28Float64%29%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> from the given condensed distance
+matrix (one-dimensional array). Raises <code>ArgumentError</code> if the given
+array cannot be interpreted as a condensed matrix (it contains an
+invalid number of elements) or <code>Enumerable::EmptyError</code> if it's
+empty.</p>
+<p><span class="flag purple">NOTE</span>  distance values must be valid (non-NaN).</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L53" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(size:Int32,&amp;:Int32,Int32-&gt;Number)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(size : Int32, & : Int32, Int32 -> Number)
+
+        <a class="method-permalink" href="#new%28size%3AInt32%2C%26%3AInt32%2CInt32-%3ENumber%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> of the given size and invokes the
+given block once for each pair of elements (indexes), using the
+block's return value as the distance between the given elements.</p>
+<p>Raises <code>ArgumentError</code> if any distance value is NaN.</p>
+<pre><code class="language-crystal"><span class="t">HClust</span><span class="t">::</span><span class="t">DistanceMatrix</span>.<span class="k">new</span>(<span class="n">5</span>) <span class="k">do</span> <span class="o">|</span>i, j<span class="o">|</span>
+  <span class="c"># compute distance between elements i and j</span>
+  <span class="n">10</span> <span class="o">*</span> (i <span class="o">+</span> <span class="n">1</span>) <span class="o">+</span> j <span class="o">+</span> <span class="n">1</span>
+<span class="k">end</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L75" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="==(rhs:self):Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>==</strong>(rhs : <span class="k">self</span>) : Bool
+
+        <a class="method-permalink" href="#%3D%3D%28rhs%3Aself%29%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if the distances of the matrices are equal, else
+<code>false</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L135" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="==(rhs):Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>==</strong>(rhs) : Bool
+
+        <a class="method-permalink" href="#%3D%3D%28rhs%29%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if the distances of the matrices are equal, else
+<code>false</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L144" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="[](i:Int,j:Int):Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>[]</strong>(i : Int, j : Int) : Float64
+
+        <a class="method-permalink" href="#%5B%5D%28i%3AInt%2Cj%3AInt%29%3AFloat64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the distance between the elements at <em>i</em> and <em>j</em>. Raises
+<code>IndexError</code> if any of the indexes is out of bounds.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L92" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="[]=(i:Int,j:Int,value:Float64):Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>[]=</strong>(i : Int, j : Int, value : Float64) : Float64
+
+        <a class="method-permalink" href="#%5B%5D%3D%28i%3AInt%2Cj%3AInt%2Cvalue%3AFloat64%29%3AFloat64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Sets the distance between the elements at <em>i</em> and <em>j</em> to <em>value</em>.
+Returns <em>value</em>.</p>
+<p>Negative indices can be used to start counting from the end of the
+elements. Raises <code>IndexError</code> if either <em>i</em> or <em>j</em> is out of bounds,
+or if <em>i == j</em> and <em>value</em> is not zero.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L114" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="[]?(i:Int,j:Int):Float64?-instance-method">
+      <div class="signature">
+        
+        def <strong>[]?</strong>(i : Int, j : Int) : Float64?
+
+        <a class="method-permalink" href="#%5B%5D%3F%28i%3AInt%2Cj%3AInt%29%3AFloat64%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the distance between the elements at <em>i</em> and <em>j</em>, or <code>nil</code> if
+any of the indexes is out of bounds.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L98" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="clone:self-instance-method">
+      <div class="signature">
+        
+        def <strong>clone</strong> : <span class="k">self</span>
+
+        <a class="method-permalink" href="#clone%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> with the same elements as the matrix
+(deep copy).</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L150" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="map(&amp;:Float64-&gt;Float64):self-instance-method">
+      <div class="signature">
+        
+        def <strong>map</strong>(& : Float64 -> Float64) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#map%28%26%3AFloat64-%3EFloat64%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> with the results of running the block
+against each element of the matrix.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L158" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="map!(&amp;:Float64-&gt;Float64):self-instance-method">
+      <div class="signature">
+        
+        def <strong>map!</strong>(& : Float64 -> Float64) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#map%21%28%26%3AFloat64-%3EFloat64%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Invokes the given block for each element of the distance matrix,
+replacing the element with the value returned by the block. Returns
+<code>self</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L165" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="matrix_to_condensed_index(row:Int32,col:Int32):Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>matrix_to_condensed_index</strong>(row : Int32, col : Int32) : Int32
+
+        <a class="method-permalink" href="#matrix_to_condensed_index%28row%3AInt32%2Ccol%3AInt32%29%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the condensed matrix index of the distance between the
+elements at <em>i</em> and <em>j</em>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L175" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="size:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>size</strong> : Int32
+
+        <a class="method-permalink" href="#size%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the size of the encoded matrix.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L188" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_a:Array(Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>to_a</strong> : Array(Float64)
+
+        <a class="method-permalink" href="#to_a%3AArray%28Float64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the condensed distance matrix as an array.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L193" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_unsafe(row:Int32,col:Int32):Pointer(Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>to_unsafe</strong>(row : Int32, col : Int32) : Pointer(Float64)
+
+        <a class="method-permalink" href="#to_unsafe%28row%3AInt32%2Ccol%3AInt32%29%3APointer%28Float64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns a pointer to the internal buffer placed at the specified
+location.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L207" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_unsafe:Pointer(Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>to_unsafe</strong> : Pointer(Float64)
+
+        <a class="method-permalink" href="#to_unsafe%3APointer%28Float64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns a pointer to the internal buffer.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L201" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unsafe_fetch(i:Int32,j:Int32):Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>unsafe_fetch</strong>(i : Int32, j : Int32) : Float64
+
+        <a class="method-permalink" href="#unsafe_fetch%28i%3AInt32%2Cj%3AInt32%29%3AFloat64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the distance between the elements at <em>i</em> and <em>j</em>, without
+doing any bounds check.</p>
+<p>This should be called with <em>i</em> and <em>j</em> within <code>0..<a href="../HClust/DistanceMatrix.html#size%3AInt32-instance-method">.size</a></code> and <code>i != j</code>. Use <code><a href="../HClust/DistanceMatrix.html#%5B%5D%28i%3AInt%2Cj%3AInt%29%3AFloat64-instance-method">#[](i, j)</a></code> and <code><a href="../HClust/DistanceMatrix.html#%5B%5D%3F%28i%3AInt%2Cj%3AInt%29%3AFloat64%3F-instance-method">#[]?(i, j)</a></code> instead for bounds checking and
+support for negative indexes.</p>
+<p><span class="flag purple">NOTE</span>  This method should only be directly invoked if you are
+absolutely sure <em>i</em> and <em>j</em> are in bounds, to avoid a bounds check
+for a small boost of performance.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L222" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unsafe_fetch(index:Int):Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>unsafe_fetch</strong>(index : Int) : Float64
+
+        <a class="method-permalink" href="#unsafe_fetch%28index%3AInt%29%3AFloat64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the distance at the given index of the condensed distance
+matrix (one-dimensional), without doing any bounds check.</p>
+<p>This should be called with <em>index</em> within <code>0...((size * (size - 1)) // 2)</code>.</p>
+<p><span class="flag purple">NOTE</span>  This method should only be directly invoked if you are
+absolutely sure the index is in bounds, to avoid a bounds check for
+a small boost of performance.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L236" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unsafe_put(i:Int32,j:Int32,value:Float64):Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>unsafe_put</strong>(i : Int32, j : Int32, value : Float64) : Float64
+
+        <a class="method-permalink" href="#unsafe_put%28i%3AInt32%2Cj%3AInt32%2Cvalue%3AFloat64%29%3AFloat64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Sets the distance between the elements at <em>i</em> and <em>j</em> to <em>value</em>,
+without doing any bounds check.</p>
+<p>This should be called with <em>i</em> and <em>j</em> within <code>0..<a href="../HClust/DistanceMatrix.html#size%3AInt32-instance-method">.size</a></code> and <code>i != j</code>. Use <code><a href="../HClust/DistanceMatrix.html#%5B%5D%3D%28i%3AInt%2Cj%3AInt%2Cvalue%3AFloat64%29%3AFloat64-instance-method">#[]=(i, j, value)</a></code> instead for bounds checking and support
+for negative indexes.</p>
+<p><span class="flag purple">NOTE</span>  This method should only be directly invoked if you are
+absolutely sure <em>i</em> and <em>j</em> are in bounds, to avoid a bounds check
+for a small boost of performance.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L251" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unsafe_put(index:Int32,value:Float64):Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>unsafe_put</strong>(index : Int32, value : Float64) : Float64
+
+        <a class="method-permalink" href="#unsafe_put%28index%3AInt32%2Cvalue%3AFloat64%29%3AFloat64-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Sets the distance at the given index of the condensed distance
+matrix (one-dimensional) to <em>value</em>, without doing any bounds check.</p>
+<p>This should be called with <em>index</em> within <code>0...((size * (size - 1)) // 2)</code>.</p>
+<p><span class="flag purple">NOTE</span>  This method should only be directly invoked if you are
+absolutely sure the index is in bounds, to avoid a bounds check for
+a small boost of performance.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/distance.cr#L265" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

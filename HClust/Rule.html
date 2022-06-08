@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 1.3.2">
+<meta name="crystal_docs.project_version" content="main">
+<meta name="crystal_docs.project_name" content="hclust">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="hclust">
+  <title>HClust::Rule - hclust main</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          hclust
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="hclust/HClust" data-name="hclust">
+      <a href="../HClust.html">HClust</a>
+      
+        <ul>
+  
+  <li class=" " data-id="hclust/HClust/ChainRule" data-name="hclust::chainrule">
+      <a href="../HClust/ChainRule.html">ChainRule</a>
+      
+    </li>
+  
+  <li class="parent " data-id="hclust/HClust/Dendrogram" data-name="hclust::dendrogram">
+      <a href="../HClust/Dendrogram.html">Dendrogram</a>
+      
+        <ul>
+  
+  <li class=" " data-id="hclust/HClust/Dendrogram/Step" data-name="hclust::dendrogram::step">
+      <a href="../HClust/Dendrogram/Step.html">Step</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/DistanceMatrix" data-name="hclust::distancematrix">
+      <a href="../HClust/DistanceMatrix.html">DistanceMatrix</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/IndexList" data-name="hclust::indexlist">
+      <a href="../HClust/IndexList.html">IndexList</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/IndexPriorityQueue" data-name="hclust::indexpriorityqueue">
+      <a href="../HClust/IndexPriorityQueue.html">IndexPriorityQueue</a>
+      
+    </li>
+  
+  <li class=" current" data-id="hclust/HClust/Rule" data-name="hclust::rule">
+      <a href="../HClust/Rule.html">Rule</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/UnionFind" data-name="hclust::unionfind">
+      <a href="../HClust/UnionFind.html">UnionFind</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">enum</span> HClust::Rule
+
+</h1>
+
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>An enum that provides linkage rules that dictate how the distances
+should be updated upon merging two clusters.</p>
+<p>A linkage rule is used when computing the distances of a newly formed
+cluster <em>I ∪ J</em> by the union of clusters <em>I</em> and <em>J</em> and every other
+existing cluster <em>K</em> (<em>d(<em>I ∪ J</em>, K)</em>) during the clustering
+procedure. Note that <em>d(X, Y)</em> expands to all distances between the
+clusters <em>x ∈ X</em> and <em>y ∈ Y</em> (<em>d(x, y)</em>).</p>
+<p>The update formula for each linkage rule is provided as a class method
+with the same name, e.g., <code><a href="../HClust/Rule.html#single%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method">Rule.single</a></code> for the single linkage rule.
+The method accepts the pre-computed distances <em>d(I, J)</em>, <em>d(I, K)</em>,
+and <em>d(J, K)</em>, and cluster sizes (|<em>I</em>|, |<em>J</em>|, and |<em>K</em>|). This is an
+in-place method, where the distance to be updated (tipically, <em>d(J,
+K)</em> as cluster <em>J</em> is reused as the new cluster) is passed as a
+pointer to the corresponding position in the distance matrix.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L17" target="_blank">
+        hclust/rule.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>
+      <a id="enum-members" class="anchor" href="#enum-members">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Enum Members
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="Average">
+        <strong>Average</strong> = <code><span class="n">0</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Defines the distance between the cluster <em>I ∪ J</em> and cluster <em>K</em> as
+the arithmetic mean of all distances from every cluster <em>i ∈ I</em> and
+<em>j ∈ J</em> to <em>k ∈ K</em>:</p>
+<pre><code class="language-crystal">d(<span class="t">I</span> ∪ <span class="t">J</span>) <span class="o">=</span> (<span class="o">|</span><span class="t">I</span><span class="o">|</span> <span class="o">*</span> d(<span class="t">I</span>, <span class="t">K</span>) <span class="o">+</span> <span class="o">|</span><span class="t">J</span><span class="o">|</span> <span class="o">*</span> d(<span class="t">J</span>, <span class="t">K</span>)) <span class="o">/</span> (<span class="o">|</span><span class="t">I</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="t">J</span><span class="o">|</span>)</code></pre>
+<p>This is also called the UPGMA method.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="Centroid">
+        <strong>Centroid</strong> = <code><span class="n">1</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Defines the distance between the cluster <em>I ∪ J</em> and cluster <em>K</em> as
+the distance between the cluster centroids or means:</p>
+<pre><code class="language-crystal">d(<span class="t">I</span> ∪ <span class="t">J</span>) <span class="o">=</span> sqrt((<span class="o">|</span><span class="t">I</span><span class="o">|</span> <span class="o">*</span> d(<span class="t">I</span>, <span class="t">K</span>)² <span class="o">+</span> <span class="o">|</span><span class="t">J</span><span class="o">|</span> <span class="o">*</span> d(<span class="t">J</span>, <span class="t">K</span>))²) <span class="o">/</span> (<span class="o">|</span><span class="t">I</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="t">J</span><span class="o">|</span>)
+                <span class="o">-</span> (<span class="o">|</span><span class="t">I</span><span class="o">|</span> <span class="o">*</span> <span class="o">|</span><span class="t">J</span><span class="o">|</span> <span class="o">*</span> d(<span class="t">I</span>, <span class="t">J</span>)²) <span class="o">/</span> (<span class="o">|</span><span class="t">I</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="t">J</span><span class="o">|</span>)²)</code></pre>
+<p>This is also called the UPGMC method.</p>
+<p><span class="flag yellow">WARNING</span>  This method requires that the initial cluster distances are
+(proportional to) squared Euclidean distance.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="Complete">
+        <strong>Complete</strong> = <code><span class="n">2</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Defines the distance between the cluster <em>I ∪ J</em> and cluster <em>K</em> as
+the largest distance from every cluster <em>i ∈ I</em> and <em>j ∈ J</em> to <em>k ∈
+K</em>:</p>
+<pre><code class="language-crystal">d(<span class="t">I</span> ∪ <span class="t">J</span>) <span class="o">=</span> max(d(<span class="t">I</span>, <span class="t">K</span>), d(<span class="t">J</span>, <span class="t">K</span>))</code></pre>
+<p>This is also called the farthest neighbor method.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="Median">
+        <strong>Median</strong> = <code><span class="n">3</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Defines the distance between the cluster <em>I ∪ J</em> and cluster <em>K</em> as
+the distance between the cluster centroids or means, where the
+centroid of <em>I ∪ J</em> is simply defined as the average of the
+centroids of <em>I</em> and <em>J</em>:</p>
+<pre><code class="language-crystal">d(<span class="t">I</span> ∪ <span class="t">J</span>) <span class="o">=</span> sqrt((d(<span class="t">I</span>, <span class="t">K</span>) <span class="o">+</span> d(<span class="t">J</span>, <span class="t">K</span>)) <span class="o">/</span> <span class="n">2</span> <span class="o">-</span> d(<span class="t">I</span>, <span class="t">J</span>) <span class="o">/</span> <span class="n">4</span>)</code></pre>
+<p>This is also called the WPGMC method.</p>
+<p><span class="flag yellow">WARNING</span>  This method requires that the initial cluster distances
+must be (proportional to) squared Euclidean distance.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="Single">
+        <strong>Single</strong> = <code><span class="n">4</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Defines the distance between the cluster <em>I ∪ J</em> and cluster <em>K</em> as
+the smallest distance from every cluster <em>i ∈ I</em> and <em>j ∈ J</em> to <em>k ∈
+K</em>:</p>
+<pre><code class="language-crystal">d(<span class="t">I</span> ∪ <span class="t">J</span>) <span class="o">=</span> max(d(<span class="t">I</span>, <span class="t">K</span>), d(<span class="t">J</span>, <span class="t">K</span>))</code></pre>
+<p>This is also called the nearest neighbor method.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="Ward">
+        <strong>Ward</strong> = <code><span class="n">5</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Ward's minimum variance criterion minimizes the total intra-cluster
+variance. It defines the distance between the cluster <em>I ∪ J</em> and
+cluster <em>K</em> as the weighted squared distance between cluster
+centers. Using the Lance–Williams formula, the distance can be
+expressed as</p>
+<pre><code class="language-crystal">d(<span class="t">I</span> ∪ <span class="t">J</span>) <span class="o">=</span> sqrt((<span class="o">|</span><span class="t">I</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="t">K</span><span class="o">|</span>) <span class="o">*</span> d(<span class="t">I</span>, <span class="t">K</span>)²
+                <span class="o">+</span> (<span class="o">|</span><span class="t">J</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="t">K</span><span class="o">|</span>) <span class="o">*</span> d(<span class="t">J</span>, <span class="t">K</span>)²
+                <span class="o">-</span> <span class="o">|</span><span class="t">K</span><span class="o">|</span> <span class="o">*</span> d(<span class="t">I</span>, <span class="t">J</span>)²)</code></pre>
+<p><span class="flag yellow">WARNING</span>  This method requires that the initial cluster distances are
+(proportional to) squared Euclidean distance.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="Weighted">
+        <strong>Weighted</strong> = <code><span class="n">6</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Defines the distance between the cluster <em>I ∪ J</em> and cluster <em>K</em> as
+the arithmetic mean of the average distances between clusters <em>I</em>
+and <em>K</em> (<em>d(I, K)</em>) and clusters <em>J</em> and <em>K</em> (<em>d(J, K)</em>):</p>
+<pre><code class="language-crystal">d(<span class="t">I</span> ∪ <span class="t">J</span>) <span class="o">=</span> (da(<span class="t">I</span>, <span class="t">K</span>) <span class="o">+</span> da(<span class="t">J</span>, <span class="t">K</span>)) <span class="o">/</span> <span class="n">2</span></code></pre>
+<p>where <em>da(X, Y)</em> means the average distance between <em>X</em> and <em>Y</em>.
+This is also called the WPGMA method.</p>
+      </dd>
+      
+    
+  </dl>
+
+
+
+
+
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#average%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method" class="signature"><strong>.average</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil</a>
+        
+          <div class="summary"><p>Update formula for the average linkage rule.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#centroid%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method" class="signature"><strong>.centroid</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil</a>
+        
+          <div class="summary"><p>Update formula for the centroid linkage rule.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#complete%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method" class="signature"><strong>.complete</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil</a>
+        
+          <div class="summary"><p>Update formula for the complete linkage rule.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#median%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method" class="signature"><strong>.median</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil</a>
+        
+          <div class="summary"><p>Update formula for the median linkage rule.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#single%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method" class="signature"><strong>.single</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil</a>
+        
+          <div class="summary"><p>Update formula for the single linkage rule.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ward%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method" class="signature"><strong>.ward</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil</a>
+        
+          <div class="summary"><p>Update formula for the ward linkage rule.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#weighted%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method" class="signature"><strong>.weighted</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil</a>
+        
+          <div class="summary"><p>Update formula for the weighted linkage rule.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#average%3F-instance-method" class="signature"><strong>#average?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#centroid%3F-instance-method" class="signature"><strong>#centroid?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#complete%3F-instance-method" class="signature"><strong>#complete?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#median%3F-instance-method" class="signature"><strong>#median?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#needs_squared_euclidean%3F%3ABool-instance-method" class="signature"><strong>#needs_squared_euclidean?</strong> : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> if the linkage rule requires that the initial cluster distances are (proportional to) squared Euclidean distance, else <code>false</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#order_dependent%3F%3ABool-instance-method" class="signature"><strong>#order_dependent?</strong> : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> if the distance formula depends on the order which the clusters were formed by merging, else <code>false</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#single%3F-instance-method" class="signature"><strong>#single?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ward%3F-instance-method" class="signature"><strong>#ward?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#weighted%3F-instance-method" class="signature"><strong>#weighted?</strong></a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="average(d_ij:Float64,d_ik:Float64,ptr_jk:Pointer(Float64),n_i:Int32,n_j:Int32,n_k:Int32):Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>average</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil
+
+        <a class="method-permalink" href="#average%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Update formula for the average linkage rule. The distance is
+computed between the newly formed cluster <em>I ∪ J</em> and <em>K</em> from the
+pre-computed distances between the clusters <em>I</em>, <em>J</em>, and <em>K</em>, and
+cluster sizes.</p>
+<p><span class="flag purple">NOTE</span>  The value at <em>ptr_jk</em> will be modified according to the
+linkage rule.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L102" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="centroid(d_ij:Float64,d_ik:Float64,ptr_jk:Pointer(Float64),n_i:Int32,n_j:Int32,n_k:Int32):Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>centroid</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil
+
+        <a class="method-permalink" href="#centroid%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Update formula for the centroid linkage rule. The distance is
+computed between the newly formed cluster <em>I ∪ J</em> and <em>K</em> from the
+pre-computed distances between the clusters <em>I</em>, <em>J</em>, and <em>K</em>, and
+cluster sizes.</p>
+<p><span class="flag purple">NOTE</span>  The value at <em>ptr_jk</em> will be modified according to the
+linkage rule.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L117" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="complete(d_ij:Float64,d_ik:Float64,ptr_jk:Pointer(Float64),n_i:Int32,n_j:Int32,n_k:Int32):Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>complete</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil
+
+        <a class="method-permalink" href="#complete%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Update formula for the complete linkage rule. The distance is
+computed between the newly formed cluster <em>I ∪ J</em> and <em>K</em> from the
+pre-computed distances between the clusters <em>I</em>, <em>J</em>, and <em>K</em>, and
+cluster sizes.</p>
+<p><span class="flag purple">NOTE</span>  The value at <em>ptr_jk</em> will be modified according to the
+linkage rule.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L134" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="median(d_ij:Float64,d_ik:Float64,ptr_jk:Pointer(Float64),n_i:Int32,n_j:Int32,n_k:Int32):Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>median</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil
+
+        <a class="method-permalink" href="#median%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Update formula for the median linkage rule. The distance is
+computed between the newly formed cluster <em>I ∪ J</em> and <em>K</em> from the
+pre-computed distances between the clusters <em>I</em>, <em>J</em>, and <em>K</em>, and
+cluster sizes.</p>
+<p><span class="flag purple">NOTE</span>  The value at <em>ptr_jk</em> will be modified according to the
+linkage rule.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L149" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="single(d_ij:Float64,d_ik:Float64,ptr_jk:Pointer(Float64),n_i:Int32,n_j:Int32,n_k:Int32):Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>single</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil
+
+        <a class="method-permalink" href="#single%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Update formula for the single linkage rule. The distance is
+computed between the newly formed cluster <em>I ∪ J</em> and <em>K</em> from the
+pre-computed distances between the clusters <em>I</em>, <em>J</em>, and <em>K</em>, and
+cluster sizes.</p>
+<p><span class="flag purple">NOTE</span>  The value at <em>ptr_jk</em> will be modified according to the
+linkage rule.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L164" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ward(d_ij:Float64,d_ik:Float64,ptr_jk:Pointer(Float64),n_i:Int32,n_j:Int32,n_k:Int32):Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>ward</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil
+
+        <a class="method-permalink" href="#ward%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Update formula for the ward linkage rule. The distance is
+computed between the newly formed cluster <em>I ∪ J</em> and <em>K</em> from the
+pre-computed distances between the clusters <em>I</em>, <em>J</em>, and <em>K</em>, and
+cluster sizes.</p>
+<p><span class="flag purple">NOTE</span>  The value at <em>ptr_jk</em> will be modified according to the
+linkage rule.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L179" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="weighted(d_ij:Float64,d_ik:Float64,ptr_jk:Pointer(Float64),n_i:Int32,n_j:Int32,n_k:Int32):Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>weighted</strong>(d_ij : Float64, d_ik : Float64, ptr_jk : Pointer(Float64), n_i : Int32, n_j : Int32, n_k : Int32) : Nil
+
+        <a class="method-permalink" href="#weighted%28d_ij%3AFloat64%2Cd_ik%3AFloat64%2Cptr_jk%3APointer%28Float64%29%2Cn_i%3AInt32%2Cn_j%3AInt32%2Cn_k%3AInt32%29%3ANil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Update formula for the weighted linkage rule. The distance is
+computed between the newly formed cluster <em>I ∪ J</em> and <em>K</em> from the
+pre-computed distances between the clusters <em>I</em>, <em>J</em>, and <em>K</em>, and
+cluster sizes.</p>
+<p><span class="flag purple">NOTE</span>  The value at <em>ptr_jk</em> will be modified according to the
+linkage rule.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L197" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="average?-instance-method">
+      <div class="signature">
+        
+        def <strong>average?</strong>
+
+        <a class="method-permalink" href="#average%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L25" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="centroid?-instance-method">
+      <div class="signature">
+        
+        def <strong>centroid?</strong>
+
+        <a class="method-permalink" href="#centroid%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L37" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="complete?-instance-method">
+      <div class="signature">
+        
+        def <strong>complete?</strong>
+
+        <a class="method-permalink" href="#complete%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L46" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="median?-instance-method">
+      <div class="signature">
+        
+        def <strong>median?</strong>
+
+        <a class="method-permalink" href="#median%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L59" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="needs_squared_euclidean?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>needs_squared_euclidean?</strong> : Bool
+
+        <a class="method-permalink" href="#needs_squared_euclidean%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if the linkage rule requires that the initial
+cluster distances are (proportional to) squared Euclidean
+distance, else <code>false</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L207" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="order_dependent?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>order_dependent?</strong> : Bool
+
+        <a class="method-permalink" href="#order_dependent%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if the distance formula depends on the order
+which the clusters were formed by merging, else <code>false</code>.</p>
+<p>This is used in the cluster relabeling after linkage. See
+<code><a href="../HClust/Dendrogram.html#relabel%28ordered%3ABool%3Dfalse%29%3Aself-instance-method">Dendrogram#relabel</a></code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L221" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="single?-instance-method">
+      <div class="signature">
+        
+        def <strong>single?</strong>
+
+        <a class="method-permalink" href="#single%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L68" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ward?-instance-method">
+      <div class="signature">
+        
+        def <strong>ward?</strong>
+
+        <a class="method-permalink" href="#ward%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L82" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="weighted?-instance-method">
+      <div class="signature">
+        
+        def <strong>weighted?</strong>
+
+        <a class="method-permalink" href="#weighted%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/rule.cr#L92" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

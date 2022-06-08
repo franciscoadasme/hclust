@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 1.3.2">
+<meta name="crystal_docs.project_version" content="main">
+<meta name="crystal_docs.project_name" content="hclust">
+
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/doc.js"></script>
+
+  <meta name="repository-name" content="hclust">
+  <title>HClust - hclust main</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="index.html">
+          hclust
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="hclust/HClust" data-name="hclust">
+      <a href="HClust.html">HClust</a>
+      
+        <ul>
+  
+  <li class=" " data-id="hclust/HClust/ChainRule" data-name="hclust::chainrule">
+      <a href="HClust/ChainRule.html">ChainRule</a>
+      
+    </li>
+  
+  <li class="parent " data-id="hclust/HClust/Dendrogram" data-name="hclust::dendrogram">
+      <a href="HClust/Dendrogram.html">Dendrogram</a>
+      
+        <ul>
+  
+  <li class=" " data-id="hclust/HClust/Dendrogram/Step" data-name="hclust::dendrogram::step">
+      <a href="HClust/Dendrogram/Step.html">Step</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/DistanceMatrix" data-name="hclust::distancematrix">
+      <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/IndexList" data-name="hclust::indexlist">
+      <a href="HClust/IndexList.html">IndexList</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/IndexPriorityQueue" data-name="hclust::indexpriorityqueue">
+      <a href="HClust/IndexPriorityQueue.html">IndexPriorityQueue</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/Rule" data-name="hclust::rule">
+      <a href="HClust/Rule.html">Rule</a>
+      
+    </li>
+  
+  <li class=" " data-id="hclust/HClust/UnionFind" data-name="hclust::unionfind">
+      <a href="HClust/UnionFind.html">UnionFind</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> HClust
+
+</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust.cr#L3" target="_blank">
+        hclust.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/dendrogram.cr#L3" target="_blank">
+        hclust/dendrogram.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/version.cr#L1" target="_blank">
+        hclust/version.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>
+      <a id="constant-summary" class="anchor" href="#constant-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Constant Summary
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="VERSION">
+        <strong>VERSION</strong> = <code>{{ (<span class="s">`shards version \&quot;/home/runner/work/hclust/hclust/src/hclust\&quot;`</span>).chomp.stringify }}</code>
+      </dt>
+      
+    
+  </dl>
+
+
+
+
+
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#generic%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.generic</strong>(rule : Rule, dism : DistanceMatrix) : Dendrogram</a>
+        
+          <div class="summary"><p><span class="flag orange">TODO</span>  add docs</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#linkage%28rule%3ARule%2Cdism%3ADistanceMatrix%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method" class="signature"><strong>.linkage</strong>(rule : Rule, dism : DistanceMatrix, reuse : Bool = <span class="n">false</span>) : Dendrogram</a>
+        
+          <div class="summary"><p>Returns the hierarchical clustering based on the pairwise distances <em>dism</em> using the linkage rule <em>rule</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mst%28dism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.mst</strong>(dism : DistanceMatrix) : Dendrogram</a>
+        
+          <div class="summary"><p><span class="flag orange">TODO</span>  docs</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#nn_chain%28rule%3AChainRule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.nn_chain</strong>(rule : ChainRule, dism : DistanceMatrix) : Dendrogram</a>
+        
+          <div class="summary"><p><span class="flag orange">TODO</span>  docs</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#primitive%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.primitive</strong>(rule : Rule, dism : DistanceMatrix) : Dendrogram</a>
+        
+          <div class="summary"><p><span class="flag orange">TODO</span>  docs</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="generic(rule:Rule,dism:DistanceMatrix):Dendrogram-class-method">
+      <div class="signature">
+        
+        def self.<strong>generic</strong>(rule : <a href="HClust/Rule.html">Rule</a>, dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+
+        <a class="method-permalink" href="#generic%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag orange">TODO</span>  add docs</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/generic.cr#L2" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="linkage(rule:Rule,dism:DistanceMatrix,reuse:Bool=false):Dendrogram-class-method">
+      <div class="signature">
+        
+        def self.<strong>linkage</strong>(rule : <a href="HClust/Rule.html">Rule</a>, dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>, reuse : Bool = <span class="n">false</span>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+
+        <a class="method-permalink" href="#linkage%28rule%3ARule%2Cdism%3ADistanceMatrix%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the hierarchical clustering based on the pairwise distances
+<em>dism</em> using the linkage rule <em>rule</em>.</p>
+<p>This method simply selects and invokes the optimal algorithm based on
+the given linkage rule as follows:</p>
+<ul>
+<li>The minimum spanning tree (MST) algoritm for the single linkage rule
+(see <code><a href="HClust.html#mst%28dism%3ADistanceMatrix%29%3ADendrogram-class-method">.mst</a></code>).</li>
+<li>The nearest-neighbor-chain (NN-chain) algoritm for the complete,
+average, weighted, and Ward linkage rules (<code><a href="HClust.html#nn_chain%28rule%3AChainRule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">.nn_chain</a></code>).</li>
+<li>The generic algoritm for the centroid and median linkage rules
+(<code><a href="HClust.html#generic%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">.generic</a></code>).</li>
+</ul>
+<p>If <em>reuse</em> is <code>true</code>, the distance matrix <em>dism</em> will be forwarded
+directly to the underlying method, and be potentially modified. If
+<em>reuse</em> is <code>false</code>, a copy will be created first and then forwarded.
+This can be used to prevent a potentially large memory allocation when
+the distance matrix will not be used after clustering.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/linkage.cr#L19" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mst(dism:DistanceMatrix):Dendrogram-class-method">
+      <div class="signature">
+        
+        def self.<strong>mst</strong>(dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+
+        <a class="method-permalink" href="#mst%28dism%3ADistanceMatrix%29%3ADendrogram-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag orange">TODO</span>  docs</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/mst.cr#L2" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="nn_chain(rule:ChainRule,dism:DistanceMatrix):Dendrogram-class-method">
+      <div class="signature">
+        
+        def self.<strong>nn_chain</strong>(rule : <a href="HClust/ChainRule.html">ChainRule</a>, dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+
+        <a class="method-permalink" href="#nn_chain%28rule%3AChainRule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag orange">TODO</span>  docs</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/chain.cr#L2" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="primitive(rule:Rule,dism:DistanceMatrix):Dendrogram-class-method">
+      <div class="signature">
+        
+        def self.<strong>primitive</strong>(rule : <a href="HClust/Rule.html">Rule</a>, dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+
+        <a class="method-permalink" href="#primitive%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag orange">TODO</span>  docs</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/primitive.cr#L2" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+
+</div>
+
+</body>
+</html>
