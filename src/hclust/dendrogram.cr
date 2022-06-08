@@ -40,6 +40,20 @@ module HClust
       (0...@observations).to_a.group_by { |i| labels[i] }.values
     end
 
+    # Returns *count* or fewer flat clusters of the original
+    # observations. Raises `ArgumentError` if *count* is negative or
+    # zero.
+    #
+    # It internally computes the smallest height at which cutting the
+    # dendrogram would generate *count* or fewer clusters, and then
+    # flattens the dendrogram at the computed height.
+    def flatten(*, count : Int) : Array(Array(Int32))
+      raise ArgumentError.new("Negative or zero count") unless count > 0
+      max_dists = max_dist_for_each_cluster(self)
+      labels = cluster_maxclust_monocrit(self, max_dists, count)
+      (0...@observations).to_a.group_by { |i| labels[i] }.values
+    end
+
     # Returns a new `Dendrogram` with relabeled clusters. If *ordered*
     # is `true`, the dendrogram's steps will be sorted by the
     # dissimilarities first.
