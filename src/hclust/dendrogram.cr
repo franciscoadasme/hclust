@@ -71,8 +71,8 @@ module HClust
       dendrogram = self.class.new @observations
       set = UnionFind.new @observations
       steps.each do |step|
-        c_i = set.find(step.nodes[0]).not_nil! # node always exists
-        c_j = set.find(step.nodes[1]).not_nil! # node always exists
+        c_i = set.find(step.clusters[0]).not_nil! # node always exists
+        c_j = set.find(step.clusters[1]).not_nil! # node always exists
         set.union c_i, c_j
         dendrogram.add c_i, c_j, step.distance
       end
@@ -85,19 +85,19 @@ module HClust
   end
 
   struct Dendrogram::Step
-    getter nodes : Tuple(Int32, Int32)
+    getter clusters : Tuple(Int32, Int32)
     getter distance : Float64
 
     def initialize(c_i : Int32, c_j : Int32, @distance : Float64)
-      @nodes = c_i < c_j ? {c_i, c_j} : {c_j, c_i}
+      @clusters = c_i < c_j ? {c_i, c_j} : {c_j, c_i}
     end
 
     def ==(rhs : self) : Bool
-      @nodes == rhs.nodes && (@distance - rhs.distance).abs <= Float64::EPSILON
+      @clusters == rhsclusters && (@distance - rhs.distance).abs <= Float64::EPSILON
     end
 
     def sqrt : self
-      self.class.new *@nodes, Math.sqrt(@distance)
+      self.class.new *@clusters, Math.sqrt(@distance)
     end
   end
 end
@@ -132,7 +132,7 @@ private def cluster_maxclust_monocrit(
     while k >= 0
       root = curr_node[k] - dendrogram.observations
       step = dendrogram.steps[root]
-      c_i, c_j = step.nodes
+      c_i, c_j = step.clusters
 
       if mc[root] <= threshold # this subtree forms a cluster
         count += 1
@@ -191,7 +191,7 @@ private def cluster_monocrit(
   while k >= 0
     root = curr_node[k] - dendrogram.observations
     step = dendrogram.steps[root]
-    c_i, c_j = step.nodes
+    c_i, c_j = step.clusters
 
     if cluster_leader == -1 && mc[root] <= cutoff # found a cluster
       cluster_leader = root
@@ -238,7 +238,7 @@ private def max_dist_for_each_cluster(
   while k >= 0
     root = curr_node[k] - dendrogram.observations
     step = dendrogram.steps[root]
-    c_i, c_j = step.nodes
+    c_i, c_j = step.clusters
 
     if c_i >= dendrogram.observations && !visited[c_i]
       visited[c_i] = true

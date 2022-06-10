@@ -7,7 +7,7 @@ module Spec
       return false unless @expected_value.is_a?(HClust::Dendrogram)
       return false unless actual_value.observations == @expected_value.observations
       actual_value.steps.zip(@expected_value.steps) do |x, y|
-        return false unless x.nodes == y.nodes &&
+        return false unless x.clusters == y.clusters &&
                             (x.distance - y.distance).abs <= @delta
       end
       true
@@ -21,7 +21,7 @@ macro it_linkages(description, method, expected)
     {% precision = 11 if precision > 11 %}
     {{method.id}}
       .steps
-      .map { |step| {step.nodes[0], step.nodes[1], step.distance.round({{precision}})} }
+      .map { |step| {step.clusters[0], step.clusters[1], step.distance.round({{precision}})} }
       .to_a
       .should eq {{expected}}
   end

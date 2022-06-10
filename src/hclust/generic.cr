@@ -23,13 +23,13 @@ def HClust.generic(rule : Rule, dism : DistanceMatrix) : Dendrogram
       case rule
       {% for rule in HClust::Rule.constants.map(&.id.downcase) %}
         in .{{rule}}?
-          update_distances_{{rule}}(active_nodes, dism, sizes, nearest, queue, *step.nodes)
+          update_distances_{{rule}}(active_nodes, dism, sizes, nearest, queue, *step.clusters)
       {% end %}
       end
     {% end %}
 
-    sizes[step.nodes[1]] += sizes[step.nodes[0]]
-    active_nodes.delete step.nodes[0] # remove smallest cluster
+    sizes[step.clusters[1]] += sizes[step.clusters[0]]
+    active_nodes.delete step.clusters[0] # remove smallest cluster
     step = step.sqrt if rule.needs_squared_euclidean?
     dendrogram << step
   end
