@@ -41,8 +41,8 @@ end
 private def next_merge(dism, nearest, queue)
   c_i = queue.pop || raise "BUG: unreachable"
   c_j = nearest[c_i]
-  d_ij = dism.unsafe_fetch(c_i, c_j)                # always n_i < n_j
-  HClust::Dendrogram::Step.new(c_i, c_j, d_ij).sort # ensure smallest cluster first
+  d_ij = dism.unsafe_fetch(c_i, c_j) # always n_i < n_j
+  HClust::Dendrogram::Step.new(c_i, c_j, d_ij)
 end
 
 # Nearest neighbor list may be out of sync due to merging two

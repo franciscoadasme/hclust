@@ -50,7 +50,7 @@ private def next_merge(active_nodes, dism, chain)
     break if c_j == chain[-2]
   end
 
-  HClust::Dendrogram::Step.new(c_i, c_j, d_ij).sort # ensure smallest cluster first
+  HClust::Dendrogram::Step.new(c_i, c_j, d_ij)
 end
 
 {% for rule in HClust::ChainRule.constants.map(&.id.downcase) %}

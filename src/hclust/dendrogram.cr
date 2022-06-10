@@ -27,7 +27,7 @@ module HClust
     # Creates and appends a merge step between clusters *c_i* and *c_j*
     # separated bu *distance*.
     def add(c_i : Int32, c_j : Int32, distance : Float64) : Step
-      step = Step.new(c_i, c_j, distance).sort
+      step = Step.new(c_i, c_j, distance)
       @steps << step
       step
     end
@@ -89,7 +89,7 @@ module HClust
     getter distance : Float64
 
     def initialize(c_i : Int32, c_j : Int32, @distance : Float64)
-      @nodes = {c_i, c_j}
+      @nodes = c_i < c_j ? {c_i, c_j} : {c_j, c_i}
     end
 
     def ==(rhs : self) : Bool
@@ -98,13 +98,6 @@ module HClust
 
     def sqrt : self
       self.class.new *@nodes, Math.sqrt(@distance)
-    end
-
-    def sort : self
-      c_i = @nodes.unsafe_fetch(0)
-      c_j = @nodes.unsafe_fetch(1)
-      c_i, c_j = c_j, c_i if c_j < c_i
-      Dendrogram::Step.new c_i, c_j, @distance
     end
   end
 end

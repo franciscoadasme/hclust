@@ -39,7 +39,7 @@ private def next_merge(active_nodes, dism)
       c_i, c_j, d_ij = c_k, c_m, dis if dis < d_ij
     end
   end
-  HClust::Dendrogram::Step.new(c_i, c_j, d_ij).sort # ensure smallest cluster first
+  HClust::Dendrogram::Step.new(c_i, c_j, d_ij)
 end
 
 {% for rule in HClust::Rule.constants.map(&.id.downcase) %}
