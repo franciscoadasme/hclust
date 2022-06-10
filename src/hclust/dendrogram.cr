@@ -185,7 +185,7 @@ end
 private def cluster_monocrit(
   dendrogram : HClust::Dendrogram,
   mc : Array(Float64),
-  cutoff : Float64
+  cutoff : Number
 ) : Array(Int32)
   visited = BitArray.new(dendrogram.observations * 2 - 1)
   curr_node = Pointer(Int32).malloc(dendrogram.observations)
