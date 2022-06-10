@@ -146,21 +146,21 @@
   </h2>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust.cr#L3" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust.cr#L3" target="_blank">
         hclust.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/dendrogram.cr#L3" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L3" target="_blank">
         hclust/dendrogram.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/version.cr#L1" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/version.cr#L1" target="_blank">
         hclust/version.cr
       </a>
     
@@ -201,6 +201,20 @@
     Class Method Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#cluster%28elements%3AIndexable%28T%29%2Ccutoff%3ANumber%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method" class="signature"><strong>.cluster</strong>(elements : Indexable(T), cutoff : Number, rule : Rule = <span class="n">:single</span>, & : T, T -> Float64) : Array(Array(T)) forall T</a>
+        
+          <div class="summary"><p>Clusters <em>elements</em> using the linkage rule <em>rule</em> based on the distances computed by the given block.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#cluster_into%28elements%3AIndexable%28T%29%2Ccount%3AInt%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method" class="signature"><strong>.cluster_into</strong>(elements : Indexable(T), count : Int, rule : Rule = <span class="n">:single</span>, & : T, T -> Float64) : Array(Array(T)) forall T</a>
+        
+          <div class="summary"><p>Clusters <em>elements</em> into <em>count</em> clusters or fewer using the linkage rule <em>rule</em> based on the distances computed by the given block.</p></div>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#generic%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.generic</strong>(rule : Rule, dism : DistanceMatrix) : Dendrogram</a>
@@ -261,6 +275,52 @@
     Class Method Detail
   </h2>
   
+    <div class="entry-detail" id="cluster(elements:Indexable(T),cutoff:Number,rule:Rule=:single,&amp;:T,T-&gt;Float64):Array(Array(T))forallT-class-method">
+      <div class="signature">
+        
+        def self.<strong>cluster</strong>(elements : Indexable(T), cutoff : Number, rule : <a href="HClust/Rule.html">Rule</a> = <span class="n">:single</span>, & : T, T -> Float64) : Array(Array(T)) forall T
+
+        <a class="method-permalink" href="#cluster%28elements%3AIndexable%28T%29%2Ccutoff%3ANumber%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Clusters <em>elements</em> using the linkage rule <em>rule</em> based on the
+distances computed by the given block. The clusters are generated such
+that the cophenetic distance between any two elements in a cluster is
+less than or equal to <em>cutoff</em>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/cluster.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="cluster_into(elements:Indexable(T),count:Int,rule:Rule=:single,&amp;:T,T-&gt;Float64):Array(Array(T))forallT-class-method">
+      <div class="signature">
+        
+        def self.<strong>cluster_into</strong>(elements : Indexable(T), count : Int, rule : <a href="HClust/Rule.html">Rule</a> = <span class="n">:single</span>, & : T, T -> Float64) : Array(Array(T)) forall T
+
+        <a class="method-permalink" href="#cluster_into%28elements%3AIndexable%28T%29%2Ccount%3AInt%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Clusters <em>elements</em> into <em>count</em> clusters or fewer using the linkage
+rule <em>rule</em> based on the distances computed by the given block.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/cluster.cr#L24" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="generic(rule:Rule,dism:DistanceMatrix):Dendrogram-class-method">
       <div class="signature">
         
@@ -277,7 +337,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/generic.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/generic.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -314,7 +374,7 @@ the distance matrix will not be used after clustering.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/linkage.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/linkage.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -335,7 +395,7 @@ the distance matrix will not be used after clustering.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/mst.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/mst.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -356,7 +416,7 @@ the distance matrix will not be used after clustering.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/chain.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/chain.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -377,7 +437,7 @@ the distance matrix will not be used after clustering.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/78025ad898b3663961cbb0f557856d7bc95933dc/src/hclust/primitive.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/primitive.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
