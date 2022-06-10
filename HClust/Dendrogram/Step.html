@@ -125,6 +125,20 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>A single merge step in a dendrogram.</p>
+<p>A step corresponds to a merge between two distinct clusters. By
+convention, the indexes of the merged clusters (<code>#nodes</code>) are always
+sorted.</p>
+
 
 
 
@@ -148,7 +162,7 @@
   </h2>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L87" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L118" target="_blank">
         hclust/dendrogram.cr
       </a>
     
@@ -172,6 +186,8 @@
       <li class="entry-summary">
         <a href="#new%28c_i%3AInt32%2Cc_j%3AInt32%2Cdistance%3AFloat64%29-class-method" class="signature"><strong>.new</strong>(c_i : Int32, c_j : Int32, distance : Float64)</a>
         
+          <div class="summary"><p>Creates a new <em>Step</em> between the clusters <em>c_i</em> and <em>c_j</em> with the given distance.</p></div>
+        
       </li>
     
   </ul>
@@ -193,25 +209,28 @@
       <li class="entry-summary">
         <a href="#%3D%3D%28rhs%3Aself%29%3ABool-instance-method" class="signature"><strong>#==</strong>(rhs : <span class="k">self</span>) : Bool</a>
         
+          <div class="summary"><p>Returns <code>true</code> if the step are equal, else <code>false</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#clusters%3ATuple%28Int32%2CInt32%29-instance-method" class="signature"><strong>#clusters</strong> : Tuple(Int32, Int32)</a>
+        
+          <div class="summary"><p>Indexes of the merged clusters.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#distance%3AFloat64-instance-method" class="signature"><strong>#distance</strong> : Float64</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#nodes%3ATuple%28Int32%2CInt32%29-instance-method" class="signature"><strong>#nodes</strong> : Tuple(Int32, Int32)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#sort%3Aself-instance-method" class="signature"><strong>#sort</strong> : <span class="k">self</span></a>
+          <div class="summary"><p>Distance between the merged clusters.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#sqrt%3Aself-instance-method" class="signature"><strong>#sqrt</strong> : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Returns a <code><a href="../../HClust/Dendrogram/Step.html">Step</a></code> with the square root of the distance.</p></div>
         
       </li>
     
@@ -273,10 +292,17 @@
         <a class="method-permalink" href="#new%28c_i%3AInt32%2Cc_j%3AInt32%2Cdistance%3AFloat64%29-class-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Creates a new <em>Step</em> between the clusters <em>c_i</em> and <em>c_j</em> with
+the given distance.</p>
+<p><span class="flag purple">NOTE</span>  Cluster indexes are stored sorted.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L91" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L135" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -303,10 +329,41 @@
         <a class="method-permalink" href="#%3D%3D%28rhs%3Aself%29%3ABool-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if the step are equal, else <code>false</code>.</p>
+<p><span class="flag purple">NOTE</span>  Distances are compared within numeric precision (epsilon =
+1e-15).</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L95" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L143" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="clusters:Tuple(Int32,Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>clusters</strong> : Tuple(Int32, Int32)
+
+        <a class="method-permalink" href="#clusters%3ATuple%28Int32%2CInt32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Indexes of the merged clusters. An index can range from 0 to <em>N +
+N - 1</em>, where <em>N</em> is the number of original elements or
+observations and an index equals to or greater than <em>N</em> indicates
+a newly created cluster (refer to the <code><a href="../../HClust/Dendrogram.html">Dendrogram</a></code> documentation).</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L123" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -319,42 +376,18 @@
         <a class="method-permalink" href="#distance%3AFloat64-instance-method">#</a>
       </div>
       
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L89" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="nodes:Tuple(Int32,Int32)-instance-method">
-      <div class="signature">
-        
-        def <strong>nodes</strong> : Tuple(Int32, Int32)
-
-        <a class="method-permalink" href="#nodes%3ATuple%28Int32%2CInt32%29-instance-method">#</a>
-      </div>
+        <div class="doc">
+          
+          <p>Distance between the merged clusters. This is computed according
+to the selected linkage rule (see <code><a href="../../HClust/Rule.html">Rule</a></code>) used for the clustering.
+If both merge clusters have a single element (singleton), the
+distance is equal to the pairwise distance between the elements.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L88" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="sort:self-instance-method">
-      <div class="signature">
-        
-        def <strong>sort</strong> : <span class="k">self</span>
-
-        <a class="method-permalink" href="#sort%3Aself-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L103" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -367,10 +400,15 @@
         <a class="method-permalink" href="#sqrt%3Aself-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns a <code><a href="../../HClust/Dendrogram/Step.html">Step</a></code> with the square root of the distance.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L148" target="_blank">View source</a>]
         
       </div>
     </div>

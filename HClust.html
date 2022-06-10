@@ -146,21 +146,21 @@
   </h2>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust.cr#L3" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust.cr#L3" target="_blank">
         hclust.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L3" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L3" target="_blank">
         hclust/dendrogram.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/version.cr#L1" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/version.cr#L1" target="_blank">
         hclust/version.cr
       </a>
     
@@ -217,14 +217,14 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#generic%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.generic</strong>(rule : Rule, dism : DistanceMatrix) : Dendrogram</a>
+        <a href="#generic%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method" class="signature"><strong>.generic</strong>(dism : DistanceMatrix, rule : Rule) : Dendrogram</a>
         
-          <div class="summary"><p><span class="flag orange">TODO</span>  add docs</p></div>
+          <div class="summary"><p>Perform hierarchical clustering based on the distances stored in <em>dism</em> using a fast generic linkage algorithm with the given linkage rule.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#linkage%28rule%3ARule%2Cdism%3ADistanceMatrix%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method" class="signature"><strong>.linkage</strong>(rule : Rule, dism : DistanceMatrix, reuse : Bool = <span class="n">false</span>) : Dendrogram</a>
+        <a href="#linkage%28dism%3ADistanceMatrix%2Crule%3ARule%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method" class="signature"><strong>.linkage</strong>(dism : DistanceMatrix, rule : Rule, reuse : Bool = <span class="n">false</span>) : Dendrogram</a>
         
           <div class="summary"><p>Returns the hierarchical clustering based on the pairwise distances <em>dism</em> using the linkage rule <em>rule</em>.</p></div>
         
@@ -233,21 +233,21 @@
       <li class="entry-summary">
         <a href="#mst%28dism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.mst</strong>(dism : DistanceMatrix) : Dendrogram</a>
         
-          <div class="summary"><p><span class="flag orange">TODO</span>  docs</p></div>
+          <div class="summary"><p>Perform hierarchical clustering based on the distances stored in <em>dism</em> using the minimum spanning tree (MST) algorithm.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#nn_chain%28rule%3AChainRule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.nn_chain</strong>(rule : ChainRule, dism : DistanceMatrix) : Dendrogram</a>
+        <a href="#nn_chain%28dism%3ADistanceMatrix%2Crule%3AChainRule%29%3ADendrogram-class-method" class="signature"><strong>.nn_chain</strong>(dism : DistanceMatrix, rule : ChainRule) : Dendrogram</a>
         
-          <div class="summary"><p><span class="flag orange">TODO</span>  docs</p></div>
+          <div class="summary"><p>Perform hierarchical clustering based on the distances stored in <em>dism</em> using the nearest-neighbor-chain (NN-chain) algorithm with the given linkage rule.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#primitive%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method" class="signature"><strong>.primitive</strong>(rule : Rule, dism : DistanceMatrix) : Dendrogram</a>
+        <a href="#primitive%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method" class="signature"><strong>.primitive</strong>(dism : DistanceMatrix, rule : Rule) : Dendrogram</a>
         
-          <div class="summary"><p><span class="flag orange">TODO</span>  docs</p></div>
+          <div class="summary"><p>Perform hierarchical clustering based on the distances stored in <em>dism</em> using the classic algorithm with the given linkage rule.</p></div>
         
       </li>
     
@@ -294,7 +294,7 @@ less than or equal to <em>cutoff</em>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/cluster.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/cluster.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -316,38 +316,56 @@ rule <em>rule</em> based on the distances computed by the given block.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/cluster.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/cluster.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="generic(rule:Rule,dism:DistanceMatrix):Dendrogram-class-method">
+    <div class="entry-detail" id="generic(dism:DistanceMatrix,rule:Rule):Dendrogram-class-method">
       <div class="signature">
         
-        def self.<strong>generic</strong>(rule : <a href="HClust/Rule.html">Rule</a>, dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+        def self.<strong>generic</strong>(dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>, rule : <a href="HClust/Rule.html">Rule</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
 
-        <a class="method-permalink" href="#generic%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">#</a>
+        <a class="method-permalink" href="#generic%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p><span class="flag orange">TODO</span>  add docs</p>
+          <p>Perform hierarchical clustering based on the distances stored in
+<em>dism</em> using a fast generic linkage algorithm with the given linkage
+rule.</p>
+<p>The so-called generic algorithm published by Müllner, D.
+<a href="https://arxiv.org/abs/1109.2378">[1]</a> includes several optimizations
+over the classic hierarchical clustering algorithm, reducing the
+best-case complexity from Θ(<em>N</em>³) to Θ(<em>N</em>²). In practice, it is
+considerably faster than the standard method. This is mainly due to
+the algorithm keeps track of the nearest neighbors of clusters in a
+priority queue to speed up the repeated minimum searches.</p>
+<p>This algorithm can deal with inversions in the dendrogram, so it can
+be used with any linkage rule including <code><a href="HClust/Rule.html#Centroid">Rule::Centroid</a></code> and
+<code><a href="HClust/Rule.html#Median">Rule::Median</a></code>.</p>
+<p>The merge steps are encoded as an unordered <code><a href="HClust/Dendrogram.html">Dendrogram</a></code>, which is
+sorted prior to be returned.</p>
+<p>The current implementation is described in section 3.1 of the
+Müllner's article <a href="https://arxiv.org/abs/1109.2378">[1]</a>.</p>
+<p><span class="flag purple">NOTE</span>  Prefer to use the <code><a href="HClust.html#linkage%28dism%3ADistanceMatrix%2Crule%3ARule%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">.linkage</a></code> method since it provides a general
+interface and picks the best algorithm depending on the linkage rule.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/generic.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/generic.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="linkage(rule:Rule,dism:DistanceMatrix,reuse:Bool=false):Dendrogram-class-method">
+    <div class="entry-detail" id="linkage(dism:DistanceMatrix,rule:Rule,reuse:Bool=false):Dendrogram-class-method">
       <div class="signature">
         
-        def self.<strong>linkage</strong>(rule : <a href="HClust/Rule.html">Rule</a>, dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>, reuse : Bool = <span class="n">false</span>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+        def self.<strong>linkage</strong>(dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>, rule : <a href="HClust/Rule.html">Rule</a>, reuse : Bool = <span class="n">false</span>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
 
-        <a class="method-permalink" href="#linkage%28rule%3ARule%2Cdism%3ADistanceMatrix%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">#</a>
+        <a class="method-permalink" href="#linkage%28dism%3ADistanceMatrix%2Crule%3ARule%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -360,9 +378,9 @@ the given linkage rule as follows:</p>
 <li>The minimum spanning tree (MST) algoritm for the single linkage rule
 (see <code><a href="HClust.html#mst%28dism%3ADistanceMatrix%29%3ADendrogram-class-method">.mst</a></code>).</li>
 <li>The nearest-neighbor-chain (NN-chain) algoritm for the complete,
-average, weighted, and Ward linkage rules (<code><a href="HClust.html#nn_chain%28rule%3AChainRule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">.nn_chain</a></code>).</li>
+average, weighted, and Ward linkage rules (<code><a href="HClust.html#nn_chain%28dism%3ADistanceMatrix%2Crule%3AChainRule%29%3ADendrogram-class-method">.nn_chain</a></code>).</li>
 <li>The generic algoritm for the centroid and median linkage rules
-(<code><a href="HClust.html#generic%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">.generic</a></code>).</li>
+(<code><a href="HClust.html#generic%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method">.generic</a></code>).</li>
 </ul>
 <p>If <em>reuse</em> is <code>true</code>, the distance matrix <em>dism</em> will be forwarded
 directly to the underlying method, and be potentially modified. If
@@ -374,7 +392,7 @@ the distance matrix will not be used after clustering.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/linkage.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/linkage.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -389,55 +407,106 @@ the distance matrix will not be used after clustering.</p>
       
         <div class="doc">
           
-          <p><span class="flag orange">TODO</span>  docs</p>
+          <p>Perform hierarchical clustering based on the distances stored in
+<em>dism</em> using the minimum spanning tree (MST) algorithm.</p>
+<p>The MST algorithm keeps track of the distances to the nearest neighbor
+for each cluster after every merge step, which leads to a significant
+speed up as obtaining the next pair of nearest clusters is very
+efficient. By definition, this algorithm can only be used with the
+<code><a href="HClust/Rule.html#Single">Rule::Single</a></code> linkage rule.</p>
+<p>The merge steps are encoded as an unordered <code><a href="HClust/Dendrogram.html">Dendrogram</a></code>, which is
+sorted prior to be returned.</p>
+<p>The current implementation is described in section 3.3 of the
+Müllner's article <a href="https://arxiv.org/abs/1109.2378">[1]</a>, which
+includes several optimizations over the classic implementation.</p>
+<p><span class="flag purple">NOTE</span>  Prefer to use the <code><a href="HClust.html#linkage%28dism%3ADistanceMatrix%2Crule%3ARule%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">.linkage</a></code> method since it provides a general
+interface and picks the best algorithm depending on the linkage rule.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/mst.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/mst.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="nn_chain(rule:ChainRule,dism:DistanceMatrix):Dendrogram-class-method">
+    <div class="entry-detail" id="nn_chain(dism:DistanceMatrix,rule:ChainRule):Dendrogram-class-method">
       <div class="signature">
         
-        def self.<strong>nn_chain</strong>(rule : <a href="HClust/ChainRule.html">ChainRule</a>, dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+        def self.<strong>nn_chain</strong>(dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>, rule : <a href="HClust/ChainRule.html">ChainRule</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
 
-        <a class="method-permalink" href="#nn_chain%28rule%3AChainRule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">#</a>
+        <a class="method-permalink" href="#nn_chain%28dism%3ADistanceMatrix%2Crule%3AChainRule%29%3ADendrogram-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p><span class="flag orange">TODO</span>  docs</p>
+          <p>Perform hierarchical clustering based on the distances stored in
+<em>dism</em> using the nearest-neighbor-chain (NN-chain) algorithm with the
+given linkage rule.</p>
+<p>The NN-chain algorithm follows paths in the nearest neighbor graph of
+the clusters to find a pair of clusters that are nearest neighbors of
+each other, which are merged into a new cluster. The algorithm uses a
+stack data structure (<code>Deque</code>) to store the paths, which can lead to a
+speed up by re-using parts of the existing path efficiently.</p>
+<p>By definition, the NN-chain algorithm can only be used with the
+following linkage rules: <code><a href="HClust/Rule.html#Single">Rule::Single</a></code>, <code><a href="HClust/Rule.html#Complete">Rule::Complete</a></code>,
+<code><a href="HClust/Rule.html#Average">Rule::Average</a></code>, <code><a href="HClust/Rule.html#Weighted">Rule::Weighted</a></code>, and <code><a href="HClust/Rule.html#Ward">Rule::Ward</a></code>. Consequently,
+this method accepts a <code><a href="HClust/ChainRule.html">ChainRule</a></code> enum (not <code><a href="HClust/Rule.html">Rule</a></code>), which only
+contains these methods to ensure safety during compilation.</p>
+<p>The merge steps are encoded as an unordered <code><a href="HClust/Dendrogram.html">Dendrogram</a></code>, which is
+sorted prior to be returned.</p>
+<p>The current implementation is described in section 3.2 of the
+Müllner's article <a href="https://arxiv.org/abs/1109.2378">[1]</a>.</p>
+<p><span class="flag purple">NOTE</span>  Prefer to use the <code><a href="HClust.html#linkage%28dism%3ADistanceMatrix%2Crule%3ARule%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">.linkage</a></code> method since it provides a general
+interface and picks the best algorithm depending on the linkage rule.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/chain.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/chain.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="primitive(rule:Rule,dism:DistanceMatrix):Dendrogram-class-method">
+    <div class="entry-detail" id="primitive(dism:DistanceMatrix,rule:Rule):Dendrogram-class-method">
       <div class="signature">
         
-        def self.<strong>primitive</strong>(rule : <a href="HClust/Rule.html">Rule</a>, dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
+        def self.<strong>primitive</strong>(dism : <a href="HClust/DistanceMatrix.html">DistanceMatrix</a>, rule : <a href="HClust/Rule.html">Rule</a>) : <a href="HClust/Dendrogram.html">Dendrogram</a>
 
-        <a class="method-permalink" href="#primitive%28rule%3ARule%2Cdism%3ADistanceMatrix%29%3ADendrogram-class-method">#</a>
+        <a class="method-permalink" href="#primitive%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p><span class="flag orange">TODO</span>  docs</p>
+          <p>Perform hierarchical clustering based on the distances stored in
+<em>dism</em> using the classic algorithm with the given linkage rule.</p>
+<p>The classic or primitive algorithm iteratively finds a pair of
+clusters that are nearest neighbors of each other, which are merged
+into a new cluster. Then, the distances stored in <em>dism</em> are updated
+by computing the distances to the newly-created cluster according to
+the linkage rule. The procedure is repeated for <em>N</em> - 1 times, where
+<em>N</em> is the number of elements or observations. Since all pairwise
+distances are searched in each iteration, the time complexity of this
+algorithm is Θ(<em>N</em>³).</p>
+<p>This algorithm can deal with inversions in the dendrogram, so it can
+be used with any linkage rule including <code><a href="HClust/Rule.html#Centroid">Rule::Centroid</a></code> and
+<code><a href="HClust/Rule.html#Median">Rule::Median</a></code>.</p>
+<p>The merge steps are encoded as an unordered <code><a href="HClust/Dendrogram.html">Dendrogram</a></code>, which is
+sorted prior to be returned.</p>
+<p>The current implementation is described in section 2.4 of the
+Müllner's article <a href="https://arxiv.org/abs/1109.2378">[1]</a>.</p>
+<p><span class="flag yellow">WARNING</span>  This method is painfully slow and should not be used for
+production. It is only used as reference to test other methods. Prefer
+to use the <code><a href="HClust.html#linkage%28dism%3ADistanceMatrix%2Crule%3ARule%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">.linkage</a></code> method since it provides a general interface and
+picks the best algorithm depending on the linkage rule.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/primitive.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/primitive.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>

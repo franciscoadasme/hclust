@@ -134,7 +134,23 @@
     Overview
   </h2>
 
-  <p><span class="flag orange">TODO</span>  docs</p>
+  <p>A step-wise dendrogram that encodes the arrangement of the clusters
+produced by hierarchical clustering as a binary tree.</p>
+<p>A dendrogram consists of a sequence of <em>N</em> - 1 merge steps (see
+<code><a href="../HClust/Dendrogram/Step.html">Step</a></code>), where <em>N</em> is the number of elements or observations that
+were clustered, and a step corresponds to a merge between two
+distinct clusters.</p>
+<p>The labeling of the clusters follows the SciPy convention, where new
+labels start at <em>N</em>:</p>
+<ul>
+<li>If a cluster has a single element, the label would be the index of
+the element in the original sequence.</li>
+<li>If a cluster has more than one elements (two previous clusters
+were merged), the label would be <em>N</em> + <em>i</em>, where <em>i</em> is the index
+of the merge step that created it.</li>
+</ul>
+<p>Consequently, the labels of the newly created clusters ranges from
+<em>N</em> to <em>N + N - 1</em>.</p>
 
 
 
@@ -159,7 +175,7 @@
   </h2>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L5" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L23" target="_blank">
         hclust/dendrogram.cr
       </a>
     
@@ -183,6 +199,8 @@
       <li class="entry-summary">
         <a href="#new%28observations%3AInt32%29-class-method" class="signature"><strong>.new</strong>(observations : Int32)</a>
         
+          <div class="summary"><p>Creates a new <code><a href="../HClust/Dendrogram.html">Dendrogram</a></code> with the given number of original elements or observations.</p></div>
+        
       </li>
     
   </ul>
@@ -204,6 +222,8 @@
       <li class="entry-summary">
         <a href="#%3C%3C%28step%3AStep%29%3Aself-instance-method" class="signature"><strong>#<<</strong>(step : Step) : <span class="k">self</span></a>
         
+          <div class="summary"><p>Appends the given merge step.</p></div>
+        
       </li>
     
       <li class="entry-summary">
@@ -216,7 +236,7 @@
       <li class="entry-summary">
         <a href="#add%28c_i%3AInt32%2Cc_j%3AInt32%2Cdistance%3AFloat64%29%3AStep-instance-method" class="signature"><strong>#add</strong>(c_i : Int32, c_j : Int32, distance : Float64) : Step</a>
         
-          <div class="summary"><p>Creates and appends a merge step between clusters <em>c_i</em> and <em>c_j</em> separated bu <em>distance</em>.</p></div>
+          <div class="summary"><p>Creates and appends a merge step between clusters <em>c_i</em> and <em>c_j</em> with the given distance.</p></div>
         
       </li>
     
@@ -237,6 +257,8 @@
       <li class="entry-summary">
         <a href="#observations%3AInt32-instance-method" class="signature"><strong>#observations</strong> : Int32</a>
         
+          <div class="summary"><p>Number of the original elements or observations that were clustered.</p></div>
+        
       </li>
     
       <li class="entry-summary">
@@ -248,6 +270,8 @@
     
       <li class="entry-summary">
         <a href="#steps%3AArray%3A%3AView%28Step%29-instance-method" class="signature"><strong>#steps</strong> : Array::View(Step)</a>
+        
+          <div class="summary"><p>Returns a view of the merge steps.</p></div>
         
       </li>
     
@@ -299,10 +323,16 @@
         <a class="method-permalink" href="#new%28observations%3AInt32%29-class-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Creates a new <code><a href="../HClust/Dendrogram.html">Dendrogram</a></code> with the given number of original
+elements or observations.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -329,10 +359,16 @@
         <a class="method-permalink" href="#%3C%3C%28step%3AStep%29%3Aself-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Appends the given merge step. Raises <code>ArgumentError</code> if the
+dendrogram is already full (contains <code>N - 1</code> steps).</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -354,7 +390,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -370,13 +406,13 @@
         <div class="doc">
           
           <p>Creates and appends a merge step between clusters <em>c_i</em> and <em>c_j</em>
-separated bu <em>distance</em>.</p>
+with the given distance.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -398,7 +434,7 @@ cutting the dendrogram at <em>height</em> (cophenetic distance).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -424,7 +460,7 @@ flattens the dendrogram at the computed height.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L50" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L75" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -437,10 +473,16 @@ flattens the dendrogram at the computed height.</p>
         <a class="method-permalink" href="#observations%3AInt32-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Number of the original elements or observations that were
+clustered.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -468,7 +510,7 @@ observations (see <code><a href="../HClust/UnionFind.html">UnionFind</a></code>)
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L67" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L92" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -481,10 +523,15 @@ observations (see <code><a href="../HClust/UnionFind.html">UnionFind</a></code>)
         <a class="method-permalink" href="#steps%3AArray%3A%3AView%28Step%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns a view of the merge steps.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/a9f794542840e37bdbf1a597976624e639342da5/src/hclust/dendrogram.cr#L82" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L108" target="_blank">View source</a>]
         
       </div>
     </div>
