@@ -146,21 +146,21 @@
   </h2>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust.cr#L3" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust.cr#L3" target="_blank">
         hclust.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/dendrogram.cr#L3" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/dendrogram.cr#L3" target="_blank">
         hclust/dendrogram.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/version.cr#L1" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/version.cr#L1" target="_blank">
         hclust/version.cr
       </a>
     
@@ -294,7 +294,7 @@ less than or equal to <em>cutoff</em>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/cluster.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/cluster.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -316,7 +316,7 @@ rule <em>rule</em> based on the distances computed by the given block.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/cluster.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/cluster.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -355,7 +355,7 @@ interface and picks the best algorithm depending on the linkage rule.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/generic.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/generic.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -375,12 +375,13 @@ interface and picks the best algorithm depending on the linkage rule.</p>
 <p>This method simply selects and invokes the optimal algorithm based on
 the given linkage rule as follows:</p>
 <ul>
-<li>The minimum spanning tree (MST) algoritm for the single linkage rule
-(see <code><a href="HClust.html#mst%28dism%3ADistanceMatrix%29%3ADendrogram-class-method">.mst</a></code>).</li>
-<li>The nearest-neighbor-chain (NN-chain) algoritm for the complete,
-average, weighted, and Ward linkage rules (<code><a href="HClust.html#nn_chain%28dism%3ADistanceMatrix%2Crule%3AChainRule%29%3ADendrogram-class-method">.nn_chain</a></code>).</li>
-<li>The generic algoritm for the centroid and median linkage rules
-(<code><a href="HClust.html#generic%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method">.generic</a></code>).</li>
+<li>The minimum spanning tree (MST) algoritm for the <code><a href="HClust/Rule.html#Single">Rule::Single</a></code>
+linkage rule (see <code><a href="HClust.html#mst%28dism%3ADistanceMatrix%29%3ADendrogram-class-method">.mst</a></code>).</li>
+<li>The nearest-neighbor-chain (NN-chain) algoritm for the
+<code><a href="HClust/Rule.html#Complete">Rule::Complete</a></code>, <code><a href="HClust/Rule.html#Average">Rule::Average</a></code>, <code><a href="HClust/Rule.html#Weighted">Rule::Weighted</a></code>, and
+<code><a href="HClust/Rule.html#Ward">Rule::Ward</a></code> linkage rules (<code><a href="HClust.html#nn_chain%28dism%3ADistanceMatrix%2Crule%3AChainRule%29%3ADendrogram-class-method">.nn_chain</a></code>).</li>
+<li>The generic algoritm for the <code><a href="HClust/Rule.html#Centroid">Rule::Centroid</a></code> and <code><a href="HClust/Rule.html#Median">Rule::Median</a></code>
+linkage rules (<code><a href="HClust.html#generic%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method">.generic</a></code>).</li>
 </ul>
 <p>If <em>reuse</em> is <code>true</code>, the distance matrix <em>dism</em> will be forwarded
 directly to the underlying method, and be potentially modified. If
@@ -392,7 +393,7 @@ the distance matrix will not be used after clustering.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/linkage.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/linkage.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -426,7 +427,7 @@ interface and picks the best algorithm depending on the linkage rule.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/mst.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/mst.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -465,7 +466,7 @@ interface and picks the best algorithm depending on the linkage rule.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/chain.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/chain.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -506,7 +507,7 @@ picks the best algorithm depending on the linkage rule.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/b51168eeb1443c820bd04dc78fa75d91293978ec/src/hclust/primitive.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/primitive.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
