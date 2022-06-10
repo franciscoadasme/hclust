@@ -4,12 +4,13 @@
 # This method simply selects and invokes the optimal algorithm based on
 # the given linkage rule as follows:
 #
-# - The minimum spanning tree (MST) algoritm for the single linkage rule
-#   (see `.mst`).
-# - The nearest-neighbor-chain (NN-chain) algoritm for the complete,
-#   average, weighted, and Ward linkage rules (`.nn_chain`).
-# - The generic algoritm for the centroid and median linkage rules
-#   (`.generic`).
+# - The minimum spanning tree (MST) algoritm for the `Rule::Single`
+#   linkage rule (see `.mst`).
+# - The nearest-neighbor-chain (NN-chain) algoritm for the
+#   `Rule::Complete`, `Rule::Average`, `Rule::Weighted`, and
+#   `Rule::Ward` linkage rules (`.nn_chain`).
+# - The generic algoritm for the `Rule::Centroid` and `Rule::Median`
+#   linkage rules (`.generic`).
 #
 # If *reuse* is `true`, the distance matrix *dism* will be forwarded
 # directly to the underlying method, and be potentially modified. If
