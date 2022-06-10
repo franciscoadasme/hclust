@@ -1,15 +1,40 @@
 require "bit_array"
 
 module HClust
-  # TODO: docs
+  # A step-wise dendrogram that encodes the arrangement of the clusters
+  # produced by hierarchical clustering as a binary tree.
+  #
+  # A dendrogram consists of a sequence of *N* - 1 merge steps (see
+  # `Step`), where *N* is the number of elements or observations that
+  # were clustered, and a step corresponds to a merge between two
+  # distinct clusters.
+  #
+  # The labeling of the clusters follows the SciPy convention, where new
+  # labels start at *N*:
+  #
+  # - If a cluster has a single element, the label would be the index of
+  #   the element in the original sequence.
+  # - If a cluster has more than one elements (two previous clusters
+  #   were merged), the label would be *N* + *i*, where *i* is the index
+  #   of the merge step that created it.
+  #
+  # Consequently, the labels of the newly created clusters ranges from
+  # *N* to *N + N - 1*.
   class Dendrogram
+    # Number of the original elements or observations that were
+    # clustered.
     getter observations : Int32
 
+    # Creates a new `Dendrogram` with the given number of original
+    # elements or observations.
     def initialize(@observations : Int32)
       @steps = Array(Step).new(@observations - 1)
     end
 
+    # Appends the given merge step. Raises `ArgumentError` if the
+    # dendrogram is already full (contains `N - 1` steps).
     def <<(step : Step) : self
+      raise ArgumentError.new("Dendrogram is full") unless @steps.size < @observations - 1
       @steps << step
       self
     end
@@ -25,7 +50,7 @@ module HClust
     end
 
     # Creates and appends a merge step between clusters *c_i* and *c_j*
-    # separated bu *distance*.
+    # with the given distance.
     def add(c_i : Int32, c_j : Int32, distance : Float64) : Step
       step = Step.new(c_i, c_j, distance)
       @steps << step
@@ -79,23 +104,47 @@ module HClust
       dendrogram
     end
 
+    # Returns a view of the merge steps.
     def steps : Array::View(Step)
       @steps.view
     end
   end
 
+  # A single merge step in a dendrogram.
+  #
+  # A step corresponds to a merge between two distinct clusters. By
+  # convention, the indexes of the merged clusters (`#nodes`) are always
+  # sorted.
   struct Dendrogram::Step
+    # Indexes of the merged clusters. An index can range from 0 to *N +
+    # N - 1*, where *N* is the number of original elements or
+    # observations and an index equals to or greater than *N* indicates
+    # a newly created cluster (refer to the `Dendrogram` documentation).
     getter clusters : Tuple(Int32, Int32)
+
+    # Distance between the merged clusters. This is computed according
+    # to the selected linkage rule (see `Rule`) used for the clustering.
+    # If both merge clusters have a single element (singleton), the
+    # distance is equal to the pairwise distance between the elements.
     getter distance : Float64
 
+    # Creates a new *Step* between the clusters *c_i* and *c_j* with
+    # the given distance.
+    #
+    # NOTE: Cluster indexes are stored sorted.
     def initialize(c_i : Int32, c_j : Int32, @distance : Float64)
       @clusters = c_i < c_j ? {c_i, c_j} : {c_j, c_i}
     end
 
+    # Returns `true` if the step are equal, else `false`.
+    #
+    # NOTE: Distances are compared within numeric precision (epsilon =
+    # 1e-15).
     def ==(rhs : self) : Bool
       @clusters == rhsclusters && (@distance - rhs.distance).abs <= Float64::EPSILON
     end
 
+    # Returns a `Step` with the square root of the distance.
     def sqrt : self
       self.class.new *@clusters, Math.sqrt(@distance)
     end
