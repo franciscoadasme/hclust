@@ -1,4 +1,29 @@
-# TODO: docs
+# Perform hierarchical clustering based on the distances stored in
+# *dism* using the classic algorithm with the given linkage rule.
+#
+# The classic or primitive algorithm iteratively finds a pair of
+# clusters that are nearest neighbors of each other, which are merged
+# into a new cluster. Then, the distances stored in *dism* are updated
+# by computing the distances to the newly-created cluster according to
+# the linkage rule. The procedure is repeated for *N* - 1 times, where
+# *N* is the number of elements or observations. Since all pairwise
+# distances are searched in each iteration, the time complexity of this
+# algorithm is Θ(*N*³).
+#
+# This algorithm can deal with inversions in the dendrogram, so it can
+# be used with any linkage rule including `Rule::Centroid` and
+# `Rule::Median`.
+#
+# The merge steps are encoded as an unordered `Dendrogram`, which is
+# sorted prior to be returned.
+#
+# The current implementation is described in section 2.4 of the
+# Müllner's article [[1]](https://arxiv.org/abs/1109.2378).
+#
+# WARNING: This method is painfully slow and should not be used for
+# production. It is only used as reference to test other methods. Prefer
+# to use the `.linkage` method since it provides a general interface and
+# picks the best algorithm depending on the linkage rule.
 def HClust.primitive(dism : DistanceMatrix, rule : Rule) : Dendrogram
   dism.map! &.**(2) if rule.needs_squared_euclidean?
 

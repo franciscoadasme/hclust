@@ -1,4 +1,27 @@
-# TODO: docs
+# Perform hierarchical clustering based on the distances stored in
+# *dism* using the nearest-neighbor-chain (NN-chain) algorithm with the
+# given linkage rule.
+#
+# The NN-chain algorithm follows paths in the nearest neighbor graph of
+# the clusters to find a pair of clusters that are nearest neighbors of
+# each other, which are merged into a new cluster. The algorithm uses a
+# stack data structure (`Deque`) to store the paths, which can lead to a
+# speed up by re-using parts of the existing path efficiently.
+#
+# By definition, the NN-chain algorithm can only be used with the
+# following linkage rules: `Rule::Single`, `Rule::Complete`,
+# `Rule::Average`, `Rule::Weighted`, and `Rule::Ward`. Consequently,
+# this method accepts a `ChainRule` enum (not `Rule`), which only
+# contains these methods to ensure safety during compilation.
+#
+# The merge steps are encoded as an unordered `Dendrogram`, which is
+# sorted prior to be returned.
+#
+# The current implementation is described in section 3.2 of the
+# Müllner's article [[1]](https://arxiv.org/abs/1109.2378).
+#
+# NOTE: Prefer to use the `.linkage` method since it provides a general
+# interface and picks the best algorithm depending on the linkage rule.
 def HClust.nn_chain(dism : DistanceMatrix, rule : ChainRule) : Dendrogram
   rule = rule.to_rule
   dism.map! &.**(2) if rule.needs_squared_euclidean?

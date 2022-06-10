@@ -1,4 +1,21 @@
-# TODO: docs
+# Perform hierarchical clustering based on the distances stored in
+# *dism* using the minimum spanning tree (MST) algorithm.
+#
+# The MST algorithm keeps track of the distances to the nearest neighbor
+# for each cluster after every merge step, which leads to a significant
+# speed up as obtaining the next pair of nearest clusters is very
+# efficient. By definition, this algorithm can only be used with the
+# `Rule::Single` linkage rule.
+#
+# The merge steps are encoded as an unordered `Dendrogram`, which is
+# sorted prior to be returned.
+#
+# The current implementation is described in section 3.3 of the
+# Müllner's article [[1]](https://arxiv.org/abs/1109.2378), which
+# includes several optimizations over the classic implementation.
+#
+# NOTE: Prefer to use the `.linkage` method since it provides a general
+# interface and picks the best algorithm depending on the linkage rule.
 def HClust.mst(dism : DistanceMatrix) : Dendrogram
   active_nodes = IndexList.new(dism.size) # tracks non-merged clusters
   # keeps updated distances to merged nodes

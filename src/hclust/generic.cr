@@ -1,4 +1,27 @@
-# TODO: add docs
+# Perform hierarchical clustering based on the distances stored in
+# *dism* using a fast generic linkage algorithm with the given linkage
+# rule.
+#
+# The so-called generic algorithm published by Müllner, D.
+# [[1]](https://arxiv.org/abs/1109.2378) includes several optimizations
+# over the classic hierarchical clustering algorithm, reducing the
+# best-case complexity from Θ(*N*³) to Θ(*N*²). In practice, it is
+# considerably faster than the standard method. This is mainly due to
+# the algorithm keeps track of the nearest neighbors of clusters in a
+# priority queue to speed up the repeated minimum searches.
+#
+# This algorithm can deal with inversions in the dendrogram, so it can
+# be used with any linkage rule including `Rule::Centroid` and
+# `Rule::Median`.
+#
+# The merge steps are encoded as an unordered `Dendrogram`, which is
+# sorted prior to be returned.
+#
+# The current implementation is described in section 3.1 of the
+# Müllner's article [[1]](https://arxiv.org/abs/1109.2378).
+#
+# NOTE: Prefer to use the `.linkage` method since it provides a general
+# interface and picks the best algorithm depending on the linkage rule.
 def HClust.generic(dism : DistanceMatrix, rule : Rule) : Dendrogram
   dism.map! &.**(2) if rule.needs_squared_euclidean?
 
