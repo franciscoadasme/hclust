@@ -11,7 +11,7 @@ def HClust.cluster(
   dism = DistanceMatrix.new(elements.size) do |i, j|
     yield elements[i], elements[j]
   end
-  dendrogram = linkage(rule, dism, reuse: true)
+  dendrogram = linkage(dism, rule, reuse: true)
   dendrogram.flatten(cutoff).map { |idxs|
     idxs.map { |i|
       elements[i]
@@ -30,7 +30,7 @@ def HClust.cluster_into(
   dism = DistanceMatrix.new(elements.size) do |i, j|
     yield elements[i], elements[j]
   end
-  dendrogram = linkage(rule, dism, reuse: true)
+  dendrogram = linkage(dism, rule, reuse: true)
   dendrogram.flatten(count: count).map { |idxs|
     idxs.map { |i|
       elements[i]

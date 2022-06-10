@@ -1,5 +1,5 @@
 # TODO: docs
-def HClust.nn_chain(rule : ChainRule, dism : DistanceMatrix) : Dendrogram
+def HClust.nn_chain(dism : DistanceMatrix, rule : ChainRule) : Dendrogram
   rule = rule.to_rule
   dism.map! &.**(2) if rule.needs_squared_euclidean?
 

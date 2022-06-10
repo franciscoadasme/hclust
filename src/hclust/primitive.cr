@@ -1,5 +1,5 @@
 # TODO: docs
-def HClust.primitive(rule : Rule, dism : DistanceMatrix) : Dendrogram
+def HClust.primitive(dism : DistanceMatrix, rule : Rule) : Dendrogram
   dism.map! &.**(2) if rule.needs_squared_euclidean?
 
   active_nodes = IndexList.new(dism.size)    # tracks non-merged clusters

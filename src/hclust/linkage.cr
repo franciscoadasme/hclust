@@ -17,8 +17,8 @@
 # This can be used to prevent a potentially large memory allocation when
 # the distance matrix will not be used after clustering.
 def HClust.linkage(
-  rule : Rule,
   dism : DistanceMatrix,
+  rule : Rule,
   reuse : Bool = false
 ) : Dendrogram
   dism = dism.clone unless reuse
@@ -26,8 +26,8 @@ def HClust.linkage(
   in .single?
     mst(dism)
   in .average?, .complete?, .ward?, .weighted?
-    nn_chain(rule.to_chain, dism)
+    nn_chain(dism, rule.to_chain)
   in .centroid?, .median?
-    generic(rule, dism)
+    generic(dism, rule)
   end
 end

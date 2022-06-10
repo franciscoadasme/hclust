@@ -3,7 +3,7 @@ require "./spec_helper"
 describe HClust do
   describe ".primitive" do
     it_linkages "using the average linkage",
-      HClust.primitive(HClust::Rule::Average, fake_dism),
+      HClust.primitive(fake_dism, :average),
       [
         {6, 12, 0.00438361},
         {7, 16, 0.00989980},
@@ -27,7 +27,7 @@ describe HClust do
       ]
 
     it_linkages "using the centroid linkage",
-      HClust.primitive(HClust::Rule::Centroid, fake_dism),
+      HClust.primitive(fake_dism, :centroid),
       [
         {6, 12, 0.00438361},
         {7, 16, 0.00989980},
@@ -51,7 +51,7 @@ describe HClust do
       ]
 
     it_linkages "using the complete linkage",
-      HClust.primitive(HClust::Rule::Complete, fake_dism),
+      HClust.primitive(fake_dism, :complete),
       [
         {6, 12, 0.00438361},
         {7, 16, 0.00989980},
@@ -75,7 +75,7 @@ describe HClust do
       ]
 
     it_linkages "using the median linkage",
-      HClust.primitive(HClust::Rule::Median, fake_dism),
+      HClust.primitive(fake_dism, :median),
       [
         {6, 12, 0.00438361},
         {7, 16, 0.00989980},
@@ -99,7 +99,7 @@ describe HClust do
       ]
 
     it_linkages "using the single linkage",
-      HClust.primitive(HClust::Rule::Single, fake_dism),
+      HClust.primitive(fake_dism, :single),
       [
         {6, 12, 0.00438361},
         {7, 16, 0.00989980},
@@ -123,7 +123,7 @@ describe HClust do
       ]
 
     it_linkages "using the ward linkage",
-      HClust.primitive(HClust::Rule::Ward, fake_dism),
+      HClust.primitive(fake_dism, :ward),
       [
         {6, 12, 0.00438361},
         {7, 16, 0.00989980},
@@ -147,7 +147,7 @@ describe HClust do
       ]
 
     it_linkages "using the weighted linkage",
-      HClust.primitive(HClust::Rule::Weighted, fake_dism),
+      HClust.primitive(fake_dism, :weighted),
       [
         {6, 12, 0.00438361},
         {7, 16, 0.00989980},

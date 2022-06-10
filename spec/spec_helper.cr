@@ -35,9 +35,9 @@ macro it_linkages_random(method, rule, size = 20, delta = 1e-12, seed = nil)
     {% if method.stringify.includes?("mst") %}
       {{method.id}}(%dism.clone) \
     {% else %}
-      {{method.id}}({{rule.id}}, %dism.clone) \
+      {{method.id}}(%dism.clone, {{rule.id}}) \
     {% end %}
       .should be_close \
-      HClust.primitive({{rule.id.gsub(/Chain/, "")}}, %dism), {{delta}}
+      HClust.primitive(%dism, {{rule.id.gsub(/Chain/, "")}}), {{delta}}
   end
 end
