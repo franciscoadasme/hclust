@@ -123,6 +123,180 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>The <code><a href="HClust.html">HClust</a></code> module provides methods for fast hierarchical
+agglomerative clustering featuring efficient linkage algorithms.</p>
+<p>Cluster analysis or <a href="https://en.wikipedia.org/wiki/Cluster_analysis">clustering</a> arrange a set of objects into
+distinct groups or clusters such that the elements within a cluster
+are more similar to each other than those in other clusters based on a
+given criterion. The latter is defined as a measure of dissimilarity
+between the objects, and it's usually encoded in a <code><a href="HClust/DistanceMatrix.html">DistanceMatrix</a></code>.
+Hierarchical agglomerative clustering builds a hierarchy of clusters,
+where each object or element starts in its own cluster, and then they
+are progressively merged forming a hierarchy among them. The
+dissimilarities bewteen a newly-created cluster and all other clusters
+are updated after each merging step. The dissimilarity between two
+clusters is dictated by the chosen linkage criterion or rule. The
+obtained hierarchy is often encoded as a <code><a href="HClust/Dendrogram.html">Dendrogram</a></code>, which can be
+cut at a given dissimilarity value to obtain flat clusters such that
+the elements of a flat cluster have a cophenetic distance no greater
+than the given value (see <code><a href="HClust/Dendrogram.html#flatten%28height%3ANumber%29%3AArray%28Array%28Int32%29%29-instance-method">Dendrogram#flatten</a></code>).</p>
+<p>The standard algorithm has a time complexity of Θ(<em>N</em>³), which is
+implemented by the <code><a href="HClust.html#primitive%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method">.primitive</a></code> method. However, optimal algorithms
+are provided based on the work of Daniel Müllner [<a href="https://arxiv.org/abs/1109.2378">1</a>], which
+describes several optimizations over the standard algorithm
+(implemented by the <code><a href="HClust.html#generic%28dism%3ADistanceMatrix%2Crule%3ARule%29%3ADendrogram-class-method">.generic</a></code> method), and fast methods for special
+cases such as the minimum spanning tree (MST) method (<code><a href="HClust.html#mst%28dism%3ADistanceMatrix%29%3ADendrogram-class-method">.mst</a></code>) for
+single linkage and nearest-neighbor-chain (NN-chain) method
+(<code><a href="HClust.html#nn_chain%28dism%3ADistanceMatrix%2Crule%3AChainRule%29%3ADendrogram-class-method">.nn_chain</a></code>) for average, complete, Ward's, and weighted linkage.
+Thus, the best-case complexity can be reduced to Θ(<em>N</em>²), where, in
+practice, the runtime of the general case is close to this.</p>
+<p>The current implementation is heavily based on Müllner's own
+implementation found in the <a href="https://github.com/dmuellner/fastcluster">fastcluster</a> C++ library, and parts of
+the implementation were also inspired by the <a href="https://github.com/diffeo/kodama">kodama</a> Rust crate (code
+for updating distances) and <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.fcluster.html">SciPy</a> Python library (code for
+generating flat clusters).</p>
+<p>The most relevant types and methods for practical usage are the
+following:</p>
+<ul>
+<li><code><a href="HClust.html#cluster%28elements%3AIndexable%28T%29%2Ccutoff%3ANumber%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method">.cluster</a></code> performs hierarchical clustering of a set of elements
+using the pairwise dissimilarities returned by the given block.</li>
+<li><code><a href="HClust.html#linkage%28dism%3ADistanceMatrix%2Crule%3ARule%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">.linkage</a></code> performs hierarchical clustering based on a pairwise
+<code><a href="HClust/DistanceMatrix.html">DistanceMatrix</a></code> returning a <code><a href="HClust/Dendrogram.html">Dendrogram</a></code> as output.</li>
+<li><code><a href="HClust/Rule.html">Rule</a></code> is an enum that determines the linkage criterion or rule.</li>
+<li><code><a href="HClust/Dendrogram.html">Dendrogram</a></code> represents a step-wise dendrogram that encodes the
+hierarchy of clusters obtained from hierarchical clustering.</li>
+<li><code><a href="HClust/Dendrogram.html#flatten%28height%3ANumber%29%3AArray%28Array%28Int32%29%29-instance-method">Dendrogram#flatten</a></code> returns a list of flat clusters.</li>
+</ul>
+<p>The available linkage rules are:</p>
+<ul>
+<li><code><a href="HClust/Rule.html#Average">Rule::Average</a></code> or UPGMA method.</li>
+<li><code><a href="HClust/Rule.html#Centroid">Rule::Centroid</a></code> or UPGMC method.</li>
+<li><code><a href="HClust/Rule.html#Complete">Rule::Complete</a></code> or farthest neighbor method.</li>
+<li><code><a href="HClust/Rule.html#Median">Rule::Median</a></code> or WPGMC method.</li>
+<li><code><a href="HClust/Rule.html#Single">Rule::Single</a></code> or nearest neighbor method.</li>
+<li><code><a href="HClust/Rule.html#Ward">Rule::Ward</a></code>'s minimum variance method</li>
+<li><code><a href="HClust/Rule.html#Weighted">Rule::Weighted</a></code> or WPGMA method.</li>
+</ul>
+<p>See <code><a href="HClust/Rule.html">Rule</a></code> documentation for details.</p>
+<h3><a id="clustering-example" class="anchor" href="#clustering-example">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Clustering example</h3>
+<p>Let's first define a list of random coordinates in 3D space as an
+example case:</p>
+<pre><code class="language-crystal">coords <span class="o">=</span> [
+  [<span class="n">-0.30818828</span>, <span class="n">2.70462841</span>, <span class="n">1.84344886</span>],
+  [<span class="n">2.9666203</span>, <span class="n">-1.39874721</span>, <span class="n">4.76223947</span>],
+  [<span class="n">3.21737027</span>, <span class="n">4.09489028</span>, <span class="n">-4.60403434</span>],
+  [<span class="n">-3.51140292</span>, <span class="n">-0.83953645</span>, <span class="n">2.31887739</span>],
+  [<span class="n">2.08457843</span>, <span class="n">4.24960773</span>, <span class="n">-3.91378835</span>],
+  [<span class="n">2.88992367</span>, <span class="n">-0.97659082</span>, <span class="n">0.75464131</span>],
+  [<span class="n">0.43808545</span>, <span class="n">3.70042294</span>, <span class="n">4.99126146</span>],
+  [<span class="n">-1.71676206</span>, <span class="n">4.93399583</span>, <span class="n">0.27392482</span>],
+  [<span class="n">1.12130963</span>, <span class="n">-1.09646418</span>, <span class="n">1.45833231</span>],
+  [<span class="n">-3.45524705</span>, <span class="n">0.92812111</span>, <span class="n">0.15155981</span>],
+]
+labels <span class="o">=</span> (<span class="n">0</span>...coords.size).to_a <span class="c"># for demonstration purposes</span></code></pre>
+<p>We'd like to group them by the proximity to each other defined by
+Euclidean distance:</p>
+<pre><code class="language-crystal"><span class="k">def</span> <span class="m">euclidean</span>(u, v)
+  <span class="t">Math</span>.sqrt (<span class="n">0</span>...u.size).sum { <span class="o">|</span>i<span class="o">|</span> (u[i] <span class="o">-</span> v[i])<span class="o">**</span><span class="n">2</span> }
+<span class="k">end</span></code></pre>
+<p>Let's say we want to split the coordinates into groups with a distance
+no more than 4. The easiest way is to use the <code><a href="HClust.html#cluster%28elements%3AIndexable%28T%29%2Ccutoff%3ANumber%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method">.cluster</a></code> convenience
+method:</p>
+<pre><code class="language-crystal">clusters <span class="o">=</span> <span class="t">HClust</span>.cluster(labels, <span class="n">4</span>) { <span class="o">|</span>i, j<span class="o">|</span> euclidean(coords[u], coords[v]) }
+clusters.size <span class="c"># =&gt; 3</span>
+clusters      <span class="c"># =&gt; [[0, 3, 6, 7, 9], [1, 5, 8], [2, 4]]</span></code></pre>
+<p>The method receives the elements to be clustered, a distance cutoff,
+and a block that receives two of the elements and must return the
+dissimilarity between them. We observe that the coordinates can be
+grouped into 3 distinct clusters containing 5, 3, and 2 elements,
+respectively. The order of the clusters is arbitrary and depends on
+the order of the elements.</p>
+<p>Alternatively, one can set the maximum number of clusters to be
+generated instead of a distance cutoff using the named argument
+<code>into:</code>:</p>
+<pre><code class="language-crystal">clusters <span class="o">=</span> <span class="t">HClust</span>.cluster(labels, into: <span class="n">2</span>) { <span class="o">|</span>i, j<span class="o">|</span> euclidean(coords[i], coords[j]) }
+clusters.size <span class="c"># =&gt; 2</span>
+clusters      <span class="c"># =&gt; [[0, 1, 3, 5, 6, 7, 8, 9], [2, 4]]</span></code></pre>
+<p>As stated above, the linkage rule dictates how the dissimilarities are
+updated upon merging two clusters during the clustering procedure.
+Therefore, the clustering output will depend on the selected rule. In
+turn, the choice of the linkage rule depends both on the problem
+domain and performance requirements. By default, the single linkage is
+used throughout the code but it can be given as the third (optional)
+argument to the cluster methods if required.</p>
+<pre><code class="language-crystal">clusters <span class="o">=</span> <span class="t">HClust</span>.cluster(labels, <span class="n">2</span>, <span class="n">:centroid</span>) { <span class="o">|</span>i, j<span class="o">|</span>
+  euclidean(coords[i], coords[j])
+}
+clusters.size <span class="c"># =&gt; 5</span>
+clusters      <span class="c"># =&gt; [[0, 7], [1, 5, 8], [2, 4], [3, 9], [6]]</span></code></pre>
+<p>Note the different number of clusters and composition obtained with
+the centroid linkage comparted to the previous result using the single
+linkage.</p>
+<h3><a id="advanced-usage" class="anchor" href="#advanced-usage">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Advanced usage</h3>
+<p>Using the <code><a href="HClust.html#cluster%28elements%3AIndexable%28T%29%2Ccutoff%3ANumber%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method">.cluster</a></code> methods is enough in most cases, albeit obtaining
+the dendrogram can be useful for visualization purposes or testing
+different clustering arguments without recomputing the
+dissimilarities.</p>
+<p>Under the hood, the <code><a href="HClust.html#cluster%28elements%3AIndexable%28T%29%2Ccutoff%3ANumber%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method">.cluster</a></code> methods construct a <code><a href="HClust/DistanceMatrix.html">DistanceMatrix</a></code>
+with the given block, invoke the <code><a href="HClust.html#linkage%28dism%3ADistanceMatrix%2Crule%3ARule%2Creuse%3ABool%3Dfalse%29%3ADendrogram-class-method">.linkage</a></code> method, and then call
+<code><a href="HClust/Dendrogram.html#flatten%28height%3ANumber%29%3AArray%28Array%28Int32%29%29-instance-method">Dendrogram#flatten</a></code> on the obtained dendrogram with the given
+argument. The latter returns an array of clusters, each containing a
+list of indexes that can be used to fetch the original elements. The
+equivalent code to the above example would be:</p>
+<pre><code class="language-crystal">dism <span class="o">=</span> <span class="t">DistanceMatrix</span>.<span class="k">new</span>(coords.size) { <span class="o">|</span>i, j<span class="o">|</span> euclidean(coords[i], coords[j]) }
+dendrogram <span class="o">=</span> linkage(dism)
+clusters <span class="o">=</span> dendrogram.flatten(<span class="n">4</span>)</code></pre>
+<p>The dendrogram represents the hierarchy as a series of merge steps,
+which contain the merged clusters and computed dissimilarity. For
+instance, let's see what the dendrogram looks like:</p>
+<pre><code class="language-crystal">pp dendrogram.steps.map { <span class="o">|</span>s<span class="o">|</span> [s.clusters[<span class="n">0</span>], s.clusters[<span class="n">1</span>], s.distance, <span class="n">0.0</span>] }</code></pre>
+<p>will print:</p>
+<pre><code class="language-text"># cluster1, cluster2, dissimilarity, size (unused)
+[[2, 4, 1.3355127737375514, 0.0],
+ [5, 8, 1.9072352420201895, 0.0],
+ [3, 9, 2.7973259058854163, 0.0],
+ [0, 7, 3.068805125647255, 0.0],
+ [6, 13, 3.384856775520168, 0.0],
+ [1, 11, 3.796359969884454, 0.0],
+ [12, 14, 3.9902939298123274, 0.0],
+ [15, 16, 4.079225895869359, 0.0],
+ [10, 17, 5.696974476555648, 0.0]]</code></pre>
+<p>The output can be copied into a Python terminal and visualized using
+the <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.dendrogram.html">dendrogram</a> function in <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.fcluster.html">SciPy</a> or similar software. It would
+look something like:</p>
+<pre><code class="language-text">  |       ________________
+5 |      |                |
+  |      |                |
+4 |      |         _______|_______
+  |      |      __|__         ____|___
+3 |      |     |     |       |      __|__
+  |      |     |     |      _|_    |    _|_
+2 |      |     |    _|_    |   |   |   |   |
+  |      |     |   |   |   |   |   |   |   |
+1 |     _|_    |   |   |   |   |   |   |   |
+  |    |   |   |   |   |   |   |   |   |   |
+0 |    2   4   1   5   8   3   9   6   0   7</code></pre>
+<p>Using this graph, one can deduce the optimal cutoff for generating
+flat clusters, where a cutoff = 4 would produce indeed two clusters as
+shown above.</p>
+
 
 
 
@@ -146,21 +320,21 @@
   </h2>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust.cr#L3" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust.cr#L214" target="_blank">
         hclust.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/dendrogram.cr#L3" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/dendrogram.cr#L3" target="_blank">
         hclust/dendrogram.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/version.cr#L1" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/version.cr#L1" target="_blank">
         hclust/version.cr
       </a>
     
@@ -210,7 +384,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#cluster_into%28elements%3AIndexable%28T%29%2Ccount%3AInt%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method" class="signature"><strong>.cluster_into</strong>(elements : Indexable(T), count : Int, rule : Rule = <span class="n">:single</span>, & : T, T -> Float64) : Array(Array(T)) forall T</a>
+        <a href="#cluster%28elements%3AIndexable%28T%29%2C%2A%2Cintocount%3AInt%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method" class="signature"><strong>.cluster</strong>(elements : Indexable(T), *, into count : Int, rule : Rule = <span class="n">:single</span>, & : T, T -> Float64) : Array(Array(T)) forall T</a>
         
           <div class="summary"><p>Clusters <em>elements</em> into <em>count</em> clusters or fewer using the linkage rule <em>rule</em> based on the distances computed by the given block.</p></div>
         
@@ -294,17 +468,17 @@ less than or equal to <em>cutoff</em>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/cluster.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/cluster.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="cluster_into(elements:Indexable(T),count:Int,rule:Rule=:single,&amp;:T,T-&gt;Float64):Array(Array(T))forallT-class-method">
+    <div class="entry-detail" id="cluster(elements:Indexable(T),*,intocount:Int,rule:Rule=:single,&amp;:T,T-&gt;Float64):Array(Array(T))forallT-class-method">
       <div class="signature">
         
-        def self.<strong>cluster_into</strong>(elements : Indexable(T), count : Int, rule : <a href="HClust/Rule.html">Rule</a> = <span class="n">:single</span>, & : T, T -> Float64) : Array(Array(T)) forall T
+        def self.<strong>cluster</strong>(elements : Indexable(T), *, into count : Int, rule : <a href="HClust/Rule.html">Rule</a> = <span class="n">:single</span>, & : T, T -> Float64) : Array(Array(T)) forall T
 
-        <a class="method-permalink" href="#cluster_into%28elements%3AIndexable%28T%29%2Ccount%3AInt%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method">#</a>
+        <a class="method-permalink" href="#cluster%28elements%3AIndexable%28T%29%2C%2A%2Cintocount%3AInt%2Crule%3ARule%3D%3Asingle%2C%26%3AT%2CT-%3EFloat64%29%3AArray%28Array%28T%29%29forallT-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -316,7 +490,7 @@ rule <em>rule</em> based on the distances computed by the given block.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/cluster.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/cluster.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -355,7 +529,7 @@ interface and picks the best algorithm depending on the linkage rule.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/generic.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/generic.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -393,7 +567,7 @@ the distance matrix will not be used after clustering.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/linkage.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/linkage.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -427,7 +601,7 @@ interface and picks the best algorithm depending on the linkage rule.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/mst.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/mst.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -466,7 +640,7 @@ interface and picks the best algorithm depending on the linkage rule.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/chain.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/chain.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -507,7 +681,7 @@ picks the best algorithm depending on the linkage rule.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/7b309375d87407c94e521079dbfabc0d041b3af8/src/hclust/primitive.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/1edaaeb19d39a2ece0fb2fdd58f04a97170a2433/src/hclust/primitive.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
