@@ -21,9 +21,10 @@ end
 
 # Clusters *elements* into *count* clusters or fewer using the linkage
 # rule *rule* based on the distances computed by the given block.
-def HClust.cluster_into(
+def HClust.cluster(
   elements : Indexable(T),
-  count : Int,
+  *,
+  into count : Int,
   rule : Rule = :single,
   & : T, T -> Float64
 ) : Array(Array(T)) forall T

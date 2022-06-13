@@ -12,10 +12,10 @@ describe HClust do
     end
   end
 
-  describe ".cluster_into" do
+  describe ".cluster" do
     it "returns N grouped values" do
       positions = fake_positions
-      HClust.cluster_into(positions, 2) { |u, v| euclidean(u, v) }.should eq [
+      HClust.cluster(positions, into: 2) { |u, v| euclidean(u, v) }.should eq [
         [0, 1, 3, 5, 6, 7, 8, 9].map { |i| positions[i] },
         [2, 4].map { |i| positions[i] },
       ]
