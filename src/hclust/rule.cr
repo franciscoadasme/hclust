@@ -21,7 +21,8 @@ enum HClust::Rule
   #
   #     d(I ∪ J) = (|I| * d(I, K) + |J| * d(J, K)) / (|I| + |J|)
   #
-  # This is also called the UPGMA method.
+  # This is also called the [UPGMA](https://en.wikipedia.org/wiki/UPGMA)
+  # method.
   Average
 
   # Defines the distance between the cluster *I ∪ J* and cluster *K* as
@@ -42,7 +43,9 @@ enum HClust::Rule
   #
   #     d(I ∪ J) = max(d(I, K), d(J, K))
   #
-  # This is also called the farthest neighbor method.
+  # This is also called the [farthest
+  # neighbor](https://en.wikipedia.org/wiki/Complete-linkage_clustering)
+  # method.
   Complete
 
   # Defines the distance between the cluster *I ∪ J* and cluster *K* as
@@ -64,14 +67,17 @@ enum HClust::Rule
   #
   #     d(I ∪ J) = max(d(I, K), d(J, K))
   #
-  # This is also called the nearest neighbor method.
+  # This is also called the [nearest
+  # neighbor](https://en.wikipedia.org/wiki/Single-linkage_clustering)
+  # method.
   Single
 
-  # Ward's minimum variance criterion minimizes the total intra-cluster
-  # variance. It defines the distance between the cluster *I ∪ J* and
-  # cluster *K* as the weighted squared distance between cluster
-  # centers. Using the Lance–Williams formula, the distance can be
-  # expressed as
+  # [Ward's minimum variance
+  # criterion](https://en.wikipedia.org/wiki/Ward%27s_method) minimizes
+  # the total intra-cluster variance. It defines the distance between
+  # the cluster *I ∪ J* and cluster *K* as the weighted squared distance
+  # between cluster centers. Using the Lance–Williams formula, the
+  # distance can be expressed as
   #
   #     d(I ∪ J) = sqrt((|I| + |K|) * d(I, K)²
   #                     + (|J| + |K|) * d(J, K)²
@@ -88,7 +94,8 @@ enum HClust::Rule
   #     d(I ∪ J) = (da(I, K) + da(J, K)) / 2
   #
   # where *da(X, Y)* means the average distance between *X* and *Y*.
-  # This is also called the WPGMA method.
+  # This is also called the [WPGMA](https://en.wikipedia.org/wiki/WPGMA)
+  # method.
   Weighted
 
   # Update formula for the average linkage rule. The distance is
