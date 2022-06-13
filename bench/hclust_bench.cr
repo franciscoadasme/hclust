@@ -10,8 +10,8 @@ best_time = (0...repeats).min_of do
   Time.measure do
     case method
     when "mst"   then HClust.mst(dism)
-    when "chain" then HClust.nn_chain(rule.to_chain, dism)
-    else              HClust.generic(rule, dism)
+    when "chain" then HClust.nn_chain(dism, rule.to_chain)
+    else              HClust.generic(dism, rule)
     end
   end
 end
