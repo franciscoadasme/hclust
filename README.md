@@ -144,7 +144,7 @@ Testing HClust (Crystal)...
 | fastcluster  | 1.2.6   | 11.2.0 (gcc) |     0.032 |
 | kodama       | 0.2.3   | 1.61.0       |     0.041 |
 | scipy        | 1.7.3   | 3.9.12       |     0.094 |
-| hclust       | 0.1.0   | 1.4.1        |     0.067 |
+| hclust       | 1.0.0   | 1.4.1        |     0.067 |
 ```
 
 The benchmark can be configured via the following environment variables:
