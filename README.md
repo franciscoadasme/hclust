@@ -122,11 +122,7 @@ Refer to the [API documentation] for further details.
 
 ## Benchmark
 
-A Bash script is used to benchmark the code and be compared against reference implementations. Run the following command on the project folder:
-
-```shell
-bash bench/bench.sh
-```
+A Bash script is used to benchmark the code and be compared against reference implementations. 
 
 The script downloads the required libraries (except for SciPy) to run the
 corresponding code. The following programs are expected to be available: `gcc`
@@ -134,17 +130,24 @@ for C++, `cargo` for Rust, and `python` for Python (SciPy must be installed in
 the current Python environment). Each benchmark will run for a number of times,
 and the best time will be printed out.
 
-The following output was tested on a AMD® Ryzen 9 5950x under Pop!_OS 22.04 LTS
-with default values:
+The following output was obtained on a machine with AMD® Ryzen 9 5950x under
+Pop!_OS 22.04 LTS using default benchmark values (see below):
 
+```text
+$ bash bench/bench.sh
+Testing Fastcluster (C++)...
+Testing Kodama (Rust)...
+Testing Scipy (Python)...
+Testing HClust (Crystal)...
 | name         | version | compiler     | time (ms) |
 | ------------ | ------- | ------------ | --------- |
 | fastcluster  | 1.2.6   | 11.2.0 (gcc) |     0.032 |
 | kodama       | 0.2.3   | 1.61.0       |     0.041 |
 | scipy        | 1.7.3   | 3.9.12       |     0.094 |
 | hclust       | 0.1.0   | 1.4.1        |     0.067 |
+```
 
-The benchmark can be configured via environment variables:
+The benchmark can be configured via the following environment variables:
 
 - `BENCH_SIZE` sets the number of data points to bench (defaults to 100).
 - `BENCH_REPEATS` sets the number of times to repeat the code during benchmark
