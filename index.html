@@ -226,22 +226,26 @@ dendrogram can be useful for visual inspection.</p>
     <use href="#octicon-link"/>
   </svg>
 </a>Benchmark</h2>
-<p>A Bash script is used to benchmark the code and be compared against reference implementations. Run the following command on the project folder:</p>
-<pre><code class="language-shell">bash bench/bench.sh</code></pre>
+<p>A Bash script is used to benchmark the code and be compared against reference implementations.</p>
 <p>The script downloads the required libraries (except for SciPy) to run the
 corresponding code. The following programs are expected to be available: <code>gcc</code>
 for C++, <code>cargo</code> for Rust, and <code>python</code> for Python (SciPy must be installed in
 the current Python environment). Each benchmark will run for a number of times,
 and the best time will be printed out.</p>
-<p>The following output was tested on a AMD® Ryzen 9 5950x under Pop!_OS 22.04 LTS
-with default values:</p>
-<p>| name         | version | compiler     | time (ms) |
+<p>The following output was obtained on a machine with AMD® Ryzen 9 5950x under
+Pop!_OS 22.04 LTS using default benchmark values (see below):</p>
+<pre><code class="language-text">$ bash bench/bench.sh
+Testing Fastcluster (C++)...
+Testing Kodama (Rust)...
+Testing Scipy (Python)...
+Testing HClust (Crystal)...
+| name         | version | compiler     | time (ms) |
 | ------------ | ------- | ------------ | --------- |
 | fastcluster  | 1.2.6   | 11.2.0 (gcc) |     0.032 |
 | kodama       | 0.2.3   | 1.61.0       |     0.041 |
 | scipy        | 1.7.3   | 3.9.12       |     0.094 |
-| hclust       | 0.1.0   | 1.4.1        |     0.067 |</p>
-<p>The benchmark can be configured via environment variables:</p>
+| hclust       | 0.1.0   | 1.4.1        |     0.067 |</code></pre>
+<p>The benchmark can be configured via the following environment variables:</p>
 <ul>
 <li><code>BENCH_SIZE</code> sets the number of data points to bench (defaults to 100).</li>
 <li><code>BENCH_REPEATS</code> sets the number of times to repeat the code during benchmark
