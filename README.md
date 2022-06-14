@@ -128,12 +128,14 @@ A Bash script is used to benchmark the code and be compared against reference im
 bash bench/bench.sh
 ```
 
-This will download the required libraries (except for SciPy which must be
-available in the current Python environment) temporary to run the corresponding
-code. Each benchmark will run for a number of times, and the best time will be
-printed out.
+The script downloads the required libraries (except for SciPy) to run the
+corresponding code. The following programs are expected to be available: `gcc`
+for C++, `cargo` for Rust, and `python` for Python (SciPy must be installed in
+the current Python environment). Each benchmark will run for a number of times,
+and the best time will be printed out.
 
-The expected output was tested on a AMD® Ryzen 9 5950x under Pop!_OS 22.04 LTS with default values:
+The following output was tested on a AMD® Ryzen 9 5950x under Pop!_OS 22.04 LTS
+with default values:
 
 | name         | version | compiler     | time (ms) |
 | ------------ | ------- | ------------ | --------- |
