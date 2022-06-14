@@ -1,5 +1,11 @@
 # Fast hierarchical clustering algorithms in pure Crystal
 
+[![Made with Crystal](https://img.shields.io/badge/Made%20with-Crystal-1f425f.svg?logo=crystal)](https://crystal-lang.org)
+[![CI status](https://img.shields.io/github/workflow/status/franciscoadasme/hclust/CI)](https://github.com/franciscoadasme/hclust/actions?query=workflow:CI)
+[![Docs status](https://img.shields.io/github/workflow/status/franciscoadasme/hclust/Deploy%20docs?label=docs)](https://franciscoadasme.github.io/hclust)
+[![Version](https://img.shields.io/github/v/release/franciscoadasme/hclust?label=version)](https://github.com/franciscoadasme/hclust/releases/latest)
+[![License](https://img.shields.io/github/license/franciscoadasme/hclust)](https://github.com/franciscoadasme/hclust/blob/master/LICENSE)
+
 This shard provides types and methods for fast hierarchical agglomerative
 clustering featuring efficient linkage algorithms.
 
