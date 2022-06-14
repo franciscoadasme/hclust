@@ -71,9 +71,14 @@ coords = [
   [-3.45524705, 0.92812111, 0.15155981],
 ]
 labels = (0...coords.size).to_a # for demonstration purposes
+
+# dissimilarity metric
+def euclidean(u, v)
+  Math.sqrt (0...u.size).sum { |i| ([i] - v[i])**2 }
+end
 ```
 
-The easiest way is to use the convenience method `#cluster`. The following code
+The easiest way is to use the convenience method `.cluster`. The following code
 will cluster the data points into groups based on the Euclidean distance with a
 distance cutoff of 4 using the single linkage (default so can be omitted):
 
@@ -81,7 +86,7 @@ distance cutoff of 4 using the single linkage (default so can be omitted):
 require "hclust"
 
 clusters = HClust.cluster(labels, 4, :single) { |i, j|
-  Math.sqrt (0...u.size).sum { |i| (u[i] - v[i])**2 } # euclidean distance
+  euclidean(coords[i], coords[j])
 }
 clusters.size # => 3
 clusters      # => [[0, 3, 6, 7, 9], [1, 5, 8], [2, 4]]
@@ -91,7 +96,7 @@ Use the `into:` named argument to limit the number of clusters:
 
 ```crystal
 clusters = HClust.cluster(labels, into: 2) { |i, j|
-  Math.sqrt (0...u.size).sum { |i| (u[i] - v[i])**2 } # euclidean distance
+  euclidean(coords[i], coords[j])
 }
 clusters.size # => 2
 clusters      # => [[0, 1, 3, 5, 6, 7, 8, 9], [2, 4]]
@@ -101,7 +106,7 @@ Alternatively, the procedure can be replicated by doing each step manually:
 
 ```crystal
 dism = DistanceMatrix.new(coords.size) { |i, j|
-  Math.sqrt (0...u.size).sum { |i| (u[i] - v[i])**2 } # euclidean distance
+  euclidean(coords[i], coords[j])
 }
 dendrogram = linkage(dism, :single)
 clusters = dendrogram.flatten(height: 4)
