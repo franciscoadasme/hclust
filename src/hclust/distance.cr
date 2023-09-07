@@ -93,6 +93,14 @@ class HClust::DistanceMatrix
     self[i, j]? || raise IndexError.new
   end
 
+  # Returns the submatrix containing the distances between the elements
+  # at the given indexes. Raises `Enumerable::EmptyError` if *indexes*
+  # is empty or `IndexError` if any of the indexes is out of bounds.
+  def [](indexes : Indexable(Int)) : self
+    raise Enumerable::EmptyError.new unless indexes.size > 0
+    self[indexes]? || raise IndexError.new
+  end
+
   # Returns the distance between the elements at *i* and *j*, or `nil` if
   # any of the indexes is out of bounds.
   def []?(i : Int, j : Int) : Float64?
@@ -102,6 +110,24 @@ class HClust::DistanceMatrix
     if 0 <= i < size && 0 <= j < size
       i, j = j, i if j < i
       unsafe_fetch(i, j)
+    end
+  end
+
+  # Returns the submatrix containing the distances between the elements
+  # at the given indexes, or `nil` if *indexes* is empty or any of the
+  # indexes is out of bounds.
+  def []?(indexes : Indexable(Int)) : self?
+    return unless indexes.size > 0
+    indexes = indexes.map { |i| i < 0 ? i + size : i }
+    return unless indexes.all? { |i| 0 <= i < size }
+    self.class.new(indexes.size).tap do |mat|
+      k = 0
+      indexes.each_with_index do |ii, i|
+        indexes.each(within: (i + 1)..) do |jj|
+          mat.unsafe_put k, unsafe_fetch(ii, jj)
+          k += 1
+        end
+      end
     end
   end
 

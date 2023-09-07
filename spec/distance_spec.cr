@@ -49,6 +49,18 @@ describe HClust::DistanceMatrix do
         HClust::DistanceMatrix.new(5)[5, 3]
       end
     end
+
+    it "raises if empty indexes" do
+      expect_raises Enumerable::EmptyError do
+        HClust::DistanceMatrix.new(5)[[] of Int32]
+      end
+    end
+
+    it "raises if any index if out of bounds" do
+      expect_raises IndexError do
+        HClust::DistanceMatrix.new(5)[[1, 3, 10]]
+      end
+    end
   end
 
   describe "#[]?" do
@@ -77,6 +89,23 @@ describe HClust::DistanceMatrix do
       mat[0, 10]?.should be_nil
       mat[40, 3]?.should be_nil
       mat[11, 6]?.should be_nil
+    end
+
+    it "returns a submatrix" do
+      mat = HClust::DistanceMatrix.new(5) do |i, j|
+        10 * (i + 1) + j + 1
+      end
+      mat[[1, 3, 4]]?.try(&.to_a).should eq [24, 25, 45]
+      mat[[0, 2]]?.try(&.to_a).should eq [13]
+      mat[(0..4).to_a]?.try(&.to_a).should eq [12, 13, 14, 15, 23, 24, 25, 34, 35, 45]
+    end
+
+    it "returns nil if empty indexes" do
+      HClust::DistanceMatrix.new(5)[[] of Int32]?.should be_nil
+    end
+
+    it "returns nil if any index if out of bounds" do
+      HClust::DistanceMatrix.new(5)[[1, 3, 10]]?.should be_nil
     end
   end
 
