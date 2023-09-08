@@ -148,6 +148,22 @@ describe HClust::DistanceMatrix do
     end
   end
 
+  describe "#centroid" do
+    it "returns the index of the centroid" do
+      dm = HClust::DistanceMatrix.new(4) { rand * 100 }
+
+      # brute force
+      indexes = (0...dm.size).to_a
+      accum = Array.new dm.size, 0.0
+      indexes.each_combination(2, reuse: true) do |(i, j)|
+        accum[i] += dm[i, j]
+        accum[j] += dm[i, j]
+      end
+
+      dm.centroid.should eq indexes.min_by { |i| accum[i] / dm.size }
+    end
+  end
+
   describe "#clone" do
     it "returns a clone of the matrix" do
       mat = HClust::DistanceMatrix.new(5) { |i, j| 10 * (i + 1) + j + 1 }

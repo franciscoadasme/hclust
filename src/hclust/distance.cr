@@ -179,6 +179,25 @@ class HClust::DistanceMatrix
     end
   end
 
+  # Returns the index of the element with the smallest average distance
+  # to all others.
+  def centroid : Int32
+    accum = Array.new size, 0.0
+    i = 0
+    j = i + 1
+    @internal_size.times do |k|
+      if j == size
+        i += 1
+        j = i + 1
+      end
+      distance = unsafe_fetch(k)
+      accum.unsafe_put i, accum.unsafe_fetch(i) + distance
+      accum.unsafe_put j, accum.unsafe_fetch(j) + distance
+      j += 1
+    end
+    (0...size).min_by { |x| accum.unsafe_fetch(x) / size }
+  end
+
   # Returns a new `DistanceMatrix` with the results of running the block
   # against each element of the matrix.
   def map(& : Float64 -> Float64) : self
