@@ -59,6 +59,26 @@ class HClust::DistanceMatrix
     end
   end
 
+  # Creates a new `DistanceMatrix` from the given elements by invoking
+  # the given block once for each pair of elements, using the block's
+  # return value as the distance between the elements.
+  #
+  # Raises `Enumerable::EmptyError` if *elements* is empty or
+  # `ArgumentError` if any distance value is NaN.
+  #
+  # ```
+  # dm = HClust::DistanceMatrix.new([1, 2, 3, 4]) { |a, b| 10 * a + b }
+  # dm.to_a # => [12.0, 13.0, 14.0, 23.0, 24.0, 34.0]
+  # ```
+  def self.new(elements : Indexable(T), & : T -> Number) : self forall T
+    raise Enumerable::EmptyError.new if elements.empty?
+    new(elements.size) do |i, j|
+      a = elements.unsafe_fetch(i)
+      b = elements.unsafe_fetch(j)
+      (yield a, b).to_f
+    end
+  end
+
   # Creates a new `DistanceMatrix` of the given size and invokes the
   # given block once for each pair of elements (indexes), using the
   # block's return value as the distance between the given elements.

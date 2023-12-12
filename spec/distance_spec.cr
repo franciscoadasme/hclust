@@ -14,11 +14,30 @@ describe HClust::DistanceMatrix do
       mat.to_a.should eq [12, 13, 14, 15, 23, 24, 25, 34, 35, 45]
     end
 
+    it "creates a matrix from elements" do
+      mat = HClust::DistanceMatrix.new((5..9).to_a) do |a, b|
+        10 * a + b
+      end
+      mat.to_a.should eq [56, 57, 58, 59, 67, 68, 69, 78, 79, 89]
+    end
+
     it "raises if distance is nan" do
       expect_raises(ArgumentError, "Invalid distance (NaN)") do
         HClust::DistanceMatrix.new(5) do
           Float64::NAN
         end
+      end
+    end
+
+    it "raises if block returns NaN" do
+      expect_raises(ArgumentError, "Invalid distance (NaN)") do
+        HClust::DistanceMatrix.new([1, 2, 3]) { Float64::NAN }
+      end
+    end
+
+    it "raises if array is empty" do
+      expect_raises(Enumerable::EmptyError) do
+        HClust::DistanceMatrix.new([] of String) { 0.0 }
       end
     end
   end
