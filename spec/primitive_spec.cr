@@ -173,7 +173,7 @@ describe HClust do
 end
 
 private def fake_dism
-  HClust::DistanceMatrix.new [
+  HClust::DistanceMatrix.from_condensed [
     0.07920459, 0.10576539, 0.59606310, 0.61042315, 0.89854317,
     0.26471848, 0.62778115, 0.66097521, 0.82065438, 0.35405001,
     0.47365547, 0.78807079, 0.53008770, 0.67712605, 0.70490824,

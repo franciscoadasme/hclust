@@ -14,8 +14,18 @@ describe HClust::DistanceMatrix do
       mat.to_a.should eq [12, 13, 14, 15, 23, 24, 25, 34, 35, 45]
     end
 
+    it "raises if distance is nan" do
+      expect_raises(ArgumentError, "Invalid distance (NaN)") do
+        HClust::DistanceMatrix.new(5) do
+          Float64::NAN
+        end
+      end
+    end
+  end
+
+  describe ".from_condensed" do
     it "creates a matrix from an array" do
-      mat = HClust::DistanceMatrix.new([12.0, 13.0, 14.0, 23.0, 24.0, 34.0])
+      mat = HClust::DistanceMatrix.from_condensed([12.0, 13.0, 14.0, 23.0, 24.0, 34.0])
       mat.size.should eq 4
       mat[0, 1].should eq 12
       mat[0, 2].should eq 13
@@ -24,21 +34,13 @@ describe HClust::DistanceMatrix do
 
     it "raises if array is invalid" do
       expect_raises(ArgumentError, "Invalid condensed distance matrix") do
-        HClust::DistanceMatrix.new([12.0, 13.0])
+        HClust::DistanceMatrix.from_condensed([12.0, 13.0])
       end
     end
 
     it "raises if array is empty" do
       expect_raises(Enumerable::EmptyError) do
-        HClust::DistanceMatrix.new([] of Float64)
-      end
-    end
-
-    it "raises if distance is nan" do
-      expect_raises(ArgumentError, "Invalid distance (NaN)") do
-        HClust::DistanceMatrix.new(5) do
-          Float64::NAN
-        end
+        HClust::DistanceMatrix.from_condensed([] of Float64)
       end
     end
   end

@@ -50,14 +50,13 @@ class HClust::DistanceMatrix
   # empty.
   #
   # NOTE: distance values must be valid (non-NaN).
-  def initialize(values : Array(Float64))
+  def self.from_condensed(values : Array(Float64)) : self
     raise Enumerable::EmptyError.new if values.empty?
     size = Math.sqrt(8 * values.size + 1) / 2 + 0.5
     raise ArgumentError.new("Invalid condensed distance matrix") if size.to_i != size
-    @size = size.to_i
-    @internal_size = values.size
-    @buffer = Pointer(Float64).malloc(@internal_size)
-    @buffer.copy_from values.to_unsafe, values.size
+    new(size.to_i).tap do |dmat|
+      dmat.to_unsafe.copy_from values.to_unsafe, values.size
+    end
   end
 
   # Creates a new `DistanceMatrix` of the given size and invokes the
