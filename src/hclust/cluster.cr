@@ -8,15 +8,15 @@ def HClust.cluster(
   rule : Rule = :single,
   & : T, T -> Float64
 ) : Array(Array(T)) forall T
-  dism = DistanceMatrix.new(elements.size) do |i, j|
-    yield elements[i], elements[j]
+  dism = DistanceMatrix.new(elements) do |a, b|
+    yield a, b
   end
   dendrogram = linkage(dism, rule, reuse: true)
-  dendrogram.flatten(cutoff).map { |idxs|
-    idxs.map { |i|
-      elements[i]
-    }
-  }
+  dendrogram.flatten(cutoff).map do |idxs|
+    idxs.map do |i|
+      elements.unsafe_fetch(i)
+    end
+  end
 end
 
 # Clusters *elements* into *count* clusters or fewer using the linkage
@@ -28,13 +28,13 @@ def HClust.cluster(
   rule : Rule = :single,
   & : T, T -> Float64
 ) : Array(Array(T)) forall T
-  dism = DistanceMatrix.new(elements.size) do |i, j|
-    yield elements[i], elements[j]
+  dism = DistanceMatrix.new(elements) do |a, b|
+    yield a, b
   end
   dendrogram = linkage(dism, rule, reuse: true)
-  dendrogram.flatten(count: count).map { |idxs|
-    idxs.map { |i|
-      elements[i]
-    }
-  }
+  dendrogram.flatten(count: count).map do |idxs|
+    idxs.map do |i|
+      elements.unsafe_fetch(i)
+    end
+  end
 end
