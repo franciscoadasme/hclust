@@ -30,7 +30,7 @@ describe HClust do
   describe ".cluster" do
     it "returns grouped values" do
       positions = fake_positions
-      HClust.cluster(positions, 4) { |u, v| euclidean(u, v) }.should eq [
+      HClust.cluster(positions, cutoff: 4) { |u, v| euclidean(u, v) }.should eq [
         [0, 3, 6, 7, 9].map { |i| positions[i] },
         [1, 5, 8].map { |i| positions[i] },
         [2, 4].map { |i| positions[i] },
@@ -41,7 +41,7 @@ describe HClust do
   describe ".cluster" do
     it "returns N grouped values" do
       positions = fake_positions
-      HClust.cluster(positions, into: 2) { |u, v| euclidean(u, v) }.should eq [
+      HClust.cluster(positions, 2) { |u, v| euclidean(u, v) }.should eq [
         [0, 1, 3, 5, 6, 7, 8, 9].map { |i| positions[i] },
         [2, 4].map { |i| positions[i] },
       ]

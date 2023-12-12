@@ -49,6 +49,7 @@ end
 # less than or equal to *cutoff*.
 def HClust.cluster(
   elements : Indexable(T),
+  *,
   cutoff : Number,
   rule : Rule = :single,
   & : T, T -> Float64
@@ -68,8 +69,7 @@ end
 # rule *rule* based on the distances computed by the given block.
 def HClust.cluster(
   elements : Indexable(T),
-  *,
-  into count : Int,
+  count : Int,
   rule : Rule = :single,
   & : T, T -> Float64
 ) : Array(Array(T)) forall T
