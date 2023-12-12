@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.8.2">
+<meta name="generator" content="Crystal Docs 1.9.2">
 <meta name="crystal_docs.project_version" content="main">
 <meta name="crystal_docs.project_name" content="hclust">
 
@@ -23,7 +23,7 @@
 
 <svg class="hidden">
   <symbol id="octicon-link" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
   </symbol>
 </svg>
 <input type="checkbox" id="sidebar-btn">
@@ -121,7 +121,7 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> HClust::DistanceMatrix
+  <span class="kind">class</span> HClust::<wbr>DistanceMatrix
 
 </h1>
 
@@ -193,7 +193,7 @@ mat[<span class="n">2</span>, <span class="n">3</span>] <span class="c"># =&gt; 
   </h2>
   
     
-      <a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L36" target="_blank">
+      <a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L36" target="_blank">
         hclust/distance.cr
       </a>
     
@@ -215,6 +215,13 @@ mat[<span class="n">2</span>, <span class="n">3</span>] <span class="c"># =&gt; 
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#from_condensed%28values%3AArray%28Float64%29%29%3Aself-class-method" class="signature"><strong>.from_condensed</strong>(values : Array(Float64)) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> from the given condensed distance matrix (one-dimensional array).</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#new%28size%3AInt32%29-class-method" class="signature"><strong>.new</strong>(size : Int32)</a>
         
           <div class="summary"><p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> of the given size filled with zeros.</p></div>
@@ -222,9 +229,9 @@ mat[<span class="n">2</span>, <span class="n">3</span>] <span class="c"># =&gt; 
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28values%3AArray%28Float64%29%29-class-method" class="signature"><strong>.new</strong>(values : Array(Float64))</a>
+        <a href="#new%28elements%3AIndexable%28T%29%2C%26%3AT-%3ENumber%29%3AselfforallT-class-method" class="signature"><strong>.new</strong>(elements : Indexable(T), & : T -> Number) : <span class="k">self</span> forall T</a>
         
-          <div class="summary"><p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> from the given condensed distance matrix (one-dimensional array).</p></div>
+          <div class="summary"><p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> from the given elements by invoking the given block once for each pair of elements, using the block's return value as the distance between the elements.</p></div>
         
       </li>
     
@@ -431,6 +438,32 @@ mat[<span class="n">2</span>, <span class="n">3</span>] <span class="c"># =&gt; 
     Constructor Detail
   </h2>
   
+    <div class="entry-detail" id="from_condensed(values:Array(Float64)):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>from_condensed</strong>(values : Array(Float64)) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#from_condensed%28values%3AArray%28Float64%29%29%3Aself-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> from the given condensed distance
+matrix (one-dimensional array). Raises <code>ArgumentError</code> if the given
+array cannot be interpreted as a condensed matrix (it contains an
+invalid number of elements) or <code>Enumerable::EmptyError</code> if it's
+empty.</p>
+<p><span class="flag purple">NOTE</span>  distance values must be valid (non-NaN).</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L53" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="new(size:Int32)-class-method">
       <div class="signature">
         
@@ -447,33 +480,34 @@ mat[<span class="n">2</span>, <span class="n">3</span>] <span class="c"># =&gt; 
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L41" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(values:Array(Float64))-class-method">
+    <div class="entry-detail" id="new(elements:Indexable(T),&amp;:T-&gt;Number):selfforallT-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(values : Array(Float64))
+        def self.<strong>new</strong>(elements : Indexable(T), & : T -> Number) : <span class="k">self</span> forall T
 
-        <a class="method-permalink" href="#new%28values%3AArray%28Float64%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28elements%3AIndexable%28T%29%2C%26%3AT-%3ENumber%29%3AselfforallT-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> from the given condensed distance
-matrix (one-dimensional array). Raises <code>ArgumentError</code> if the given
-array cannot be interpreted as a condensed matrix (it contains an
-invalid number of elements) or <code>Enumerable::EmptyError</code> if it's
-empty.</p>
-<p><span class="flag purple">NOTE</span>  distance values must be valid (non-NaN).</p>
+          <p>Creates a new <code><a href="../HClust/DistanceMatrix.html">DistanceMatrix</a></code> from the given elements by invoking
+the given block once for each pair of elements, using the block's
+return value as the distance between the elements.</p>
+<p>Raises <code>Enumerable::EmptyError</code> if <em>elements</em> is empty or
+<code>ArgumentError</code> if any distance value is NaN.</p>
+<pre><code class="language-crystal">dm <span class="o">=</span> <span class="t">HClust</span><span class="t">::</span><span class="t">DistanceMatrix</span>.new([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>]) { <span class="o">|</span>a, b<span class="o">|</span> <span class="n">10</span> <span class="o">*</span> a <span class="o">+</span> b }
+dm.to_a <span class="c"># =&gt; [12.0, 13.0, 14.0, 23.0, 24.0, 34.0]</span></code></pre>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L53" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L73" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -501,7 +535,7 @@ block's return value as the distance between the given elements.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L75" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L94" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -537,7 +571,7 @@ block's return value as the distance between the given elements.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L161" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L180" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -559,7 +593,7 @@ block's return value as the distance between the given elements.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L170" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L189" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -581,7 +615,7 @@ block's return value as the distance between the given elements.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L92" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L111" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -604,7 +638,7 @@ is empty or <code>IndexError</code> if any of the indexes is out of bounds.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L118" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -629,7 +663,7 @@ or if <em>i == j</em> and <em>value</em> is not zero.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L140" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -651,7 +685,7 @@ any of the indexes is out of bounds.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L106" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L125" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -674,7 +708,7 @@ indexes is out of bounds.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L119" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L138" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -696,7 +730,7 @@ to all others.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L184" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L203" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -718,7 +752,7 @@ to all others.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L176" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L195" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -740,7 +774,7 @@ against each element of the matrix.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L203" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L222" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -763,7 +797,7 @@ replacing the element with the value returned by the block. Returns
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L210" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L229" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -785,7 +819,7 @@ elements at <em>i</em> and <em>j</em>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L220" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L239" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -806,7 +840,7 @@ elements at <em>i</em> and <em>j</em>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L233" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L252" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -827,7 +861,7 @@ elements at <em>i</em> and <em>j</em>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L238" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L257" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -849,7 +883,7 @@ location.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L252" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L271" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -870,7 +904,7 @@ location.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L246" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L265" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -897,7 +931,7 @@ for a small boost of performance.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L267" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L286" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -923,7 +957,7 @@ a small boost of performance.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L281" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L300" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -950,7 +984,7 @@ for a small boost of performance.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L296" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L315" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -976,7 +1010,7 @@ a small boost of performance.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/franciscoadasme/hclust/blob/acf28efaa999c91cd2cb222b4b7283588f3a71d0/src/hclust/distance.cr#L310" target="_blank">View source</a>]
+          [<a href="https://github.com/franciscoadasme/hclust/blob/e00db0b78361115422ecc3f9aa9d8a54fb525468/src/hclust/distance.cr#L329" target="_blank">View source</a>]
         
       </div>
     </div>
