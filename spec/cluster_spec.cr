@@ -1,6 +1,32 @@
 require "./spec_helper"
 
 describe HClust do
+  describe ".centroids" do
+    it "returns N clusters' centroids" do
+      positions = fake_positions
+
+      dism = HClust::DistanceMatrix.new(positions) { |u, v| euclidean(u, v) }
+      dendrogram = HClust.linkage(dism, :centroid)
+      clusters = dendrogram.flatten(count: 3)
+      expected = clusters.map { |idxs| positions[idxs[dism[idxs].centroid]] }
+
+      actual = HClust.centroids(positions, 3, :centroid) { |u, v| euclidean(u, v) }
+      actual.should eq expected
+    end
+
+    it "returns clusters' centroids by distance cutoff" do
+      positions = fake_positions
+
+      dism = HClust::DistanceMatrix.new(positions) { |u, v| euclidean(u, v) }
+      dendrogram = HClust.linkage(dism, :centroid)
+      clusters = dendrogram.flatten(height: 1)
+      expected = clusters.map { |idxs| positions[idxs[dism[idxs].centroid]] }
+
+      actual = HClust.centroids(positions, cutoff: 1) { |u, v| euclidean(u, v) }
+      actual.should eq expected
+    end
+  end
+
   describe ".cluster" do
     it "returns grouped values" do
       positions = fake_positions
